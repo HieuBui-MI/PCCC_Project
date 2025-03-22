@@ -3,15 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
   tags:
   - CinemachineTarget
-=======
-=======
->>>>>>> Stashed changes
-  tags: []
->>>>>>> Stashed changes
   layers:
   - Default
   - TransparentFX
