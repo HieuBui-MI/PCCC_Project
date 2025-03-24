@@ -2,15 +2,24 @@ using UnityEngine;
 
 public class BreakableObject : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public GameObject unbrokenObject;
+    public GameObject brokenObject;
+    private void Awake() {
+        
+    }
+
     void Start()
     {
         
     }
 
-    // Update is called once per frame
     void Update()
     {
         
+    }
+
+    public void Beinteracted(){
+        unbrokenObject.SetActive(false);
+        brokenObject.SetActive(true);
     }
 }

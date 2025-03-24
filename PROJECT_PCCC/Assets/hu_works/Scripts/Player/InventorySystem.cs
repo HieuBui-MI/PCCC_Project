@@ -12,19 +12,12 @@ public class InventorySystem : MonoBehaviour
     }
     void Start()
     {
-        // foreach (Transform child in Equipments.transform)
-        // {
-        //     if (child.GetComponent<Tool>().toolName == "Axe" && child.gameObject.activeSelf == true)
-        //     {
-        //         isPlayerHoldingTool = true;
-        //         isUsingAxe = true;
-        //     }
-        // }
     }
 
     void Update()
     {
         SwitchTools();
+        ActiveEquipTool();
     }
 
     void SwitchTools()
@@ -33,6 +26,14 @@ public class InventorySystem : MonoBehaviour
         {
             isPlayerHoldingTool = !isPlayerHoldingTool;
             isUsingAxe = !isUsingAxe;
+        }
+    }
+
+    void ActiveEquipTool()
+    {
+        foreach (Transform child in Equipments.transform)
+        {
+            child.gameObject.SetActive(isUsingAxe);
         }
     }
 }
