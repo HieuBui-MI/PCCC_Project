@@ -2,13 +2,15 @@ using UnityEngine;
 
 public class PlayerAnimationsHandler : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private Animator animator;
+    private void Awake() {
+        animator = GetComponent<Animator>();
+    }
     void Start()
     {
         
     }
 
-    // Update is called once per frame
     void Update()
     {
         
