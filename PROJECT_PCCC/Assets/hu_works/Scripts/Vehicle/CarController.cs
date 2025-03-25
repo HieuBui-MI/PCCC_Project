@@ -20,11 +20,20 @@ public class CarController : MonoBehaviour
     [SerializeField] private Transform frontLeftWheelTransform, frontRightWheelTransform;
     [SerializeField] private Transform rearLeftWheelTransform, rearRightWheelTransform;
 
+    private void Start() {
+        Rigidbody rb = GetComponent<Rigidbody>();
+        rb.centerOfMass = new Vector3(0, -0.5f, 0); // Hạ thấp trọng tâm để tăng độ ổn định
+    }
+
     private void FixedUpdate() {
         GetInput();
         HandleMotor();
         HandleSteering();
         UpdateWheels();
+
+        // Áp dụng thanh cân bằng
+        ApplyStabilizerBar(frontLeftWheelCollider, frontRightWheelCollider);
+        ApplyStabilizerBar(rearLeftWheelCollider, rearRightWheelCollider);
     }
 
     private void GetInput() {
@@ -41,7 +50,11 @@ public class CarController : MonoBehaviour
     private void HandleMotor() {
         frontLeftWheelCollider.motorTorque = verticalInput * motorForce;
         frontRightWheelCollider.motorTorque = verticalInput * motorForce;
-        currentbreakForce = isBreaking ? breakForce : 0f;
+
+        float speed = GetComponent<Rigidbody>().linearVelocity.magnitude; // Lấy tốc độ hiện tại
+        float adjustedBrakeForce = Mathf.Lerp(breakForce, breakForce / 2, speed / 50f); // Giảm lực phanh ở tốc độ cao
+        currentbreakForce = isBreaking ? adjustedBrakeForce : 0f;
+
         ApplyBreaking();
     }
 
@@ -53,7 +66,10 @@ public class CarController : MonoBehaviour
     }
 
     private void HandleSteering() {
-        currentSteerAngle = maxSteerAngle * horizontalInput;
+        float speed = GetComponent<Rigidbody>().linearVelocity.magnitude; // Lấy tốc độ hiện tại
+        float adjustedSteerAngle = Mathf.Lerp(maxSteerAngle, maxSteerAngle / 2, speed / 50f); // Giảm góc lái khi tốc độ tăng
+        currentSteerAngle = adjustedSteerAngle * horizontalInput;
+
         frontLeftWheelCollider.steerAngle = currentSteerAngle;
         frontRightWheelCollider.steerAngle = currentSteerAngle;
     }
@@ -69,7 +85,31 @@ public class CarController : MonoBehaviour
         Vector3 pos;
         Quaternion rot; 
         wheelCollider.GetWorldPose(out pos, out rot);
-        wheelTransform.rotation = rot;
+
+        // Correctly apply rotation adjustment
+        wheelTransform.rotation = rot * Quaternion.Euler(0f, 90f, 0f);
         wheelTransform.position = pos;
+    }
+
+    private void ApplyStabilizerBar(WheelCollider leftWheel, WheelCollider rightWheel) {
+        WheelHit hit;
+        float travelLeft = 1.0f;
+        float travelRight = 1.0f;
+
+        if (leftWheel.GetGroundHit(out hit)) {
+            travelLeft = (-leftWheel.transform.InverseTransformPoint(hit.point).y - leftWheel.radius) / leftWheel.suspensionDistance;
+        }
+        if (rightWheel.GetGroundHit(out hit)) {
+            travelRight = (-rightWheel.transform.InverseTransformPoint(hit.point).y - rightWheel.radius) / rightWheel.suspensionDistance;
+        }
+
+        float antiRollForce = (travelLeft - travelRight) * 5000f; // Điều chỉnh giá trị lực cân bằng
+
+        if (leftWheel.isGrounded) {
+            GetComponent<Rigidbody>().AddForceAtPosition(leftWheel.transform.up * -antiRollForce, leftWheel.transform.position);
+        }
+        if (rightWheel.isGrounded) {
+            GetComponent<Rigidbody>().AddForceAtPosition(rightWheel.transform.up * antiRollForce, rightWheel.transform.position);
+        }
     }
 }
