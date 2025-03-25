@@ -1,0 +1,27 @@
+fileFormatVersion: 2
+guid: ea3bce1f0016f8847bf0277fd3f907e6
+labels:
+- iOS
+- Android
+- warehouse
+- industrial
+- building
+- lowpoly
+- colliders
+- prefab
+- rts
+- strategy
+- mobile
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 3314
+  packageName: Warehouse
+  packageVersion: 1.0
+  assetPath: Assets/Project/Prefabs/warehouse-prefab.prefab
+  uploadId: 26343

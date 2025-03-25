@@ -1,0 +1,27 @@
+fileFormatVersion: 2
+guid: e9927b92247c93041b5fa2e983d4a7ba
+labels:
+- iOS
+- Android
+- warehouse
+- industrial
+- building
+- lowpoly
+- colliders
+- prefab
+- rts
+- strategy
+- mobile
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 3314
+  packageName: Warehouse
+  packageVersion: 1.0
+  assetPath: Assets/Project/Materials/warehouse-unlit.mat
+  uploadId: 26343
