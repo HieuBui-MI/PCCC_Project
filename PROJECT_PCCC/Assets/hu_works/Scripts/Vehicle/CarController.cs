@@ -8,7 +8,7 @@ public class CarController : MonoBehaviour
     private float horizontalInput, verticalInput;
     private float currentSteerAngle, currentbreakForce;
     private bool isBreaking;
-
+    public Vector3 wheelsOffSet;
     // Settings
     [SerializeField] private float motorForce, breakForce, maxSteerAngle;
 
@@ -20,12 +20,14 @@ public class CarController : MonoBehaviour
     [SerializeField] private Transform frontLeftWheelTransform, frontRightWheelTransform;
     [SerializeField] private Transform rearLeftWheelTransform, rearRightWheelTransform;
 
-    private void Start() {
+    private void Start()
+    {
         Rigidbody rb = GetComponent<Rigidbody>();
         rb.centerOfMass = new Vector3(0, -0.5f, 0); // Hạ thấp trọng tâm để tăng độ ổn định
     }
 
-    private void FixedUpdate() {
+    private void FixedUpdate()
+    {
         GetInput();
         HandleMotor();
         HandleSteering();
@@ -36,7 +38,8 @@ public class CarController : MonoBehaviour
         ApplyStabilizerBar(rearLeftWheelCollider, rearRightWheelCollider);
     }
 
-    private void GetInput() {
+    private void GetInput()
+    {
         // Steering Input
         horizontalInput = Input.GetAxis("Horizontal");
 
@@ -47,7 +50,8 @@ public class CarController : MonoBehaviour
         isBreaking = Input.GetKey(KeyCode.Space);
     }
 
-    private void HandleMotor() {
+    private void HandleMotor()
+    {
         frontLeftWheelCollider.motorTorque = verticalInput * motorForce;
         frontRightWheelCollider.motorTorque = verticalInput * motorForce;
 
@@ -58,14 +62,16 @@ public class CarController : MonoBehaviour
         ApplyBreaking();
     }
 
-    private void ApplyBreaking() {
+    private void ApplyBreaking()
+    {
         frontRightWheelCollider.brakeTorque = currentbreakForce;
         frontLeftWheelCollider.brakeTorque = currentbreakForce;
         rearLeftWheelCollider.brakeTorque = currentbreakForce;
         rearRightWheelCollider.brakeTorque = currentbreakForce;
     }
 
-    private void HandleSteering() {
+    private void HandleSteering()
+    {
         float speed = GetComponent<Rigidbody>().linearVelocity.magnitude; // Lấy tốc độ hiện tại
         float adjustedSteerAngle = Mathf.Lerp(maxSteerAngle, maxSteerAngle / 2, speed / 50f); // Giảm góc lái khi tốc độ tăng
         currentSteerAngle = adjustedSteerAngle * horizontalInput;
@@ -74,41 +80,48 @@ public class CarController : MonoBehaviour
         frontRightWheelCollider.steerAngle = currentSteerAngle;
     }
 
-    private void UpdateWheels() {
+    private void UpdateWheels()
+    {
         UpdateSingleWheel(frontLeftWheelCollider, frontLeftWheelTransform);
         UpdateSingleWheel(frontRightWheelCollider, frontRightWheelTransform);
         UpdateSingleWheel(rearRightWheelCollider, rearRightWheelTransform);
         UpdateSingleWheel(rearLeftWheelCollider, rearLeftWheelTransform);
     }
 
-    private void UpdateSingleWheel(WheelCollider wheelCollider, Transform wheelTransform) {
+    private void UpdateSingleWheel(WheelCollider wheelCollider, Transform wheelTransform)
+    {
         Vector3 pos;
-        Quaternion rot; 
+        Quaternion rot;
         wheelCollider.GetWorldPose(out pos, out rot);
 
-        // Correctly apply rotation adjustment
-        wheelTransform.rotation = rot * Quaternion.Euler(0f, 90f, 0f);
+        // Áp dụng offset vào vị trí và góc quay của bánh xe
         wheelTransform.position = pos;
+        wheelTransform.rotation = rot * Quaternion.Euler(wheelsOffSet); 
     }
 
-    private void ApplyStabilizerBar(WheelCollider leftWheel, WheelCollider rightWheel) {
+    private void ApplyStabilizerBar(WheelCollider leftWheel, WheelCollider rightWheel)
+    {
         WheelHit hit;
         float travelLeft = 1.0f;
         float travelRight = 1.0f;
 
-        if (leftWheel.GetGroundHit(out hit)) {
+        if (leftWheel.GetGroundHit(out hit))
+        {
             travelLeft = (-leftWheel.transform.InverseTransformPoint(hit.point).y - leftWheel.radius) / leftWheel.suspensionDistance;
         }
-        if (rightWheel.GetGroundHit(out hit)) {
+        if (rightWheel.GetGroundHit(out hit))
+        {
             travelRight = (-rightWheel.transform.InverseTransformPoint(hit.point).y - rightWheel.radius) / rightWheel.suspensionDistance;
         }
 
         float antiRollForce = (travelLeft - travelRight) * 5000f; // Điều chỉnh giá trị lực cân bằng
 
-        if (leftWheel.isGrounded) {
+        if (leftWheel.isGrounded)
+        {
             GetComponent<Rigidbody>().AddForceAtPosition(leftWheel.transform.up * -antiRollForce, leftWheel.transform.position);
         }
-        if (rightWheel.isGrounded) {
+        if (rightWheel.isGrounded)
+        {
             GetComponent<Rigidbody>().AddForceAtPosition(rightWheel.transform.up * antiRollForce, rightWheel.transform.position);
         }
     }
