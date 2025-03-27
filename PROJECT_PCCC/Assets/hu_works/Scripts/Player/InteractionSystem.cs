@@ -2,63 +2,90 @@ using UnityEngine;
 
 public class InteractionSystem : MonoBehaviour
 {
-    private SphereCollider detector;
-    [SerializeField] private GameObject detectedObject;
-    public string tagToDetect = "BreakableObject";
+    [SerializeField] private GameObject targetObject;
+    public GameObject playerCameraRoot;
+    private float reachDistance = 10f;
+    private Outline previosOutline;
+    private bool isTemporaryOutline;
 
-    private void Awake()
+    void Update()
     {
-        if (detector == null) detector = GetComponent<SphereCollider>();
-
-        if (detector != null)
-        {
-            detector.isTrigger = true;
-        }
+        SetTargetObject();
     }
 
-    private void Update()
+    void SetTargetObject()
     {
-        InteractBreak();
-    }
+        Vector3 origin = playerCameraRoot.transform.position;
+        Vector3 direction = playerCameraRoot.transform.forward;
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag(tagToDetect))
+        if (Physics.Raycast(origin, direction, out RaycastHit hit, reachDistance))
         {
-            detectedObject = other.gameObject;
-            Debug.Log("Đã phát hiện vật thể có thể tương tác: " + detectedObject.name);
-        }
-    }
+            GameObject hitObject = hit.collider.gameObject;
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag(tagToDetect))
-        {
-            if (detectedObject == other.gameObject)
+            Tag tagComponent = hitObject.GetComponent<Tag>();
+            if (tagComponent == null || !tagComponent.HasTag("Interactable"))
             {
-                detectedObject = null;
+                return;
+            }
+
+            if (hitObject != targetObject)
+            {
+                RemoveHighlight();
+                targetObject = hitObject;
+                ApplyHighlight(targetObject);
             }
         }
-    }
-
-    public GameObject GetDetectedObject()
-    {
-        return detectedObject;
-    }
-
-    void InteractBreak()
-    {
-        if (detectedObject != null && Input.GetKeyDown(KeyCode.Mouse0) && GetComponent<InventorySystem>().isUsingAxe)
+        else
         {
-            GetComponent<PlayerAnimationsHandler>().AxeBreaking();
+            RemoveHighlight();
+            targetObject = null;
         }
     }
 
-    public void ObjectBreak()
+    void ApplyHighlight(GameObject obj)
     {
-        if (detectedObject != null)
+        Outline outline = obj.GetComponent<Outline>();
+        if (outline == null)
         {
-            detectedObject.GetComponent<BreakableObject>().Beinteracted();
+            outline = obj.AddComponent<Outline>();
+            outline.OutlineColor = Color.yellow;
+            outline.OutlineWidth = 5f;
+            isTemporaryOutline = true;
+        }
+        else
+        {
+            isTemporaryOutline = false;
+        }
+
+        previosOutline = outline;
+        outline.enabled = true;
+    }
+
+    void RemoveHighlight()
+    {
+        if (previosOutline != null)
+        {
+            previosOutline.enabled = false;
+
+
+            if (isTemporaryOutline)
+            {
+                Destroy(previosOutline);
+            }
+
+            previosOutline = null;
+        }
+    }
+
+    public void Interact()
+    {
+        if (targetObject != null)
+        {
+            Interactable interactable = targetObject.GetComponent<Interactable>();
+            if (interactable != null)
+            {
+                interactable.Interact(this.gameObject);
+            }
         }
     }
 }

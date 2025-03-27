@@ -9,6 +9,7 @@ public class CarController : MonoBehaviour
     private float currentSteerAngle, currentbreakForce;
     private bool isBreaking;
     public Vector3 wheelsOffSet;
+    public float speed;
     // Settings
     [SerializeField] private float motorForce, breakForce, maxSteerAngle;
 
@@ -28,6 +29,7 @@ public class CarController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        speed = GetComponent<Rigidbody>().linearVelocity.magnitude;
         GetInput();
         HandleMotor();
         HandleSteering();
@@ -96,7 +98,7 @@ public class CarController : MonoBehaviour
 
         // Áp dụng offset vào vị trí và góc quay của bánh xe
         wheelTransform.position = pos;
-        wheelTransform.rotation = rot * Quaternion.Euler(wheelsOffSet); 
+        wheelTransform.rotation = rot * Quaternion.Euler(wheelsOffSet);
     }
 
     private void ApplyStabilizerBar(WheelCollider leftWheel, WheelCollider rightWheel)
