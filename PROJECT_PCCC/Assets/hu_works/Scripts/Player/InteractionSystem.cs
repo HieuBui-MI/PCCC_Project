@@ -5,8 +5,9 @@ public class InteractionSystem : MonoBehaviour
     [SerializeField] private GameObject targetObject;
     public GameObject playerCameraRoot;
     private float reachDistance = 10f;
-    private Outline previosOutline;
-    private bool isTemporaryOutline;
+    private GameObject marker;
+
+    [SerializeField] private GameObject markerPrefab; // Prefab của marker
 
     void Update()
     {
@@ -22,58 +23,51 @@ public class InteractionSystem : MonoBehaviour
         {
             GameObject hitObject = hit.collider.gameObject;
 
-            Tag tagComponent = hitObject.GetComponent<Tag>();
-            if (tagComponent == null || !tagComponent.HasTag("Interactable"))
+            if (hitObject.GetComponent<Interactable>() == null)
             {
                 return;
             }
 
             if (hitObject != targetObject)
             {
-                RemoveHighlight();
+                RemoveMarker();
                 targetObject = hitObject;
-                ApplyHighlight(targetObject);
+                ApplyMarker(targetObject);
             }
         }
         else
         {
-            RemoveHighlight();
+            RemoveMarker();
             targetObject = null;
         }
     }
 
-    void ApplyHighlight(GameObject obj)
+    void ApplyMarker(GameObject obj)
     {
-        Outline outline = obj.GetComponent<Outline>();
-        if (outline == null)
+        if (markerPrefab == null)
         {
-            outline = obj.AddComponent<Outline>();
-            outline.OutlineColor = Color.yellow;
-            outline.OutlineWidth = 5f;
-            isTemporaryOutline = true;
-        }
-        else
-        {
-            isTemporaryOutline = false;
+            Debug.LogWarning("Marker prefab is not assigned!");
+            return;
         }
 
-        previosOutline = outline;
-        outline.enabled = true;
+        // Tạo marker nếu chưa có
+        if (marker == null)
+        {
+            marker = Instantiate(markerPrefab);
+        }
+
+        // Đặt vị trí của marker ở chính giữa phía trên của targetObject
+        Bounds bounds = obj.GetComponent<Collider>().bounds; 
+        Vector3 markerPosition = bounds.center + Vector3.up * bounds.extents.y + Vector3.up * 0.2f; // Chính giữa phía trên
+        marker.transform.position = markerPosition;
     }
 
-    void RemoveHighlight()
+    void RemoveMarker()
     {
-        if (previosOutline != null)
+        if (marker != null)
         {
-            previosOutline.enabled = false;
-
-
-            if (isTemporaryOutline)
-            {
-                Destroy(previosOutline);
-            }
-
-            previosOutline = null;
+            Destroy(marker); //
+            marker = null;
         }
     }
 

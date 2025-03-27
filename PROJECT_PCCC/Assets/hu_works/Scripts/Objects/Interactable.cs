@@ -7,24 +7,52 @@ public class Interactable : MonoBehaviour
         None,
         Pickup,
         Door,
-        NPC,
+        Burnable,
         Button,
         Breakable
     }
 
-    [SerializeField] private InteractableType type = InteractableType.None; // Loại của Interactable
+    [SerializeField] private InteractableType type = InteractableType.None;
+
+    [System.Serializable]
+    public class BurnableOptions
+    {
+        [Range(0f, 100f)] public float flammability = 0.5f;
+        public float burnDuration = 5f;
+    }
+
+    [SerializeField] private BurnableOptions burnableOptions; 
 
     public void Interact(GameObject player)
     {
-        if (type == InteractableType.Breakable)
+        switch (type)
         {
-            Broken();
+            case InteractableType.Breakable:
+                Broken();
+                break;
+            case InteractableType.Burnable:
+                Burn();
+                break;
+            default:
+                Debug.Log($"Interacted with {type}");
+                break;
         }
     }
 
     void Broken()
     {
-        transform.Find("Broken").gameObject.SetActive(true);
-        transform.Find("Normal").gameObject.SetActive(false);
+        Transform brokenPart = transform.Find("Broken");
+        Transform normalPart = transform.Find("Normal");
+
+        if (brokenPart != null) brokenPart.gameObject.SetActive(true);
+        if (normalPart != null) normalPart.gameObject.SetActive(false);
+    }
+
+    void Burn()
+    {
+        if (burnableOptions != null)
+        {
+            Debug.Log($"Burning {gameObject.name} with flammability: {burnableOptions.flammability} and burn duration: {burnableOptions.burnDuration}s");
+        }
     }
 }
