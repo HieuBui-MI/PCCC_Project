@@ -77,7 +77,8 @@ public class RandomPointOnSurface : MonoBehaviour
             // Tạo đối tượng tại vị trí và đặt hướng theo pháp tuyến với độ nghiêng
             Quaternion rotation = Quaternion.LookRotation(normal) * Quaternion.Euler(rotationOffset);
             GameObject pointObject = Instantiate(pointPrefab, position, rotation);
-            pointObjects.Add(pointObject); // Lưu GameObject vào danh sách
+            pointObject.transform.parent = GameObject.Find("GameManager").transform.Find("FlamePoints"); // Đặt cha cho GameObject
+            pointObjects.Add(pointObject); 
         }
         else
         {
