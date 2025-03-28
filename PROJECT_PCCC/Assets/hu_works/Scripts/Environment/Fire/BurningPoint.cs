@@ -9,15 +9,14 @@ public class BurningPoint : MonoBehaviour
 
     private void Update()
     {
-        if (isBurning)
-        {
-            SpreadFire();
-        }
-        // colorChange();
+        SpreadFire();
+        fireParticle();
     }
 
     private void SpreadFire()
     {
+        if (!isBurning) return;
+
         // Tìm tất cả các đối tượng có component BurningPoint trong phạm vi
         Collider[] colliders = Physics.OverlapSphere(transform.position, burningRadius);
 
@@ -46,15 +45,27 @@ public class BurningPoint : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, burningRadius);
     }
 
-    // void colorChange()
-    // {
-    //     if (isBurning)
-    //     {
-    //         transform.Find("Sphere").GetComponent<Renderer>().material.color = Color.red;
-    //     }
-    //     else
-    //     {
-    //         transform.Find("Sphere").GetComponent<Renderer>().material.color = Color.white;
-    //     }
-    // }
+    void fireParticle()
+    {
+        if (isBurning == true)
+        {
+            foreach (Transform child in transform)
+            {
+                if (child.name == "WildFire")
+                {
+                    child.gameObject.SetActive(true);
+                }
+            }
+        }
+        else
+        {
+            foreach (Transform child in transform)
+            {
+                if (child.name == "WildFire")
+                {
+                    child.gameObject.SetActive(false);
+                }
+            }
+        }
+    }
 }
