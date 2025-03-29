@@ -3595,6 +3595,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7c93daeea39e344083455d56e8da7d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isDriving: 0
+  vehicle: {fileID: 0}
+  isPlayerHoldingTool: 0
+  isUsingAxe: 0
+  isCarryingLadder: 0
+  isCarryingBucket: 0
+  isCarryingRope: 0
+  interactionSystem: {fileID: 0}
 --- !u!114 &7619352170452002421
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3608,11 +3616,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Equipments: {fileID: 0}
-  isPlayerHoldingTool: 0
-  isUsingAxe: 0
-  isCarryingLadder: 0
-  isCarryingBucket: 0
-  isCarryingRope: 0
 --- !u!114 &7565327987582770658
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3639,6 +3642,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetObject: {fileID: 0}
   playerCameraRoot: {fileID: 8907614995152762936}
+  reachDistance: 2
   markerPrefab: {fileID: 8747550572264607911, guid: b88aad414a6fe0f41a43e43b106dbcaa, type: 3}
 --- !u!1 &8435619448912532716
 GameObject:

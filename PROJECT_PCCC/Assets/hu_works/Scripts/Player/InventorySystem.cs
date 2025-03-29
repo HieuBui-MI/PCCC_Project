@@ -4,11 +4,8 @@ using UnityEngine;
 public class InventorySystem : MonoBehaviour
 {
     public GameObject Equipments = null;
-    public bool isPlayerHoldingTool = false;
-    public bool isUsingAxe = false;
-    public bool isCarryingLadder = false;
-    public bool isCarryingBucket = false;
-    public bool isCarryingRope = false;
+    private PlayerScript playerScript;
+
 
     private void Awake()
     {
@@ -21,6 +18,12 @@ public class InventorySystem : MonoBehaviour
         else
         {
             Debug.LogWarning("Equipments object not found!");
+        }
+
+        playerScript = GetComponent<PlayerScript>();
+        if (playerScript == null)
+        {
+            Debug.LogError("PlayerScript component not found on this GameObject!");
         }
     }
 
@@ -54,30 +57,30 @@ public class InventorySystem : MonoBehaviour
     void SwitchTool(string toolName)
     {
         // Reset trạng thái tất cả công cụ
-        isUsingAxe = false;
-        isCarryingLadder = false;
-        isCarryingBucket = false;
-        isCarryingRope = false;
+        playerScript.isUsingAxe = false;
+        playerScript.isCarryingLadder = false;
+        playerScript.isCarryingBucket = false;
+        playerScript.isCarryingRope = false;
 
         // Kích hoạt công cụ tương ứng
         switch (toolName)
         {
             case "Axe":
-                isUsingAxe = true;
+                playerScript.isUsingAxe = true;
                 break;
             case "Ladder":
-                isCarryingLadder = true;
+                playerScript.isCarryingLadder = true;
                 break;
             case "Bucket":
-                isCarryingBucket = true;
+                playerScript.isCarryingBucket = true;
                 break;
             case "Rope":
-                isCarryingRope = true;
+                playerScript.isCarryingRope = true;
                 break;
         }
 
         // Cập nhật trạng thái người chơi
-        isPlayerHoldingTool = isUsingAxe || isCarryingLadder || isCarryingBucket || isCarryingRope;
+        playerScript.isPlayerHoldingTool = playerScript.isUsingAxe || playerScript.isCarryingLadder || playerScript.isCarryingBucket || playerScript.isCarryingRope;
     }
 
     void UpdateActiveTool()
@@ -87,10 +90,10 @@ public class InventorySystem : MonoBehaviour
         foreach (Transform child in Equipments.transform)
         {
             // Kích hoạt công cụ dựa trên trạng thái
-            child.gameObject.SetActive(child.GetComponent<Tool>().toolName == "FireAxe" && isUsingAxe ||
-                                       child.GetComponent<Tool>().toolName == "Ladder" && isCarryingLadder ||
-                                       child.GetComponent<Tool>().toolName == "Bucket" && isCarryingBucket ||
-                                       child.GetComponent<Tool>().toolName == "Rope" && isCarryingRope);
+            child.gameObject.SetActive(child.GetComponent<Tool>().toolName == "FireAxe" && playerScript.isUsingAxe ||
+                                       child.GetComponent<Tool>().toolName == "Ladder" && playerScript.isCarryingLadder ||
+                                       child.GetComponent<Tool>().toolName == "Bucket" && playerScript.isCarryingBucket ||
+                                       child.GetComponent<Tool>().toolName == "Rope" && playerScript.isCarryingRope);
         }
     }
 }

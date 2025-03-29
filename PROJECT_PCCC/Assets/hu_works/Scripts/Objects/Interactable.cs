@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Interactable : MonoBehaviour
@@ -8,7 +9,7 @@ public class Interactable : MonoBehaviour
         Pickup,
         Door,
         Burnable,
-        Button,
+        Drivable,
         Breakable
     }
 
@@ -21,17 +22,20 @@ public class Interactable : MonoBehaviour
         public float burnDuration = 5f;
     }
 
-    [SerializeField] private BurnableOptions burnableOptions; 
+    [SerializeField] private BurnableOptions burnableOptions;
 
-    public void Interact(GameObject player)
+    public void InteractCase(GameObject player)
     {
         switch (type)
         {
             case InteractableType.Breakable:
-                Broken();
+                Broken(player);
                 break;
             case InteractableType.Burnable:
                 Burn();
+                break;
+            case InteractableType.Drivable:
+                DriveVehicle(player);
                 break;
             default:
                 Debug.Log($"Interacted with {type}");
@@ -39,7 +43,7 @@ public class Interactable : MonoBehaviour
         }
     }
 
-    void Broken()
+    void Broken(GameObject player)
     {
         Transform brokenPart = transform.Find("Broken");
         Transform normalPart = transform.Find("Normal");
@@ -54,5 +58,13 @@ public class Interactable : MonoBehaviour
         {
             Debug.Log($"Burning {gameObject.name} with flammability: {burnableOptions.flammability} and burn duration: {burnableOptions.burnDuration}s");
         }
+    }
+
+    void DriveVehicle(GameObject player)
+    {
+        player.GetComponent<PlayerScript>().isDriving = true;
+        player.GetComponent<PlayerScript>().vehicle = this.gameObject;
+        GetComponent<CarController>().driver = player;
+        GetComponent<CarController>().ChangeFollowCamera();
     }
 }

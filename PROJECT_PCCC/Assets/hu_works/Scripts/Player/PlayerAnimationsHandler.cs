@@ -6,6 +6,7 @@ public class PlayerAnimationsHandler : MonoBehaviour
 {
     private StarterAssetsInputs starterAssetsInputs;
     private InventorySystem inventorySystem;
+    private PlayerScript playerScript;
     private InteractionSystem interactionSystem;
     private Animator animator;
     private bool isInAction = false;
@@ -13,14 +14,10 @@ public class PlayerAnimationsHandler : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         starterAssetsInputs = GetComponent<StarterAssetsInputs>();
+        playerScript = GetComponent<PlayerScript>();
         inventorySystem = GetComponent<InventorySystem>();
         interactionSystem = GetComponent<InteractionSystem>();
     }
-    void Start()
-    {
-
-    }
-
 
     void Update()
     {
@@ -30,12 +27,12 @@ public class PlayerAnimationsHandler : MonoBehaviour
 
     void AxePose()
     {
-        animator.SetBool("isUsingAxe", GetComponent<InventorySystem>().isUsingAxe);
+        animator.SetBool("isUsingAxe", GetComponent<PlayerScript>().isUsingAxe);
     }
 
     public void AxeBreaking()
     {
-        if (inventorySystem.isUsingAxe == true && starterAssetsInputs.leftClick == true && isInAction == false)
+        if (playerScript.isUsingAxe == true && starterAssetsInputs.leftClick == true && isInAction == false)
         {
             isInAction = true;
             animator.SetTrigger("AxeBreak");

@@ -9,9 +9,8 @@ public class RandomPointOnSurface : MonoBehaviour
     private Vector3[] normals; // Pháp tuyến của các đỉnh
     private List<Vector3> randomPoints = new List<Vector3>(); // Danh sách lưu các điểm ngẫu nhiên
     private List<GameObject> pointObjects = new List<GameObject>(); // Danh sách lưu các GameObject được tạo
-
-    [SerializeField] private int numberOfPoints = 10; // Số lượng điểm ngẫu nhiên cần tạo
-    [SerializeField] private GameObject pointPrefab; // Prefab để tạo tại các điểm ngẫu nhiên
+    public int numberOfPoints = 10; // Số lượng điểm ngẫu nhiên cần tạo
+    public GameObject pointPrefab; // Prefab để tạo tại các điểm ngẫu nhiên
     [SerializeField] public Vector3 rotationOffset = Vector3.zero; // Biến để kiểm soát độ nghiêng
 
     void Start()

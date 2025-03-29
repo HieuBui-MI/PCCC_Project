@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class CarController : MonoBehaviour
 {
+    public GameObject cameraManager;
+    public GameObject driver;
     private float horizontalInput, verticalInput;
     private float currentSteerAngle, currentbreakForce;
     private bool isBreaking;
@@ -21,10 +23,19 @@ public class CarController : MonoBehaviour
     [SerializeField] private Transform frontLeftWheelTransform, frontRightWheelTransform;
     [SerializeField] private Transform rearLeftWheelTransform, rearRightWheelTransform;
 
+    private void Awake()
+    {
+        cameraManager = GameObject.Find("CameraManager");
+    }
+
     private void Start()
     {
         Rigidbody rb = GetComponent<Rigidbody>();
         rb.centerOfMass = new Vector3(0, -0.5f, 0); // Hạ thấp trọng tâm để tăng độ ổn định
+    }
+
+    private void Update() {
+        LeaveVehicle();
     }
 
     private void FixedUpdate()
@@ -40,16 +51,33 @@ public class CarController : MonoBehaviour
         ApplyStabilizerBar(rearLeftWheelCollider, rearRightWheelCollider);
     }
 
+    void LeaveVehicle()
+    {
+        if (Input.GetKeyDown(KeyCode.Q) && driver != null)
+        {
+            Debug.Log("Leave Vehicle");
+            GetComponent<CarController>().ChangeFollowCamera();
+        }
+    }
+
+    public void ChangeFollowCamera()
+    {
+        cameraManager.GetComponent<CameraManager>().ChangeCameraRoot_Player_Vehicle(driver, gameObject);
+    }
+
     private void GetInput()
     {
-        // Steering Input
-        horizontalInput = Input.GetAxis("Horizontal");
+        if (driver != null)
+        {
+            // Steering Input
+            horizontalInput = Input.GetAxis("Horizontal");
 
-        // Acceleration Input
-        verticalInput = Input.GetAxis("Vertical");
+            // Acceleration Input
+            verticalInput = Input.GetAxis("Vertical");
 
-        // Breaking Input
-        isBreaking = Input.GetKey(KeyCode.Space);
+            // Breaking Input
+            isBreaking = Input.GetKey(KeyCode.Space);
+        }
     }
 
     private void HandleMotor()

@@ -4,34 +4,38 @@ public class InteractionSystem : MonoBehaviour
 {
     [SerializeField] private GameObject targetObject;
     public GameObject playerCameraRoot;
-    private float reachDistance = 10f;
+    [SerializeField] private float reachDistance = 5f;
     private GameObject marker;
-
-    [SerializeField] private GameObject markerPrefab; // Prefab của marker
+    [SerializeField] private GameObject markerPrefab; 
+    private GameObject previousTargetObject; 
 
     void Update()
     {
         SetTargetObject();
+        OutlineObject();
     }
 
     void SetTargetObject()
     {
         Vector3 origin = playerCameraRoot.transform.position;
         Vector3 direction = playerCameraRoot.transform.forward;
+        // Vẽ ray trong Scene View để debug
+        Debug.DrawRay(origin, direction * reachDistance, Color.red);
 
         if (Physics.Raycast(origin, direction, out RaycastHit hit, reachDistance))
         {
             GameObject hitObject = hit.collider.gameObject;
+            GameObject hitObjectRoot = hitObject.transform.root.gameObject;
 
-            if (hitObject.GetComponent<Interactable>() == null)
+            if (hitObjectRoot.GetComponent<Interactable>() == null)
             {
                 return;
             }
 
-            if (hitObject != targetObject)
+            if (hitObjectRoot != targetObject)
             {
                 RemoveMarker();
-                targetObject = hitObject;
+                targetObject = hitObjectRoot;
                 ApplyMarker(targetObject);
             }
         }
@@ -50,14 +54,12 @@ public class InteractionSystem : MonoBehaviour
             return;
         }
 
-        // Tạo marker nếu chưa có
         if (marker == null)
         {
             marker = Instantiate(markerPrefab);
         }
 
-        // Đặt vị trí của marker ở chính giữa phía trên của targetObject
-        Bounds bounds = obj.GetComponent<Collider>().bounds; 
+        Bounds bounds = obj.GetComponent<Collider>().bounds;
         Vector3 markerPosition = bounds.center + Vector3.up * bounds.extents.y + Vector3.up * 0.2f; // Chính giữa phía trên
         marker.transform.position = markerPosition;
     }
@@ -66,7 +68,7 @@ public class InteractionSystem : MonoBehaviour
     {
         if (marker != null)
         {
-            Destroy(marker); //
+            Destroy(marker);
             marker = null;
         }
     }
@@ -78,8 +80,34 @@ public class InteractionSystem : MonoBehaviour
             Interactable interactable = targetObject.GetComponent<Interactable>();
             if (interactable != null)
             {
-                interactable.Interact(this.gameObject);
+                interactable.InteractCase(this.gameObject);
             }
+        }
+    }
+
+    void OutlineObject()
+    {
+        if (previousTargetObject != targetObject)
+        {
+            if (previousTargetObject != null)
+            {
+                Outline previousOutline = previousTargetObject.transform.Find("Body/CarFrame").GetComponent<Outline>();
+                if (previousOutline != null)
+                {
+                    previousOutline.enabled = false;
+                }
+            }
+
+            if (targetObject != null)
+            {
+                Outline currentOutline = targetObject.transform.Find("Body/CarFrame").GetComponent<Outline>();
+                if (currentOutline != null)
+                {
+                    currentOutline.enabled = true;
+                }
+            }
+
+            previousTargetObject = targetObject;
         }
     }
 }
