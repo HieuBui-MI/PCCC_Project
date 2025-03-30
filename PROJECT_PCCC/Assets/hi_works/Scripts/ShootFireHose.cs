@@ -3,6 +3,8 @@ using Obi; // Đảm bảo bạn đã thêm thư viện Obi vào dự án của 
 
 public class ShootFireHose : MonoBehaviour
 {
+    [SerializeField] public GameObject PlayerCapsule;
+    [SerializeField] public GameObject ObiSolver;
     [SerializeField] public GameObject ObiEmitter;
     private ObiEmitter obiEmitterComponent;
     private float targetSpeed = 0f; // Giá trị mục tiêu của speed
@@ -35,6 +37,18 @@ public class ShootFireHose : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Giữ rotation của ObiSolver luôn là (0, 0, 0)
+        if (ObiSolver != null)
+        {
+            ObiSolver.transform.rotation = Quaternion.identity;
+        }
+
+        // Gán rotation của PlayerCapsule cho ObiEmitter
+        if (PlayerCapsule != null && ObiEmitter != null)
+        {
+            ObiEmitter.transform.rotation = PlayerCapsule.transform.rotation;
+        }
+
         if (obiEmitterComponent != null)
         {
             // Kiểm tra trạng thái chuột trái
