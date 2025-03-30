@@ -3,34 +3,33 @@ using UnityEngine;
 
 public class InventorySystem : MonoBehaviour
 {
-    public GameObject Equipments = null;
+    public GameObject inActiveEquipments = null;
+    public GameObject activeEquipment = null;
+
     private PlayerScript playerScript;
 
 
     private void Awake()
     {
-        // Kiểm tra null để tránh lỗi
-        var equipmentTransform = GetComponentsInChildren<Transform>().FirstOrDefault(t => t.name == "Equipments");
-        if (equipmentTransform != null)
+        if (inActiveEquipments == null)
         {
-            Equipments = equipmentTransform.gameObject;
-        }
-        else
-        {
-            Debug.LogWarning("Equipments object not found!");
+            inActiveEquipments = GetComponentsInChildren<Transform>().FirstOrDefault(t => t.name == "InActiveEquipments").gameObject;
         }
 
-        playerScript = GetComponent<PlayerScript>();
+        if (activeEquipment == null)
+        {
+            activeEquipment = GetComponentsInChildren<Transform>().FirstOrDefault(t => t.name == "ActiveEquipment").gameObject;
+        }
+
         if (playerScript == null)
         {
-            Debug.LogError("PlayerScript component not found on this GameObject!");
+            playerScript = GetComponent<PlayerScript>();
         }
     }
 
     void Update()
     {
         HandleToolSwitching();
-        UpdateActiveTool();
     }
 
     void HandleToolSwitching()
@@ -38,7 +37,7 @@ public class InventorySystem : MonoBehaviour
         // Hỗ trợ chuyển đổi nhiều công cụ
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            SwitchTool("Axe");
+            SwitchTool("FireAxe");
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
@@ -50,50 +49,59 @@ public class InventorySystem : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.Alpha4))
         {
-            SwitchTool("Rope");
+            SwitchTool("FireHose");
         }
     }
 
     void SwitchTool(string toolName)
     {
-        // Reset trạng thái tất cả công cụ
-        playerScript.isUsingAxe = false;
-        playerScript.isCarryingLadder = false;
-        playerScript.isCarryingBucket = false;
-        playerScript.isCarryingRope = false;
+        playerScript.ResetToolStates(); // Đặt lại trạng thái công cụ trước khi chuyển đổi
 
         // Kích hoạt công cụ tương ứng
         switch (toolName)
         {
-            case "Axe":
-                playerScript.isUsingAxe = true;
+            case "FireAxe":
+                playerScript.isUsingFireAxe = true;
+                UpdateActiveTool();
                 break;
             case "Ladder":
                 playerScript.isCarryingLadder = true;
+                UpdateActiveTool();
                 break;
             case "Bucket":
                 playerScript.isCarryingBucket = true;
+                UpdateActiveTool();
                 break;
-            case "Rope":
-                playerScript.isCarryingRope = true;
+            case "FireHose":
+                playerScript.isHoldingFireHose = true;
+                UpdateActiveTool();
                 break;
         }
 
         // Cập nhật trạng thái người chơi
-        playerScript.isPlayerHoldingTool = playerScript.isUsingAxe || playerScript.isCarryingLadder || playerScript.isCarryingBucket || playerScript.isCarryingRope;
+        playerScript.isPlayerHoldingTool = playerScript.isUsingFireAxe || playerScript.isCarryingLadder || playerScript.isCarryingBucket || playerScript.isHoldingFireHose;
     }
 
     void UpdateActiveTool()
     {
-        if (Equipments == null) return;
-
-        foreach (Transform child in Equipments.transform)
+        // Đặt tất cả các công cụ trong activeEquipment về inActiveEquipments
+        foreach (Transform tool in activeEquipment.transform)
         {
-            // Kích hoạt công cụ dựa trên trạng thái
-            child.gameObject.SetActive(child.GetComponent<Tool>().toolName == "FireAxe" && playerScript.isUsingAxe ||
-                                       child.GetComponent<Tool>().toolName == "Ladder" && playerScript.isCarryingLadder ||
-                                       child.GetComponent<Tool>().toolName == "Bucket" && playerScript.isCarryingBucket ||
-                                       child.GetComponent<Tool>().toolName == "Rope" && playerScript.isCarryingRope);
+            tool.SetParent(inActiveEquipments.transform);
+            tool.gameObject.SetActive(false);
+        }
+
+        // Đặt công cụ đang sử dụng về activeEquipment
+        foreach (Transform tool in inActiveEquipments.transform)
+        {
+            if (playerScript.isUsingFireAxe == true && tool.GetComponent<Tool>().toolName == "FireAxe" ||
+                playerScript.isCarryingLadder == true && tool.GetComponent<Tool>().toolName == "Ladder" ||
+                playerScript.isCarryingBucket == true && tool.GetComponent<Tool>().toolName == "Bucket" ||
+                playerScript.isHoldingFireHose == true && tool.GetComponent<Tool>().toolName == "FireHose")
+            {
+                tool.gameObject.SetActive(true);
+                tool.SetParent(activeEquipment.transform);
+            }
         }
     }
 }

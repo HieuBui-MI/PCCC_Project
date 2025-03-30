@@ -6,10 +6,12 @@ public class PlayerScript : MonoBehaviour
     public bool isDriving = false;
     public GameObject vehicle;
     public bool isPlayerHoldingTool = false;
-    public bool isUsingAxe = false;
+
+    ////////////////////////////////////////////////
+    public bool isUsingFireAxe = false;
     public bool isCarryingLadder = false;
     public bool isCarryingBucket = false;
-    public bool isCarryingRope = false;
+    public bool isHoldingFireHose = false;
     public InteractionSystem interactionSystem;
     private void Awake()
     {
@@ -25,5 +27,13 @@ public class PlayerScript : MonoBehaviour
         {
             interactionSystem.Interact();
         }
+    }
+
+    public void ResetToolStates()
+    {
+        isUsingFireAxe = false;
+        isCarryingLadder = false;
+        isCarryingBucket = false;
+        isHoldingFireHose = false;
     }
 }

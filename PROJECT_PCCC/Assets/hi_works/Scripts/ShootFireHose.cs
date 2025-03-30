@@ -1,5 +1,5 @@
 using UnityEngine;
-using Obi; // Đảm bảo bạn đã thêm thư viện Obi vào dự án của mình
+using Obi;
 
 public class ShootFireHose : MonoBehaviour
 {
@@ -7,11 +7,10 @@ public class ShootFireHose : MonoBehaviour
     [SerializeField] public GameObject ObiSolver;
     [SerializeField] public GameObject ObiEmitter;
     private ObiEmitter obiEmitterComponent;
-    private float targetSpeed = 0f; // Giá trị mục tiêu của speed
-    private float speedIncreaseRate = 10f; // Tốc độ tăng của speed
-    private float speedDecreaseRate = 20f; // Tốc độ giảm của speed
+    private float targetSpeed = 0f;
+    private float speedIncreaseRate = 10f;
+    private float speedDecreaseRate = 20f;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         if (ObiEmitter != null)
@@ -21,7 +20,7 @@ public class ShootFireHose : MonoBehaviour
             if (obiEmitterComponent != null)
             {
                 Debug.Log("ObiEmitter contains the 'ObiEmitter' component.");
-                obiEmitterComponent.speed = 0f; // Đặt speed ban đầu là 0
+                obiEmitterComponent.speed = 20f; // Đặt speed ban đầu là 0
             }
             else
             {
@@ -35,15 +34,38 @@ public class ShootFireHose : MonoBehaviour
     }
 
     // Update is called once per frame
+    // void Update()
+    // {
+    //     if (ObiSolver != null)
+    //     {
+    //         ObiSolver.transform.rotation = Quaternion.identity;
+    //     }
+
+    //     if (PlayerCapsule != null && ObiEmitter != null)
+    //     {
+    //         ObiEmitter.transform.rotation = PlayerCapsule.transform.rotation;
+    //     }
+
+    //     if (obiEmitterComponent != null)
+    //     {
+    //         if (Input.GetMouseButton(0)) 
+    //         {
+    //             obiEmitterComponent.speed = Mathf.MoveTowards(obiEmitterComponent.speed, targetSpeed, speedIncreaseRate * Time.deltaTime);
+    //         }
+    //         else // Thả chuột trái
+    //         {
+    //             obiEmitterComponent.speed = Mathf.MoveTowards(obiEmitterComponent.speed, targetSpeed, speedDecreaseRate * Time.deltaTime);
+    //         }
+    //     }
+    // }
+
     void Update()
     {
-        // Giữ rotation của ObiSolver luôn là (0, 0, 0)
         if (ObiSolver != null)
         {
             ObiSolver.transform.rotation = Quaternion.identity;
         }
 
-        // Gán rotation của PlayerCapsule cho ObiEmitter
         if (PlayerCapsule != null && ObiEmitter != null)
         {
             ObiEmitter.transform.rotation = PlayerCapsule.transform.rotation;
@@ -51,17 +73,7 @@ public class ShootFireHose : MonoBehaviour
 
         if (obiEmitterComponent != null)
         {
-            // Kiểm tra trạng thái chuột trái
-            if (Input.GetMouseButton(0)) // Nhấn giữ chuột trái
-            {
-                targetSpeed = 25f; // Đặt mục tiêu speed là 25
-                obiEmitterComponent.speed = Mathf.MoveTowards(obiEmitterComponent.speed, targetSpeed, speedIncreaseRate * Time.deltaTime);
-            }
-            else // Thả chuột trái
-            {
-                targetSpeed = 0f; // Đặt mục tiêu speed là 0
-                obiEmitterComponent.speed = Mathf.MoveTowards(obiEmitterComponent.speed, targetSpeed, speedDecreaseRate * Time.deltaTime);
-            }
+            obiEmitterComponent.speed = 20f; // Luôn đặt tốc độ là 20 để test
         }
     }
 }

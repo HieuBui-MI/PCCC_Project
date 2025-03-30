@@ -17,8 +17,8 @@ public class InteractionSystem : MonoBehaviour
 
     void SetTargetObject()
     {
-        Vector3 origin = playerCameraRoot.transform.position;
-        Vector3 direction = playerCameraRoot.transform.forward;
+        Vector3 origin = GameObject.Find("PlayerCameraRoot").transform.position;
+        Vector3 direction = GameObject.Find("PlayerCameraRoot").transform.forward;
         // Vẽ ray trong Scene View để debug
         Debug.DrawRay(origin, direction * reachDistance, Color.red);
 

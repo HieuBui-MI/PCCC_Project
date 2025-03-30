@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerAnimationsHandler : MonoBehaviour
 {
-    private StarterAssetsInputs starterAssetsInputs;
+    // private StarterAssetsInputs starterAssetsInputs;
     private InventorySystem inventorySystem;
     private PlayerScript playerScript;
     private InteractionSystem interactionSystem;
@@ -13,7 +13,7 @@ public class PlayerAnimationsHandler : MonoBehaviour
     private void Awake()
     {
         animator = GetComponent<Animator>();
-        starterAssetsInputs = GetComponent<StarterAssetsInputs>();
+        // starterAssetsInputs = GetComponent<StarterAssetsInputs>();
         playerScript = GetComponent<PlayerScript>();
         inventorySystem = GetComponent<InventorySystem>();
         interactionSystem = GetComponent<InteractionSystem>();
@@ -21,22 +21,23 @@ public class PlayerAnimationsHandler : MonoBehaviour
 
     void Update()
     {
-        AxePose();
+        PoseStateHandler();
         AxeBreaking();
     }
 
-    void AxePose()
+    void PoseStateHandler()
     {
-        animator.SetBool("isUsingAxe", GetComponent<PlayerScript>().isUsingAxe);
+        animator.SetBool("isUsingAxe", GetComponent<PlayerScript>().isUsingFireAxe);
+        animator.SetBool("isHoldingFireHose", GetComponent<PlayerScript>().isHoldingFireHose);
     }
 
     public void AxeBreaking()
     {
-        if (playerScript.isUsingAxe == true && starterAssetsInputs.leftClick == true && isInAction == false)
-        {
-            isInAction = true;
-            animator.SetTrigger("AxeBreak");
-        }
+        // if (playerScript.isUsingFireAxe == true && starterAssetsInputs.leftClick == true && isInAction == false)
+        // {
+        //     isInAction = true;
+        //     animator.SetTrigger("AxeBreak");
+        // }
     }
 
     public void resetActionState()

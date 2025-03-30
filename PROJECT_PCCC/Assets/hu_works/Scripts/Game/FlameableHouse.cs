@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using Obi;
 
 public class FlameableHouse : MonoBehaviour
 {
@@ -33,6 +34,13 @@ public class FlameableHouse : MonoBehaviour
             {
                 // Thêm script RandomPointOnSurface vào part
                 randomPointScript = part.AddComponent<RandomPointOnSurface>();
+            }
+
+            // Kiểm tra nếu part chưa có collider
+            ObiCollider collider = part.GetComponent<ObiCollider>();
+            if (collider == null)
+            {
+                part.AddComponent<ObiCollider>();
             }
 
             // Gắn prefab vào script RandomPointOnSurface

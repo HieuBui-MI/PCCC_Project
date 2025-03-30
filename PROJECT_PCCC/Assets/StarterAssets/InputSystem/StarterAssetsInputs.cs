@@ -5,85 +5,77 @@ using UnityEngine.InputSystem;
 
 namespace StarterAssets
 {
-    public class StarterAssetsInputs : MonoBehaviour
-    {
-        [Header("Character Input Values")]
-        public Vector2 move;
-        public Vector2 look;
-        public bool jump;
-        public bool sprint;
-        public bool leftClick; 
+	public class StarterAssetsInputs : MonoBehaviour
+	{
+		[Header("Character Input Values")]
+		public Vector2 move;
+		public Vector2 look;
+		public bool sprint;
+		public bool jump;
 
-        [Header("Movement Settings")]
-        public bool analogMovement;
+		[Header("Movement Settings")]
+		public bool analogMovement;
 
-        [Header("Mouse Cursor Settings")]
-        public bool cursorLocked = true;
-        public bool cursorInputForLook = true;
+		[Header("Mouse Cursor Settings")]
+		public bool cursorLocked = true;
+		public bool cursorInputForLook = true;
 
 #if ENABLE_INPUT_SYSTEM
-        public void OnMove(InputValue value)
-        {
-            MoveInput(value.Get<Vector2>());
-        }
+		public void OnMove(InputValue value)
+		{
+			MoveInput(value.Get<Vector2>());
+		}
 
-        public void OnLook(InputValue value)
-        {
-            if (cursorInputForLook)
-            {
-                LookInput(value.Get<Vector2>());
-            }
-        }
+		public void OnLook(InputValue value)
+		{
+			if (cursorInputForLook)
+			{
+				LookInput(value.Get<Vector2>());
+			}
+		}
 
-        public void OnJump(InputValue value)
-        {
-            JumpInput(value.isPressed);
-        }
 
-        public void OnSprint(InputValue value)
-        {
-            SprintInput(value.isPressed);
-        }
 
-        public void OnLeftClick(InputValue value) // Xử lý sự kiện nhấn chuột trái
-        {
-            LeftClickInput(value.isPressed);
-        }
+		public void OnSprint(InputValue value)
+		{
+			SprintInput(value.isPressed);
+		}
+
+		public void OnJump(InputValue value)
+		{
+			JumpInput(value.isPressed);
+		}
 #endif
 
-        public void MoveInput(Vector2 newMoveDirection)
-        {
-            move = newMoveDirection;
-        }
 
-        public void LookInput(Vector2 newLookDirection)
-        {
-            look = newLookDirection;
-        }
+		public void MoveInput(Vector2 newMoveDirection)
+		{
+			move = newMoveDirection;
+		}
 
-        public void JumpInput(bool newJumpState)
-        {
-            jump = newJumpState;
-        }
+		public void LookInput(Vector2 newLookDirection)
+		{
+			look = newLookDirection;
+		}
 
-        public void SprintInput(bool newSprintState)
-        {
-            sprint = newSprintState;
-        }
+		public void SprintInput(bool newSprintState)
+		{
+			sprint = newSprintState;
+		}
 
-        public void LeftClickInput(bool newLeftClickState) // Hàm cập nhật trạng thái nhấn chuột trái
-        {
-            leftClick = newLeftClickState;
-        }
+		private void OnApplicationFocus(bool hasFocus)
+		{
+			SetCursorState(cursorLocked);
+		}
 
-        private void OnApplicationFocus(bool hasFocus)
-        {
-            SetCursorState(cursorLocked);
-        }
+		private void SetCursorState(bool newState)
+		{
+			Cursor.lockState = newState ? CursorLockMode.Locked : CursorLockMode.None;
+		}
+		public void JumpInput(bool newJumpState)
+		{
+			jump = newJumpState;
+		}
+	}
 
-        private void SetCursorState(bool newState)
-        {
-            Cursor.lockState = newState ? CursorLockMode.Locked : CursorLockMode.None;
-        }
-    }
 }

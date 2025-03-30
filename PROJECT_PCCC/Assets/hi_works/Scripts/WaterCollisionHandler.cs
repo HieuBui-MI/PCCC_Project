@@ -5,14 +5,14 @@ public class WaterCollisionHandler : MonoBehaviour
     public LayerMask HittableLayers; 
     public GameObject spawnPrefab;  
 
-    void OnCollisionEnter(Collision collision)
+    void OnTriggerEnter(Collider other)
     {
-        if (((1 << collision.gameObject.layer) & HittableLayers) != 0)
+        if (((1 << other.gameObject.layer) & HittableLayers) != 0)
         {
             // Spawn prefab tại vị trí va chạm
             if (spawnPrefab != null)
             {
-                Vector3 spawnPosition = collision.contacts[0].point; // Lấy vị trí va chạm
+                Vector3 spawnPosition = other.ClosestPoint(transform.position); // Lấy vị trí gần nhất
                 Quaternion spawnRotation = Quaternion.identity; // Hoặc sử dụng rotation khác nếu cần
                 GameObject spawnedObject = Instantiate(spawnPrefab, spawnPosition, spawnRotation);
 
@@ -20,11 +20,5 @@ public class WaterCollisionHandler : MonoBehaviour
                 Destroy(spawnedObject, 1f);
             }
         }
-        else
-        {
-            Debug.Log("Hit something else!");
-        }
-
-        Destroy(gameObject);
     }
 }
