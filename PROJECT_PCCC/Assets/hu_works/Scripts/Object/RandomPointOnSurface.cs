@@ -6,19 +6,19 @@ public class RandomPointOnSurface : MonoBehaviour
     private Mesh mesh;
     private Vector3[] vertices;
     private int[] triangles;
-    private Vector3[] normals; // Pháp tuyến của các đỉnh
-    private List<Vector3> randomPoints = new List<Vector3>(); // Danh sách lưu các điểm ngẫu nhiên
-    private List<GameObject> pointObjects = new List<GameObject>(); // Danh sách lưu các GameObject được tạo
-    public int numberOfPoints = 10; // Số lượng điểm ngẫu nhiên cần tạo
-    public GameObject pointPrefab; // Prefab để tạo tại các điểm ngẫu nhiên
-    [SerializeField] public Vector3 rotationOffset = Vector3.zero; // Biến để kiểm soát độ nghiêng
+    private Vector3[] normals; 
+    private List<Vector3> randomPoints = new List<Vector3>(); 
+    private List<GameObject> pointObjects = new List<GameObject>(); 
+    public int numberOfPoints = 10; 
+    public GameObject pointPrefab; 
+    [SerializeField] public Vector3 rotationOffset = Vector3.zero; 
 
     void Start()
     {
         mesh = GetComponent<MeshFilter>().mesh;
         vertices = mesh.vertices;
         triangles = mesh.triangles;
-        normals = mesh.normals; // Lấy pháp tuyến của các đỉnh
+        normals = mesh.normals; 
 
         // Tạo các điểm ngẫu nhiên trên bề mặt mesh
         for (int i = 0; i < numberOfPoints; i++)

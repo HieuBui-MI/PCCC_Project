@@ -12,21 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d93d0a0d159da459986967b663da6fd0, type: 3}
   m_Name: FluidPassCompute
   m_EditorClassIdentifier: 
-  voxelSize: 0.06
-  isosurface: 0.07
-  descentIterations: 2
-  descentIsosurface: 0.242
-  descentSpeed: 0.709
+  voxelSize: 10
+  isosurface: 0.001
+  descentIterations: 0
+  descentIsosurface: 0.5
+  descentSpeed: 1
   smoothingIterations: 3
   smoothingIntensity: 1
   bevel: 1
-  materialType: 1
+  materialType: 0
   customFluidMaterial: {fileID: 0}
   customUnderwaterMaterial: {fileID: 0}
   reflectionCubemap: {fileID: 0}
   smoothness: 0.9
   metallic: 0
-  turbidity: {r: 0.33490568, g: 1, b: 0.78264886, a: 0}
+  turbidity: {r: 0, g: 0.40715814, b: 1, a: 0}
   thickness: 1
   indexOfRefraction: 1.33
   diffuseMap: {fileID: 0}
