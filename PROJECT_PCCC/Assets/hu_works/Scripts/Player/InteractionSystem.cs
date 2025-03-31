@@ -6,8 +6,16 @@ public class InteractionSystem : MonoBehaviour
     public GameObject playerCameraRoot;
     [SerializeField] private float reachDistance = 5f;
     private GameObject marker;
-    [SerializeField] private GameObject markerPrefab; 
-    private GameObject previousTargetObject; 
+    [SerializeField] private GameObject markerPrefab;
+    private GameObject previousTargetObject;
+    private void Awake()
+    {
+        if (playerCameraRoot == null)
+        {
+            playerCameraRoot = transform.parent.Find("PlayerCameraRoot").gameObject;
+
+        }
+    }
 
     void Update()
     {
@@ -17,8 +25,8 @@ public class InteractionSystem : MonoBehaviour
 
     void SetTargetObject()
     {
-        Vector3 origin = GameObject.Find("PlayerCameraRoot").transform.position;
-        Vector3 direction = GameObject.Find("PlayerCameraRoot").transform.forward;
+        Vector3 origin = playerCameraRoot.transform.position;
+        Vector3 direction = playerCameraRoot.transform.forward;
         // Vẽ ray trong Scene View để debug
         Debug.DrawRay(origin, direction * reachDistance, Color.red);
 
@@ -80,7 +88,7 @@ public class InteractionSystem : MonoBehaviour
             Interactable interactable = targetObject.GetComponent<Interactable>();
             if (interactable != null)
             {
-                interactable.InteractCase(this.gameObject);
+                interactable.InteractCase(transform.parent.gameObject);
             }
         }
     }

@@ -62,8 +62,9 @@ public class Interactable : MonoBehaviour
 
     void DriveVehicle(GameObject player)
     {
-        player.GetComponent<PlayerScript>().isDriving = true;
-        player.GetComponent<PlayerScript>().vehicle = this.gameObject;
+        PlayerScript playerScript = player.GetComponentInChildren<PlayerScript>();
+        playerScript.isDriving = true;
+        playerScript.vehicle = this.gameObject;
         GetComponent<CarController>().driver = player;
         GetComponent<CarController>().ChangeFollowCamera();
     }

@@ -1,5 +1,6 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using StarterAssets;
 
 public class PlayerScript : MonoBehaviour
 {
@@ -12,14 +13,22 @@ public class PlayerScript : MonoBehaviour
     public bool isCarryingLadder = false;
     public bool isCarryingBucket = false;
     public bool isHoldingFireHose = false;
+
+    public float leftClickTimeOutDelta = 0.0f;
     public InteractionSystem interactionSystem;
+    private StarterAssetsInputs starterAssetsInputs;
+    private PlayerAnimationsHandler playerAnimationsHandler;   
     private void Awake()
     {
         interactionSystem = GetComponent<InteractionSystem>();
+        starterAssetsInputs = GetComponentInParent<StarterAssetsInputs>();
+        playerAnimationsHandler = GetComponent<PlayerAnimationsHandler>();
     }
+    
     private void Update()
     {
         Interact();
+        HandleLeftClick();
     }
     void Interact()
     {
@@ -35,5 +44,29 @@ public class PlayerScript : MonoBehaviour
         isCarryingLadder = false;
         isCarryingBucket = false;
         isHoldingFireHose = false;
+    }
+
+    void HandleLeftClick()
+    {
+        if (starterAssetsInputs.leftClick)
+        {
+            if (Time.time >= leftClickTimeOutDelta + 0.1f)
+            {
+                SetIsUsingFireAxe();
+                leftClickTimeOutDelta = Time.time;
+            }
+            else
+            {
+                starterAssetsInputs.leftClick = false; 
+            }
+        }
+    }
+
+    public void SetIsUsingFireAxe()
+    {
+        if (isUsingFireAxe)
+        {
+            playerAnimationsHandler.AxeBreaking();
+        }
     }
 }

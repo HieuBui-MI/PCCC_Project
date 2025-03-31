@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerAnimationsHandler : MonoBehaviour
 {
-    // private StarterAssetsInputs starterAssetsInputs;
+    private StarterAssetsInputs starterAssetsInputs;
     private InventorySystem inventorySystem;
     private PlayerScript playerScript;
     private InteractionSystem interactionSystem;
@@ -13,7 +13,7 @@ public class PlayerAnimationsHandler : MonoBehaviour
     private void Awake()
     {
         animator = GetComponent<Animator>();
-        // starterAssetsInputs = GetComponent<StarterAssetsInputs>();
+        starterAssetsInputs = GetComponent<StarterAssetsInputs>();
         playerScript = GetComponent<PlayerScript>();
         inventorySystem = GetComponent<InventorySystem>();
         interactionSystem = GetComponent<InteractionSystem>();
@@ -22,7 +22,6 @@ public class PlayerAnimationsHandler : MonoBehaviour
     void Update()
     {
         PoseStateHandler();
-        AxeBreaking();
     }
 
     void PoseStateHandler()
@@ -33,11 +32,8 @@ public class PlayerAnimationsHandler : MonoBehaviour
 
     public void AxeBreaking()
     {
-        // if (playerScript.isUsingFireAxe == true && starterAssetsInputs.leftClick == true && isInAction == false)
-        // {
-        //     isInAction = true;
-        //     animator.SetTrigger("AxeBreak");
-        // }
+            isInAction = true;
+            animator.SetTrigger("AxeBreak");
     }
 
     public void resetActionState()
@@ -45,4 +41,8 @@ public class PlayerAnimationsHandler : MonoBehaviour
         isInAction = false;
         interactionSystem.Interact();
     }
+    public void OnLand()
+    {
+    }
+
 }

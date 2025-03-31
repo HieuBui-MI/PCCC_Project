@@ -12,6 +12,7 @@ namespace StarterAssets
 		public Vector2 look;
 		public bool sprint;
 		public bool jump;
+		public bool leftClick = false;
 
 		[Header("Movement Settings")]
 		public bool analogMovement;
@@ -34,8 +35,6 @@ namespace StarterAssets
 			}
 		}
 
-
-
 		public void OnSprint(InputValue value)
 		{
 			SprintInput(value.isPressed);
@@ -44,6 +43,11 @@ namespace StarterAssets
 		public void OnJump(InputValue value)
 		{
 			JumpInput(value.isPressed);
+		}
+
+		public void OnLeftClick(InputValue value)
+		{
+			leftClick = value.isPressed;
 		}
 #endif
 
@@ -75,6 +79,11 @@ namespace StarterAssets
 		public void JumpInput(bool newJumpState)
 		{
 			jump = newJumpState;
+		}
+
+		public void LeftClickInput(bool newLeftClickState)
+		{
+			leftClick = newLeftClickState;
 		}
 	}
 

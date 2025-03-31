@@ -65,18 +65,23 @@ namespace StarterAssets
 		private float _jumpTimeoutDelta;
 		private float _fallTimeoutDelta;
 
-		//
-		private Animator animator;
-
+		// animation IDs
+		private int _animIDSpeed;
+		private int _animIDGrounded;
+		private int _animIDJump;
+		private int _animIDFreeFall;
+		private int _animIDMotionSpeed;
 
 #if ENABLE_INPUT_SYSTEM
 		private PlayerInput _playerInput;
 #endif
+		private Animator _animator;
 		private CharacterController _controller;
 		private StarterAssetsInputs _input;
 		private GameObject _mainCamera;
 
 		private const float _threshold = 0.01f;
+		private bool _hasAnimator;
 
 		private bool IsCurrentDeviceMouse
 		{
@@ -97,22 +102,20 @@ namespace StarterAssets
 			{
 				_mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
 			}
-
-			if (animator == null)
-			{
-				animator = transform.Find("FireFighter").GetComponent<Animator>();
-			}
 		}
 
 		private void Start()
 		{
 			_controller = GetComponent<CharacterController>();
+			_animator = GetComponentInChildren<Animator>(); // Tìm Animator trong các child objects
+			_hasAnimator = _animator != null; // Kiểm tra xem Animator có tồn tại không
 			_input = GetComponent<StarterAssetsInputs>();
 #if ENABLE_INPUT_SYSTEM
 			_playerInput = GetComponent<PlayerInput>();
 #else
 			Debug.LogError( "Starter Assets package is missing dependencies. Please use Tools/Starter Assets/Reinstall Dependencies to fix it");
 #endif
+			AssignAnimationIDs();
 
 			// reset our timeouts on start
 			_jumpTimeoutDelta = JumpTimeout;
@@ -121,19 +124,11 @@ namespace StarterAssets
 
 		private void Update()
 		{
+			_animator = GetComponentInChildren<Animator>(); // Tìm Animator trong các child objects
+			_hasAnimator = _animator != null; // Kiểm tra xem Animator có tồn tại không
 			JumpAndGravity();
 			GroundedCheck();
 			Move();
-			animator.SetBool("Jump", _input.jump);
-			animator.SetBool("Grounded", Grounded);
-			if (!Grounded)
-			{
-				animator.SetBool("FreeFall", true);
-			}
-			else
-			{
-				animator.SetBool("FreeFall", false);
-			}
 		}
 
 		private void LateUpdate()
@@ -141,11 +136,25 @@ namespace StarterAssets
 			CameraRotation();
 		}
 
+		private void AssignAnimationIDs()
+		{
+			_animIDSpeed = Animator.StringToHash("Speed");
+			_animIDGrounded = Animator.StringToHash("Grounded");
+			_animIDJump = Animator.StringToHash("Jump");
+			_animIDFreeFall = Animator.StringToHash("FreeFall");
+			_animIDMotionSpeed = Animator.StringToHash("MotionSpeed");
+		}
+
 		private void GroundedCheck()
 		{
 			// set sphere position, with offset
 			Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - GroundedOffset, transform.position.z);
 			Grounded = Physics.CheckSphere(spherePosition, GroundedRadius, GroundLayers, QueryTriggerInteraction.Ignore);
+
+			if (_hasAnimator)
+			{
+				_animator.SetBool(_animIDGrounded, Grounded);
+			}
 		}
 
 		private void CameraRotation()
@@ -219,8 +228,12 @@ namespace StarterAssets
 
 			// move the player
 			_controller.Move(inputDirection.normalized * (_speed * Time.deltaTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
-			animator.SetFloat("MotionSpeed", inputMagnitude);
-			animator.SetFloat("Speed", _animationBlend);
+
+			if (_hasAnimator)
+			{
+				_animator.SetFloat(_animIDSpeed, _animationBlend);
+				_animator.SetFloat(_animIDMotionSpeed, inputMagnitude);
+			}
 		}
 
 		private void JumpAndGravity()
@@ -229,6 +242,13 @@ namespace StarterAssets
 			{
 				// reset the fall timeout timer
 				_fallTimeoutDelta = FallTimeout;
+
+				// update animator if using character
+				if (_hasAnimator)
+				{
+					_animator.SetBool(_animIDJump, false);
+					_animator.SetBool(_animIDFreeFall, false);
+				}
 
 				// stop our velocity dropping infinitely when grounded
 				if (_verticalVelocity < 0.0f)
@@ -241,6 +261,12 @@ namespace StarterAssets
 				{
 					// the square root of H * -2 * G = how much velocity needed to reach desired height
 					_verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
+
+					// update animator if using character
+					if (_hasAnimator)
+					{
+						_animator.SetBool(_animIDJump, true);
+					}
 				}
 
 				// jump timeout
@@ -258,6 +284,14 @@ namespace StarterAssets
 				if (_fallTimeoutDelta >= 0.0f)
 				{
 					_fallTimeoutDelta -= Time.deltaTime;
+				}
+				else
+				{
+					// update animator if using character
+					if (_hasAnimator)
+					{
+						_animator.SetBool(_animIDFreeFall, true);
+					}
 				}
 
 				// if we are not grounded, do not jump
@@ -289,5 +323,6 @@ namespace StarterAssets
 			// when selected, draw a gizmo in the position of, and matching radius of, the grounded collider
 			Gizmos.DrawSphere(new Vector3(transform.position.x, transform.position.y - GroundedOffset, transform.position.z), GroundedRadius);
 		}
+
 	}
 }

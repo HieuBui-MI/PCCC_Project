@@ -26,7 +26,7 @@ public class CameraManager : MonoBehaviour
             // Thoát khỏi xe và mở lại player
             foreach (Transform item in vehicle.transform)
             {
-                if (item.name == "FireFighter")
+                if (item.name == player.name)
                 {
                     player.transform.SetParent(null);
                     item.gameObject.SetActive(true); 
@@ -39,8 +39,8 @@ public class CameraManager : MonoBehaviour
             playerFollowCamera.SetActive(true);
             vehicleFollowCamera.SetActive(false);
 
-            player.GetComponent<PlayerScript>().isDriving = false;
-            player.GetComponent<PlayerScript>().vehicle = null;
+            player.GetComponentInChildren<PlayerScript>().isDriving = false;
+            player.GetComponentInChildren<PlayerScript>().vehicle = null;
         }
     }
 }

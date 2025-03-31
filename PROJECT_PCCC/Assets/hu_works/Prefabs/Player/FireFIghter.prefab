@@ -141,7 +141,6 @@ GameObject:
   - component: {fileID: 9027473592288012732}
   - component: {fileID: 5075375681426729667}
   - component: {fileID: 889162653220482695}
-  - component: {fileID: 2370455014745179262}
   m_Layer: 0
   m_Name: FireHose
   m_TagString: Untagged
@@ -197,21 +196,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   toolName: FireHose
---- !u!114 &2370455014745179262
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 259333669134369197}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aee9a1ae79c28d14dbbddc209aa34567, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PlayerCapsule: {fileID: 8287904661056712848}
-  ObiSolver: {fileID: 0}
-  ObiEmitter: {fileID: 6082772470930167653}
 --- !u!1 &353116114645606579
 GameObject:
   m_ObjectHideFlags: 0
@@ -3736,6 +3720,7 @@ MonoBehaviour:
   isCarryingLadder: 0
   isCarryingBucket: 0
   isHoldingFireHose: 0
+  leftClickTimeOutDelta: 0
   interactionSystem: {fileID: 0}
 --- !u!114 &7619352170452002421
 MonoBehaviour:
@@ -3792,7 +3777,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerCameraRoot: {fileID: 0}
-  isAiming: 0
   aimingPoint: {fileID: 0}
   hittableLayers:
     serializedVersion: 2
