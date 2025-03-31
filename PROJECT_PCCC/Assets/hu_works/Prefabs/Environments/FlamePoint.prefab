@@ -49,7 +49,7 @@ MonoBehaviour:
   isBurning: 0
   spreadable: 1
   spreadRadius: 2
-  spreadTime: 2
+  spreadTime: 5
   spreadDamage: 10
   degreeoOfCombustion: 0
   maxdegreeoOfCombustion: 100

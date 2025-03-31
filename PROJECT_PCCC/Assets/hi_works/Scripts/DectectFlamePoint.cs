@@ -4,10 +4,10 @@ public class DectectFlame : MonoBehaviour
 {
     public float detectionRadius = 5f; 
     public LayerMask detectableLayers; 
+    public float waterDamgage = 10f; // Giá trị thiệt hại từ nước
 
     void Start()
     {
-        // Thực hiện phát hiện một lần khi script được kích hoạt
         DetectFlamePoints();
     }
 
@@ -20,7 +20,7 @@ public class DectectFlame : MonoBehaviour
             FlamePoint flamePoint = hitCollider.GetComponent<FlamePoint>();
             if (flamePoint != null)
             {
-                Destroy(flamePoint.gameObject); // Xóa đối tượng FlamePoint nếu phát hiện
+                flamePoint.DescreaseDegreeOfCombustion(waterDamgage); // Giảm độ cháy của điểm lửa
             }
         }
     }

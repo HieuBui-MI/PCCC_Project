@@ -53,7 +53,7 @@ public class FlamePoint : MonoBehaviour
             {
                 if (flamePoint.degreeoOfCombustion < flamePoint.maxdegreeoOfCombustion && flamePoint != this)
                 {
-                    flamePoint.TakeDamage(spreadDamage);
+                    flamePoint.IncreaseDegreeOfCombustion(spreadDamage);
                 }
             }
             spreadTimer = 0f;
@@ -84,12 +84,21 @@ public class FlamePoint : MonoBehaviour
         }
     }
 
-    public void TakeDamage(float damage)
+    public void IncreaseDegreeOfCombustion(float damage)
     {
         degreeoOfCombustion += damage;
         if (degreeoOfCombustion >= maxdegreeoOfCombustion)
         {
             degreeoOfCombustion = maxdegreeoOfCombustion;
+        }
+    }
+
+    public void DescreaseDegreeOfCombustion(float damage)
+    {
+        degreeoOfCombustion -= damage;
+        if (degreeoOfCombustion <= 0f)
+        {
+            degreeoOfCombustion = 0f;
         }
     }
 
