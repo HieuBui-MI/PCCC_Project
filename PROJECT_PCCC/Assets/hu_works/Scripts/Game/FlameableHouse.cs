@@ -8,6 +8,7 @@ public class FlameableHouse : MonoBehaviour
     [SerializeField] private GameObject pointPrefab; // Prefab để gắn vào RandomPointOnSurface
     public int numberOfPointsEachPart;
     [SerializeField] public Vector3 rotationOffset = Vector3.zero; 
+    public float spawnChance = 0.5f; 
 
     void Start()
     {
@@ -49,6 +50,7 @@ public class FlameableHouse : MonoBehaviour
                 randomPointScript.pointPrefab = pointPrefab;
                 randomPointScript.numberOfPoints = numberOfPointsEachPart; 
                 randomPointScript.rotationOffset = rotationOffset; 
+                randomPointScript.spawnChance = spawnChance;
             }
         }
 

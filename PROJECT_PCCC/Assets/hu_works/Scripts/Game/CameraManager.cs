@@ -28,7 +28,7 @@ public class CameraManager : MonoBehaviour
             {
                 if (item.name == player.name)
                 {
-                    player.transform.SetParent(null);
+                    player.transform.SetParent(GameObject.Find("Ground").transform); 
                     item.gameObject.SetActive(true); 
                     break;
                 }

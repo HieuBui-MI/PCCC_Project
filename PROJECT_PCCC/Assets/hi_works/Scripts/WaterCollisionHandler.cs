@@ -16,8 +16,7 @@ public class WaterCollisionHandler : MonoBehaviour
                 Quaternion spawnRotation = Quaternion.identity; // Hoặc sử dụng rotation khác nếu cần
                 GameObject spawnedObject = Instantiate(spawnPrefab, spawnPosition, spawnRotation);
 
-                // Xóa prefab sau 3 giây
-                Destroy(spawnedObject, 1f);
+                Destroy(spawnedObject, 0.1f);
             }
         }
     }

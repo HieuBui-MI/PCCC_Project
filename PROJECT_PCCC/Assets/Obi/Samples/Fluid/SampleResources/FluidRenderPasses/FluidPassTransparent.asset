@@ -26,7 +26,7 @@ MonoBehaviour:
   reflectionCubemap: {fileID: 8900000, guid: c33edd744b24a4969856286e6004bf8f, type: 3}
   smoothness: 0.9
   metallic: 0
-  turbidity: {r: 0, g: 0, b: 0, a: 0}
+  turbidity: {r: 0, g: 0.8310704, b: 1, a: 0}
   thickness: 8
   indexOfRefraction: 1.1
   diffuseMap: {fileID: 0}

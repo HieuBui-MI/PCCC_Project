@@ -27,7 +27,7 @@ public class FirePointShooter : MonoBehaviour
         if (rb != null)
         {
             rb.useGravity = true;
-            rb.linearVelocity = firePoint.forward * projectileSpeed;
+            rb.linearVelocity = firePoint.up * projectileSpeed;
         }
 
         Destroy(projectile, destroyTime);

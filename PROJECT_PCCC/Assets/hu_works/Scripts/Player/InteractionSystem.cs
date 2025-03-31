@@ -4,7 +4,7 @@ public class InteractionSystem : MonoBehaviour
 {
     [SerializeField] private GameObject targetObject;
     public GameObject playerCameraRoot;
-    [SerializeField] private float reachDistance = 5f;
+    public float reachDistance = 5f;
     private GameObject marker;
     [SerializeField] private GameObject markerPrefab;
     private GameObject previousTargetObject;

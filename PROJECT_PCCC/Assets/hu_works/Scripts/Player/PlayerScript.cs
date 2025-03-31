@@ -1,6 +1,7 @@
 using Unity.VisualScripting;
 using UnityEngine;
 using StarterAssets;
+using UnityEngine.Animations.Rigging;
 
 public class PlayerScript : MonoBehaviour
 {
@@ -17,18 +18,19 @@ public class PlayerScript : MonoBehaviour
     public float leftClickTimeOutDelta = 0.0f;
     public InteractionSystem interactionSystem;
     private StarterAssetsInputs starterAssetsInputs;
-    private PlayerAnimationsHandler playerAnimationsHandler;   
+    private PlayerAnimationsHandler playerAnimationsHandler;
     private void Awake()
     {
         interactionSystem = GetComponent<InteractionSystem>();
         starterAssetsInputs = GetComponentInParent<StarterAssetsInputs>();
         playerAnimationsHandler = GetComponent<PlayerAnimationsHandler>();
     }
-    
+
     private void Update()
     {
         Interact();
         HandleLeftClick();
+        RHWeightForFireHose();
     }
     void Interact()
     {
@@ -57,7 +59,7 @@ public class PlayerScript : MonoBehaviour
             }
             else
             {
-                starterAssetsInputs.leftClick = false; 
+                starterAssetsInputs.leftClick = false;
             }
         }
     }
@@ -67,6 +69,18 @@ public class PlayerScript : MonoBehaviour
         if (isUsingFireAxe)
         {
             playerAnimationsHandler.AxeBreaking();
+        }
+    }
+
+    void RHWeightForFireHose()
+    {
+        if (isHoldingFireHose)
+        {
+            transform.Find("Rig2/RightHandAim").GetComponent<MultiAimConstraint>().weight = 1f;
+        }
+        else
+        {
+            transform.Find("Rig2/RightHandAim").GetComponent<MultiAimConstraint>().weight = 0f;
         }
     }
 }

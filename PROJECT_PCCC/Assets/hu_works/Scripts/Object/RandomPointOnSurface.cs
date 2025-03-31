@@ -6,19 +6,20 @@ public class RandomPointOnSurface : MonoBehaviour
     private Mesh mesh;
     private Vector3[] vertices;
     private int[] triangles;
-    private Vector3[] normals; 
-    private List<Vector3> randomPoints = new List<Vector3>(); 
-    private List<GameObject> pointObjects = new List<GameObject>(); 
-    public int numberOfPoints = 10; 
-    public GameObject pointPrefab; 
-    [SerializeField] public Vector3 rotationOffset = Vector3.zero; 
+    private Vector3[] normals;
+    private List<Vector3> randomPoints = new List<Vector3>();
+    private List<GameObject> pointObjects = new List<GameObject>();
+    public int numberOfPoints = 10;
+    public GameObject pointPrefab;
+    public float spawnChance = 0.5f;
+    [SerializeField] public Vector3 rotationOffset = Vector3.zero;
 
     void Start()
     {
         mesh = GetComponent<MeshFilter>().mesh;
         vertices = mesh.vertices;
         triangles = mesh.triangles;
-        normals = mesh.normals; 
+        normals = mesh.normals;
 
         // Tạo các điểm ngẫu nhiên trên bề mặt mesh
         for (int i = 0; i < numberOfPoints; i++)
@@ -29,7 +30,7 @@ public class RandomPointOnSurface : MonoBehaviour
             randomPoints.Add(worldPoint); // Lưu điểm vào danh sách
 
             // Tạo GameObject tại điểm ngẫu nhiên với hướng vuông góc và độ nghiêng
-            CreatePointObject(worldPoint, worldNormal);
+            CreatePointObject(worldPoint, worldNormal, spawnChance);
         }
     }
 
@@ -69,15 +70,23 @@ public class RandomPointOnSurface : MonoBehaviour
         return point;
     }
 
-    void CreatePointObject(Vector3 position, Vector3 normal)
+    void CreatePointObject(Vector3 position, Vector3 normal, float spawnChance)
     {
         if (pointPrefab != null)
         {
-            // Tạo đối tượng tại vị trí và đặt hướng theo pháp tuyến với độ nghiêng
-            Quaternion rotation = Quaternion.LookRotation(normal) * Quaternion.Euler(rotationOffset);
-            GameObject pointObject = Instantiate(pointPrefab, position, rotation);
-            pointObject.transform.parent = GameObject.Find("GameManager").transform.Find("FlamePoints"); // Đặt cha cho GameObject
-            pointObjects.Add(pointObject); 
+            // Kiểm tra xác suất tạo đối tượng
+            if (Random.value <= spawnChance) // Random.value trả về giá trị từ 0 đến 1
+            {
+                // Tạo đối tượng tại vị trí và đặt hướng theo pháp tuyến với độ nghiêng
+                Quaternion rotation = Quaternion.LookRotation(normal) * Quaternion.Euler(rotationOffset);
+                GameObject pointObject = Instantiate(pointPrefab, position, rotation);
+                pointObject.transform.parent = GameObject.Find("GameManager").transform.Find("FlamePoints"); // Đặt cha cho GameObject
+                pointObjects.Add(pointObject);
+            }
+            else
+            {
+                Debug.Log("Point creation skipped due to spawn chance.");
+            }
         }
         else
         {

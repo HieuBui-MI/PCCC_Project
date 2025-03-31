@@ -23,9 +23,15 @@ public class PlayerAiming : MonoBehaviour
         Vector3 direction = playerCameraRoot.transform.forward;
 
         // Sử dụng layerMask để bỏ qua các layer không cần thiết
-        if (Physics.Raycast(origin, direction, out RaycastHit hit, 1000f, hittableLayers))
+        if (Physics.Raycast(origin, direction, out RaycastHit hit, GetComponent<InteractionSystem>().reachDistance, hittableLayers))
         {
+            // Nếu có hit, đặt aimingPoint tại vị trí hit
             aimingPoint.transform.position = hit.point;
+        }
+        else
+        {
+            // Nếu không có hit, đặt aimingPoint ở vị trí mặc định
+            aimingPoint.transform.position = origin + direction * GetComponent<InteractionSystem>().reachDistance;
         }
     }
 }

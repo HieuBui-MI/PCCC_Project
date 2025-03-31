@@ -20,14 +20,7 @@ public class DectectFlame : MonoBehaviour
             FlamePoint flamePoint = hitCollider.GetComponent<FlamePoint>();
             if (flamePoint != null)
             {
-                // Tìm MeshRenderer hoặc Material của đối tượng và đổi màu sang đỏ
-                MeshRenderer meshRenderer = hitCollider.transform.Find("Sphere").GetComponent<MeshRenderer>();
-                if (meshRenderer != null)
-                {
-                    meshRenderer.material.color = Color.red;
-                    hitCollider.transform.Find("Sphere").localScale = new Vector3(1f, 1f, 1f); // Thay đổi kích thước của Sphere
-                }
-                Debug.Log("Total Flame Points: " + hitColliders.Length);
+                Destroy(flamePoint.gameObject); // Xóa đối tượng FlamePoint nếu phát hiện
             }
         }
     }

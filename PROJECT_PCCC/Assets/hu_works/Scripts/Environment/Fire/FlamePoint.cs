@@ -1,4 +1,6 @@
 using System.Collections;
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class FlamePoint : MonoBehaviour
@@ -6,37 +8,56 @@ public class FlamePoint : MonoBehaviour
     public bool isBurning = false; // Trạng thái hiện tại của điểm
     public bool spreadable = false;
     public float spreadRadius; // Bán kính ảnh hưởng để lan cháy
-    public float SpreadTime; // Thời gian để lan cháy sang các điểm khác
+    public float spreadTime; // Thời gian để lan cháy sang các điểm khác
+    private float spreadTimer = 0f; // Bộ đếm thời gian cho SpreadFire
+    public float spreadDamage;
+    [SerializeField] private float degreeoOfCombustion;
+    [SerializeField] private float maxdegreeoOfCombustion;
+
+    private List<FlamePoint> flamePointColliders = new List<FlamePoint>();
+
+    private void Start()
+    {
+        // Đặt giá trị ban đầu cho degreeoOfCombustion dựa trên trạng thái isBurning
+        degreeoOfCombustion = isBurning ? maxdegreeoOfCombustion : 0f;
+
+        // Tìm tất cả các FlamePoint trong bán kính spreadRadius
+        Collider[] colliders = Physics.OverlapSphere(transform.position, spreadRadius);
+        foreach (Collider collider in colliders)
+        {
+            FlamePoint flamePoint = collider.GetComponent<FlamePoint>();
+            if (flamePoint != null)
+            {
+                // Thêm FlamePoint vào danh sách
+                flamePointColliders.Add(flamePoint);
+            }
+        }
+    }
 
     private void Update()
     {
         SpreadFire();
         fireParticle();
+        SetBurning();
     }
 
     private void SpreadFire()
     {
-        if (!spreadable) return; 
-        if (!isBurning) return;
+        if (!spreadable || !isBurning) return;
 
-        // Tìm tất cả các đối tượng có component FlamePoint trong phạm vi
-        Collider[] colliders = Physics.OverlapSphere(transform.position, spreadRadius);
+        spreadTimer += Time.deltaTime;
 
-        foreach (Collider collider in colliders)
+        if (spreadTimer >= spreadTime)
         {
-            FlamePoint flamePoint = collider.GetComponent<FlamePoint>();
-            if (flamePoint != null && !flamePoint.isBurning)
+            foreach (FlamePoint flamePoint in flamePointColliders)
             {
-                // Bắt đầu lan cháy với thời gian trễ
-                StartCoroutine(SpreadFireWithDelay(flamePoint));
+                if (flamePoint.degreeoOfCombustion < flamePoint.maxdegreeoOfCombustion && flamePoint != this)
+                {
+                    flamePoint.TakeDamage(spreadDamage);
+                }
             }
+            spreadTimer = 0f;
         }
-    }
-
-    private IEnumerator SpreadFireWithDelay(FlamePoint targetPoint)
-    {
-        yield return new WaitForSeconds(SpreadTime); // Chờ thời gian lan cháy
-        targetPoint.isBurning = true; 
     }
 
     void fireParticle()
@@ -62,4 +83,26 @@ public class FlamePoint : MonoBehaviour
             }
         }
     }
+
+    public void TakeDamage(float damage)
+    {
+        degreeoOfCombustion += damage;
+        if (degreeoOfCombustion >= maxdegreeoOfCombustion)
+        {
+            degreeoOfCombustion = maxdegreeoOfCombustion;
+        }
+    }
+
+    public void SetBurning()
+    {
+        if (degreeoOfCombustion >= maxdegreeoOfCombustion / 2)
+        {
+            isBurning = true;
+        }
+        else
+        {
+            isBurning = false;
+        }
+    }
+
 }
