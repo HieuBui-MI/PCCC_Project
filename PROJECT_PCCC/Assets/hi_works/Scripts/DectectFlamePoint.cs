@@ -20,7 +20,7 @@ public class DectectFlame : MonoBehaviour
             FlamePoint flamePoint = hitCollider.GetComponent<FlamePoint>();
             if (flamePoint != null)
             {
-                flamePoint.DescreaseDegreeOfCombustion(waterDamgage); // Giảm độ cháy của điểm lửa
+                flamePoint.DescreaseDOC(waterDamgage); // Giảm độ cháy của điểm lửa
             }
         }
     }

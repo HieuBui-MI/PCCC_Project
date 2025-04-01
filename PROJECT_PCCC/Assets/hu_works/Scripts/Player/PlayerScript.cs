@@ -8,6 +8,7 @@ public class PlayerScript : MonoBehaviour
     public bool isDriving = false;
     public GameObject vehicle;
     public bool isPlayerHoldingTool = false;
+    public bool isPlayerCarryingAVictim = false;
 
     ////////////////////////////////////////////////
     public bool isUsingFireAxe = false;
@@ -36,6 +37,7 @@ public class PlayerScript : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.F))
         {
+            Debug.Log("Interact key pressed");
             interactionSystem.Interact();
         }
     }

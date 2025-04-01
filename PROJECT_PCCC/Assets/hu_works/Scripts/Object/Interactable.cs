@@ -6,10 +6,10 @@ public class Interactable : MonoBehaviour
     public enum InteractableType
     {
         None,
-        Pickup,
+        Carry,
         Door,
         Drivable,
-        Breakable
+        Breakable,
     }
 
     [SerializeField] private InteractableType type = InteractableType.None;
@@ -22,6 +22,9 @@ public class Interactable : MonoBehaviour
                 break;
             case InteractableType.Drivable:
                 DriveVehicle(player);
+                break;
+            case InteractableType.Carry:
+                CarryVictim(player);
                 break;
             default:
                 Debug.Log($"Interacted with {type}");
@@ -45,5 +48,11 @@ public class Interactable : MonoBehaviour
         playerScript.vehicle = this.gameObject;
         GetComponent<CarController>().driver = player;
         GetComponent<CarController>().ChangeFollowCamera();
+    }
+
+    void CarryVictim(GameObject player)
+    {
+        transform.parent = player.transform;
+        player.GetComponent<PlayerScript>().isPlayerCarryingAVictim = true;
     }
 }
