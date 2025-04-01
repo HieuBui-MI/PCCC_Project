@@ -8,19 +8,18 @@ public class InteractionSystem : MonoBehaviour
     private GameObject marker;
     [SerializeField] private GameObject markerPrefab;
     private GameObject previousTargetObject;
+
     private void Awake()
     {
         if (playerCameraRoot == null)
         {
             playerCameraRoot = transform.parent.Find("PlayerCameraRoot").gameObject;
-
         }
     }
 
     void Update()
     {
         SetTargetObject();
-        OutlineObject();
     }
 
     void SetTargetObject()
@@ -33,17 +32,16 @@ public class InteractionSystem : MonoBehaviour
         if (Physics.Raycast(origin, direction, out RaycastHit hit, reachDistance))
         {
             GameObject hitObject = hit.collider.gameObject;
-            GameObject hitObjectRoot = hitObject.transform.root.gameObject;
 
-            if (hitObjectRoot.GetComponent<Interactable>() == null)
+            if (hitObject.GetComponent<Interactable>() == null)
             {
                 return;
             }
 
-            if (hitObjectRoot != targetObject)
+            if (hitObject != targetObject)
             {
                 RemoveMarker();
-                targetObject = hitObjectRoot;
+                targetObject = hitObject;
                 ApplyMarker(targetObject);
             }
         }
@@ -68,7 +66,7 @@ public class InteractionSystem : MonoBehaviour
         }
 
         Bounds bounds = obj.GetComponent<Collider>().bounds;
-        Vector3 markerPosition = bounds.center + Vector3.up * bounds.extents.y + Vector3.up * 0.2f; // Chính giữa phía trên
+        Vector3 markerPosition = bounds.center + Vector3.up * bounds.extents.y + Vector3.up * 0.3f; // Chính giữa phía trên
         marker.transform.position = markerPosition;
     }
 
@@ -90,32 +88,6 @@ public class InteractionSystem : MonoBehaviour
             {
                 interactable.InteractCase(transform.parent.gameObject);
             }
-        }
-    }
-
-    void OutlineObject()
-    {
-        if (previousTargetObject != targetObject)
-        {
-            if (previousTargetObject != null)
-            {
-                Outline previousOutline = previousTargetObject.transform.Find("Body/CarFrame").GetComponent<Outline>();
-                if (previousOutline != null)
-                {
-                    previousOutline.enabled = false;
-                }
-            }
-
-            if (targetObject != null)
-            {
-                Outline currentOutline = targetObject.transform.Find("Body/CarFrame").GetComponent<Outline>();
-                if (currentOutline != null)
-                {
-                    currentOutline.enabled = true;
-                }
-            }
-
-            previousTargetObject = targetObject;
         }
     }
 }
