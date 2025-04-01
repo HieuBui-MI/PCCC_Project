@@ -52,7 +52,14 @@ public class Interactable : MonoBehaviour
 
     void CarryVictim(GameObject player)
     {
-        transform.parent = player.transform;
-        player.GetComponent<PlayerScript>().isPlayerCarryingAVictim = true;
+        Debug.Log("Carrying victim");
+        if(player.GetComponentInChildren<PlayerScript>() != null)
+        {
+            player.GetComponentInChildren<PlayerScript>().isPlayerCarryingAVictim = true;
+        }
+        else
+        {
+            Debug.LogWarning("Player script not found in children!");
+        }
     }
 }

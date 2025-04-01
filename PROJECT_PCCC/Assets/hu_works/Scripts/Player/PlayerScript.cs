@@ -16,7 +16,7 @@ public class PlayerScript : MonoBehaviour
     public bool isCarryingBucket = false;
     public bool isHoldingFireHose = false;
 
-    public float leftClickTimeOutDelta = 0.0f;
+    private float leftClickTimeOutDelta = 0.0f;
     public InteractionSystem interactionSystem;
     private StarterAssetsInputs starterAssetsInputs;
     private PlayerAnimationsHandler playerAnimationsHandler;
