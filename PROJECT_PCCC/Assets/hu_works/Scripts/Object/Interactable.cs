@@ -50,8 +50,8 @@ public class Interactable : MonoBehaviour
         PlayerScript playerScript = player.GetComponentInChildren<PlayerScript>();
         playerScript.isDriving = true;
         playerScript.vehicle = this.gameObject;
-        GetComponent<CarController>().driver = player;
-        GetComponent<CarController>().ChangeFollowCamera();
+        transform.parent.parent.GetComponent<CarController>().driver = player;
+        transform.parent.parent.GetComponent<CarController>().ChangeFollowCamera();
     }
 
     void CarryVictim(GameObject player)

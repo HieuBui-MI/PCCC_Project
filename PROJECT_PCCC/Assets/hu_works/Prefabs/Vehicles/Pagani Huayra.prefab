@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1977423411033196201}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: WheelColliders
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 4875241624891520283}
   - component: {fileID: 2044876162106359285}
   - component: {fileID: 403450562450593315}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Object_tread.tga.jpg.004
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -134,7 +134,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4294993089953427806}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: VehicleCameraRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -167,7 +167,7 @@ GameObject:
   - component: {fileID: 2212856331339188417}
   - component: {fileID: 2430046648337091687}
   - component: {fileID: 1039253689400450805}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Object_tread.tga.jpg.003
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -257,7 +257,7 @@ GameObject:
   - component: {fileID: 5674558699814073636}
   - component: {fileID: 4893942377797594537}
   - component: {fileID: 2161123386959327435}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: ld_00.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -332,6 +332,73 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &1629535578562780897
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3928428665340438651}
+  - component: {fileID: 5753913044005200161}
+  - component: {fileID: 167894083653717254}
+  m_Layer: 10
+  m_Name: Head
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3928428665340438651
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1629535578562780897}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8974257489803867659}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &5753913044005200161
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1629535578562780897}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.095694, y: 1.0944164, z: 1.401552}
+  m_Center: {x: 0.038668633, y: 0.08953273, z: 0.42268622}
+--- !u!114 &167894083653717254
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1629535578562780897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f0ae06d76531234fa9b48c948e32e59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 4
 --- !u!1 &1716075611503593780
 GameObject:
   m_ObjectHideFlags: 0
@@ -343,7 +410,7 @@ GameObject:
   - component: {fileID: 8334649477917314958}
   - component: {fileID: 11208040341787454}
   - component: {fileID: 1784214477840086388}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: ld_02.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -429,7 +496,7 @@ GameObject:
   - component: {fileID: 1084964531852647315}
   - component: {fileID: 2573926387669684923}
   - component: {fileID: 8390390024659767131}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Object_tread.tga.jpg.002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -508,6 +575,38 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &1735154713033500492
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8974257489803867659}
+  m_Layer: 10
+  m_Name: InteractableParts
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8974257489803867659
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1735154713033500492}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 3928428665340438651}
+  m_Father: {fileID: 6425686541692117719}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2255713302034212943
 GameObject:
   m_ObjectHideFlags: 0
@@ -519,7 +618,7 @@ GameObject:
   - component: {fileID: 5626169989391082053}
   - component: {fileID: 2240980060494168513}
   - component: {fileID: 673328510907511698}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: rd_00.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -604,7 +703,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2715449737140012466}
   - component: {fileID: 2633033912078835912}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Object_tread.tga.jpg.002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -674,7 +773,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3503077881819888971}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: LeftDoor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -710,7 +809,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1297713419519371977}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Meshes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -747,7 +846,7 @@ GameObject:
   - component: {fileID: 6869582278668907046}
   - component: {fileID: 1757202609062076507}
   - component: {fileID: 966637662319349148}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: ld_01.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -831,8 +930,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7547608305492512923}
-  m_Layer: 0
-  m_Name: Body
+  m_Layer: 10
+  m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -867,7 +966,7 @@ GameObject:
   - component: {fileID: 5086307289965640554}
   - component: {fileID: 7451385512857598020}
   - component: {fileID: 7292191971179810001}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: rd_04.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -953,7 +1052,7 @@ GameObject:
   - component: {fileID: 7299806215084821007}
   - component: {fileID: 341261948120355832}
   - component: {fileID: 2067542890760229733}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: rd_02.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1039,10 +1138,9 @@ GameObject:
   - component: {fileID: 3242615170681074227}
   - component: {fileID: 791582097590594952}
   - component: {fileID: 7274742122504280237}
-  - component: {fileID: 5299915346059241244}
   - component: {fileID: 2369947427716066648}
   m_Layer: 0
-  m_Name: Object_grills.tga.jpg
+  m_Name: CarFrame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1125,24 +1223,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &5299915346059241244
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4354766710815838812}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  outlineMode: 0
-  outlineColor: {r: 1, g: 0, b: 0, a: 1}
-  outlineWidth: 2
-  precomputeOutline: 0
-  bakeKeys: []
-  bakeValues: []
 --- !u!64 &2369947427716066648
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1174,7 +1254,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5828674534759613367}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RightDoor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1212,7 +1292,7 @@ GameObject:
   - component: {fileID: 13922105665470947}
   - component: {fileID: 6586074548234352532}
   - component: {fileID: 4374585827043659917}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: rd_01.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1298,7 +1378,7 @@ GameObject:
   - component: {fileID: 9173583254838480293}
   - component: {fileID: 5305305323106094527}
   - component: {fileID: 3393488707725675491}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: ld_04.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1382,7 +1462,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7566955083032357927}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Wheels
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1415,8 +1495,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6425686541692117719}
   - component: {fileID: 4181259945880658584}
+  - component: {fileID: 7473436687650232158}
   - component: {fileID: 5054877490229779906}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Pagani Huayra
   m_TagString: Vehicle
   m_Icon: {fileID: 0}
@@ -1437,6 +1518,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7547608305492512923}
+  - {fileID: 8974257489803867659}
   - {fileID: 7566955083032357927}
   - {fileID: 1977423411033196201}
   - {fileID: 4294993089953427806}
@@ -1469,6 +1551,27 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!65 &7473436687650232158
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5962889984147544822}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.1040046, y: 0.22703451, z: 5.0013933}
+  m_Center: {x: 0.042497516, y: -0.38648275, z: 0.03746605}
 --- !u!114 &5054877490229779906
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1481,6 +1584,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f966286f844f024ca17910c53bc4af1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cameraManager: {fileID: 0}
+  driver: {fileID: 0}
   wheelsOffSet: {x: 0, y: 90, z: 0}
   speed: 0
   motorForce: 1000
@@ -1504,7 +1609,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8627254197770405284}
   - component: {fileID: 8932455448000408524}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Object_tread.tga.jpg.003
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1576,7 +1681,7 @@ GameObject:
   - component: {fileID: 7092039069075649062}
   - component: {fileID: 2387550395897658884}
   - component: {fileID: 6006487404673548087}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: rd_03.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1662,7 +1767,7 @@ GameObject:
   - component: {fileID: 8235955753618764483}
   - component: {fileID: 8015486303388533415}
   - component: {fileID: 1940270035012092197}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Object_tread.tga.jpg.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1751,7 +1856,7 @@ GameObject:
   m_Component:
   - component: {fileID: 520107720961510646}
   - component: {fileID: 2964165400524554158}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Object_tread.tga.jpg.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1823,7 +1928,7 @@ GameObject:
   - component: {fileID: 6881405561866885288}
   - component: {fileID: 4839005833764507307}
   - component: {fileID: 5260550327459108726}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: ld_03.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1908,7 +2013,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4029432527238425074}
   - component: {fileID: 718346115323801359}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Object_tread.tga.jpg.004
   m_TagString: Untagged
   m_Icon: {fileID: 0}

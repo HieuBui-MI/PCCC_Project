@@ -1,3 +1,4 @@
+using Unity.Cinemachine;
 using UnityEngine;
 
 public class CameraManager : MonoBehaviour
@@ -16,6 +17,7 @@ public class CameraManager : MonoBehaviour
             // Chuyển từ chế độ người chơi sang chế độ lái xe
             playerFollowCamera.SetActive(false);
             vehicleFollowCamera.SetActive(true);
+            vehicleFollowCamera.GetComponent<CinemachineVirtualCameraBase>().Follow = vehicle.transform.Find("DriverSeat").transform; // Đặt camera theo dõi vị trí ngồi lái xe
 
             // Đặt player làm con của vehicle và ẩn player
             player.transform.SetParent(vehicle.transform);
