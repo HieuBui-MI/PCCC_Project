@@ -9,6 +9,7 @@ public class PlayerScript : MonoBehaviour
     public GameObject vehicle;
     public bool isPlayerHoldingTool = false;
     public bool isPlayerCarryingAVictim = false;
+    public GameObject carriedVictim = null;
 
     ////////////////////////////////////////////////
     public bool isUsingFireAxe = false;

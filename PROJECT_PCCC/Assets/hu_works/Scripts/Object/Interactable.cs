@@ -6,7 +6,8 @@ public class Interactable : MonoBehaviour
     public enum InteractableType
     {
         None,
-        Carry,
+        Carriable,
+        Putable,
         Door,
         Drivable,
         Breakable,
@@ -23,8 +24,11 @@ public class Interactable : MonoBehaviour
             case InteractableType.Drivable:
                 DriveVehicle(player);
                 break;
-            case InteractableType.Carry:
+            case InteractableType.Carriable:
                 CarryVictim(player);
+                break;
+            case InteractableType.Putable:
+                PutVictim(player);
                 break;
             default:
                 Debug.Log($"Interacted with {type}");
@@ -52,14 +56,27 @@ public class Interactable : MonoBehaviour
 
     void CarryVictim(GameObject player)
     {
-        Debug.Log("Carrying victim");
-        if(player.GetComponentInChildren<PlayerScript>() != null)
+        if (player.GetComponentInChildren<PlayerScript>() != null)
         {
             player.GetComponentInChildren<PlayerScript>().isPlayerCarryingAVictim = true;
+            player.GetComponentInChildren<PlayerScript>().carriedVictim = this.gameObject;
+            this.transform.SetParent(player.transform);
+            this.gameObject.SetActive(false);
         }
-        else
+    }
+
+    void PutVictim(GameObject player)
+    {
+        if (player.GetComponentInChildren<PlayerScript>() == null || player.GetComponentInChildren<PlayerScript>().carriedVictim == null) return;
+        foreach (Transform child in player.transform)
         {
-            Debug.LogWarning("Player script not found in children!");
+            if (child.gameObject.name == player.GetComponentInChildren<PlayerScript>().carriedVictim.name)
+            {
+                child.gameObject.SetActive(true);
+                this.GetComponent<Stretcher>().PutVictimInStretcher(child.gameObject);
+                player.GetComponentInChildren<PlayerScript>().carriedVictim = null;
+                player.GetComponentInChildren<PlayerScript>().isPlayerCarryingAVictim = false;
+            }
         }
     }
 }
