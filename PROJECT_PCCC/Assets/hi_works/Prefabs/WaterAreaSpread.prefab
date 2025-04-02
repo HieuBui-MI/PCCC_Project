@@ -48,3 +48,4 @@ MonoBehaviour:
   detectableLayers:
     serializedVersion: 2
     m_Bits: 4294967295
+  waterDamgage: 5

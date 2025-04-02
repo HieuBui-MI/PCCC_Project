@@ -2,15 +2,27 @@ using UnityEngine;
 
 public class Victim : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField] private bool isOnStretcher = false;
+    private Animator animator;
+    private void Awake()
     {
-        
+        animator = GetComponent<Animator>();
+    }
+    private void Update()
+    {
+        OnStretcherCheck();
+        if (isOnStretcher)
+        {
+            animator.SetBool("isOnStretcher", true);
+        }
+        else
+        {
+            animator.SetBool("isOnStretcher", false);
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnStretcherCheck()
     {
-        
+        isOnStretcher = transform.parent.GetComponent<Stretcher>() != null;
     }
 }

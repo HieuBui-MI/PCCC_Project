@@ -38,7 +38,6 @@ public class PlayerScript : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.F))
         {
-            Debug.Log("Interact key pressed");
             interactionSystem.Interact();
         }
     }

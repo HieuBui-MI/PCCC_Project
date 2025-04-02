@@ -61,6 +61,8 @@ public class Interactable : MonoBehaviour
             player.GetComponentInChildren<PlayerScript>().isPlayerCarryingAVictim = true;
             player.GetComponentInChildren<PlayerScript>().carriedVictim = this.gameObject;
             this.transform.SetParent(player.transform);
+            this.transform.localPosition = Vector3.zero;
+            this.transform.localRotation = Quaternion.identity;
             this.gameObject.SetActive(false);
         }
     }

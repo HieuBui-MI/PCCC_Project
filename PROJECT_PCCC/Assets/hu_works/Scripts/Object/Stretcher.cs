@@ -11,11 +11,16 @@ public class Stretcher : MonoBehaviour
 
     public void PutVictimInStretcher(GameObject victim)
     {
-        victim.transform.parent = transform;
+        victim.transform.SetParent(transform); // Đặt cha cho victim
+
+        // // Đặt vị trí và rotation cho victim
+        // victim.transform.localPosition = Vector3.zero; // Đặt vị trí về (0, 0, 0)
+        transform.GetChild(0).gameObject.transform.localPosition = Vector3.zero; // Đặt vị trí về (0, 0, 0)
+        victim.transform.localRotation = Quaternion.identity; // Đặt rotation về mặc định (không xoay)
     }
 
     private void SetVictim()
     {
-        victim = transform.childCount > 0? transform.GetChild(0).gameObject : null;
+        victim = transform.childCount > 0 ? transform.GetChild(0).gameObject : null;
     }
 }
