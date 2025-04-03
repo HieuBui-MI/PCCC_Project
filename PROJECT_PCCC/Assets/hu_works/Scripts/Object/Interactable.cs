@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Interactable : MonoBehaviour
@@ -11,9 +10,11 @@ public class Interactable : MonoBehaviour
         Door,
         Drivable,
         Breakable,
+        Climbable
     }
 
     [SerializeField] private InteractableType type = InteractableType.None;
+
     public void InteractCase(GameObject player)
     {
         switch (type)
@@ -30,13 +31,16 @@ public class Interactable : MonoBehaviour
             case InteractableType.Putable:
                 PutVictim(player);
                 break;
+            case InteractableType.Climbable:
+                Climb(player);
+                break;
             default:
                 Debug.Log($"Interacted with {type}");
                 break;
         }
     }
 
-    void Broken(GameObject player)
+    private void Broken(GameObject player)
     {
         Transform brokenPart = transform.Find("Broken");
         Transform normalPart = transform.Find("Normal");
@@ -45,40 +49,64 @@ public class Interactable : MonoBehaviour
         if (normalPart != null) normalPart.gameObject.SetActive(false);
     }
 
-    void DriveVehicle(GameObject player)
+    private void DriveVehicle(GameObject player)
     {
         PlayerScript playerScript = player.GetComponentInChildren<PlayerScript>();
+        if (playerScript == null) return;
+
         playerScript.isDriving = true;
         playerScript.vehicle = this.gameObject;
-        transform.parent.parent.GetComponent<CarController>().driver = player;
-        transform.parent.parent.GetComponent<CarController>().ChangeFollowCamera();
-    }
 
-    void CarryVictim(GameObject player)
-    {
-        if (player.GetComponentInChildren<PlayerScript>() != null)
+        CarController carController = transform.parent?.parent?.GetComponent<CarController>();
+        if (carController != null)
         {
-            player.GetComponentInChildren<PlayerScript>().isPlayerCarryingAVictim = true;
-            player.GetComponentInChildren<PlayerScript>().carriedVictim = this.gameObject;
-            this.transform.SetParent(player.transform);
-            this.transform.localPosition = Vector3.zero;
-            this.transform.localRotation = Quaternion.identity;
-            this.gameObject.SetActive(false);
+            carController.driver = player;
+            carController.ChangeFollowCamera();
         }
     }
 
-    void PutVictim(GameObject player)
+    private void CarryVictim(GameObject player)
     {
-        if (player.GetComponentInChildren<PlayerScript>() == null || player.GetComponentInChildren<PlayerScript>().carriedVictim == null) return;
-        foreach (Transform child in player.transform)
+        PlayerScript playerScript = player.GetComponentInChildren<PlayerScript>();
+        if (playerScript == null) return;
+
+        playerScript.isPlayerCarryingAVictim = true;
+        playerScript.carriedVictim = this.gameObject;
+
+        transform.SetParent(player.transform);
+        transform.localPosition = Vector3.zero;
+        transform.localRotation = Quaternion.identity;
+        gameObject.SetActive(false);
+    }
+
+    private void PutVictim(GameObject player)
+    {
+        PlayerScript playerScript = player.GetComponentInChildren<PlayerScript>();
+        if (playerScript == null || playerScript.carriedVictim == null) return;
+
+        GameObject carriedVictim = playerScript.carriedVictim;
+        carriedVictim.SetActive(true);
+
+        Stretcher stretcher = GetComponent<Stretcher>();
+        if (stretcher != null)
         {
-            if (child.gameObject.name == player.GetComponentInChildren<PlayerScript>().carriedVictim.name)
-            {
-                child.gameObject.SetActive(true);
-                this.GetComponent<Stretcher>().PutVictimInStretcher(child.gameObject);
-                player.GetComponentInChildren<PlayerScript>().carriedVictim = null;
-                player.GetComponentInChildren<PlayerScript>().isPlayerCarryingAVictim = false;
-            }
+            stretcher.PutVictimInStretcher(carriedVictim);
         }
+
+        playerScript.carriedVictim = null;
+        playerScript.isPlayerCarryingAVictim = false;
+    }
+
+    private void Climb(GameObject player)
+    {
+        PlayerScript playerScript = player.GetComponentInChildren<PlayerScript>();
+        Animator animator = player.GetComponentInChildren<Animator>();
+        if (playerScript == null) return;
+        playerScript.isPlayerClimbing = true;
+        if (animator != null)
+        {
+            animator.SetTrigger("Climb");
+        }
+
     }
 }

@@ -7,18 +7,17 @@ public class PlayerScript : MonoBehaviour
 {
     public bool isDriving = false;
     public GameObject vehicle;
-    public bool isPlayerHoldingTool = false;
-    public bool isPlayerCarryingAVictim = false;
-    public GameObject carriedVictim = null;
-
-    ////////////////////////////////////////////////
     public bool isUsingFireAxe = false;
     public bool isCarryingLadder = false;
     public bool isCarryingBucket = false;
     public bool isHoldingFireHose = false;
-
+    public bool isPlayerHoldingTool = false;
+    public bool isPlayerCarryingAVictim = false;
+    public GameObject carriedVictim = null;
     private float leftClickTimeOutDelta = 0.0f;
-    public InteractionSystem interactionSystem;
+    public bool isPlayerClimbing = false;
+    ///////////////////////////////////////////////////////
+    private InteractionSystem interactionSystem;
     private StarterAssetsInputs starterAssetsInputs;
     private PlayerAnimationsHandler playerAnimationsHandler;
     private void Awake()

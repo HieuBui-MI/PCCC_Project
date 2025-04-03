@@ -22,6 +22,7 @@ public class PlayerAnimationsHandler : MonoBehaviour
     void Update()
     {
         PoseStateHandler();
+        OnClimb();
     }
 
     void PoseStateHandler()
@@ -32,8 +33,8 @@ public class PlayerAnimationsHandler : MonoBehaviour
 
     public void AxeBreaking()
     {
-            isInAction = true;
-            animator.SetTrigger("AxeBreak");
+        isInAction = true;
+        animator.SetTrigger("AxeBreak");
     }
 
     public void resetActionState()
@@ -45,4 +46,9 @@ public class PlayerAnimationsHandler : MonoBehaviour
     {
     }
 
+    public void OnClimb()
+    {
+        isInAction = GetComponent<PlayerScript>().isPlayerClimbing;
+        animator.SetBool("isClimbing", GetComponent<PlayerScript>().isPlayerClimbing);
+    }
 }
