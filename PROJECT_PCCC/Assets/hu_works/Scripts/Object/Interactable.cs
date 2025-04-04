@@ -1,3 +1,4 @@
+using StarterAssets;
 using UnityEngine;
 
 public class Interactable : MonoBehaviour
@@ -10,10 +11,18 @@ public class Interactable : MonoBehaviour
         Door,
         Drivable,
         Breakable,
-        Climbable
+        Climbable,
+        Take,
     }
-
     [SerializeField] private InteractableType type = InteractableType.None;
+
+    public enum CarriableType
+    {
+        None,
+        Object,
+        Victim
+    }
+    [SerializeField] private CarriableType carriableType = CarriableType.None;
 
     public void InteractCase(GameObject player)
     {
@@ -26,13 +35,24 @@ public class Interactable : MonoBehaviour
                 DriveVehicle(player);
                 break;
             case InteractableType.Carriable:
-                CarryVictim(player);
+                if (carriableType == CarriableType.Victim)
+                {
+                    CarryVictim(player);
+                }
+
+                if (carriableType == CarriableType.Object)
+                {
+                    CarryObject(player);
+                }
                 break;
             case InteractableType.Putable:
                 PutVictim(player);
                 break;
             case InteractableType.Climbable:
                 Climb(player);
+                break;
+            case InteractableType.Take:
+                Debug.Log($"Interacted with {type}");
                 break;
             default:
                 Debug.Log($"Interacted with {type}");
@@ -97,16 +117,29 @@ public class Interactable : MonoBehaviour
         playerScript.isPlayerCarryingAVictim = false;
     }
 
+    void CarryObject(GameObject player)
+    {
+        if (player.GetComponentInChildren<PlayerScript>().carriedObject == null)
+        {
+            player.GetComponentInChildren<PlayerScript>().carriedObject = this.gameObject;
+            player.GetComponentInChildren<PlacementSystem>().prevCarriedObjectPosition = this.transform.position;
+        }
+    }
     private void Climb(GameObject player)
     {
         PlayerScript playerScript = player.GetComponentInChildren<PlayerScript>();
         Animator animator = player.GetComponentInChildren<Animator>();
         if (playerScript == null) return;
+
+        // Justify the player position to the ladder position
+        Vector3 playerCurrentPosition = player.transform.position;
+        player.transform.position = new Vector3(playerCurrentPosition.x, playerCurrentPosition.y + 0.5f, playerCurrentPosition.z);
+
+        // Set the player to climb the ladder
         playerScript.isPlayerClimbing = true;
         if (animator != null)
         {
             animator.SetTrigger("Climb");
         }
-
     }
 }

@@ -1,6 +1,5 @@
 using Unity.VisualScripting;
 using UnityEngine;
-
 public class PlayerAiming : MonoBehaviour
 {
     [SerializeField] private GameObject playerCameraRoot;

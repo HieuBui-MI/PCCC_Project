@@ -4,10 +4,9 @@ public class InteractionSystem : MonoBehaviour
 {
     [SerializeField] private GameObject targetObject;
     public GameObject playerCameraRoot;
-    public float reachDistance = 5f;
+    public float reachDistance;
     private GameObject marker;
     [SerializeField] private GameObject markerPrefab;
-    private GameObject previousTargetObject;
 
     private void Awake()
     {
@@ -79,6 +78,7 @@ public class InteractionSystem : MonoBehaviour
             Bounds bounds = objCollider.bounds;
             Vector3 markerPosition = bounds.center + Vector3.up * bounds.extents.y + Vector3.up * 0.3f; // Chính giữa phía trên
             marker.transform.position = markerPosition;
+            marker.transform.SetParent(obj.transform); 
         }
     }
 

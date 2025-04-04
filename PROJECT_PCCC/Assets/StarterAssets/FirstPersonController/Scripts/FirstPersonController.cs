@@ -79,10 +79,8 @@ namespace StarterAssets
 		private CharacterController _controller;
 		private StarterAssetsInputs _input;
 		private GameObject _mainCamera;
-
 		private const float _threshold = 0.01f;
 		private bool _hasAnimator;
-
 		private bool IsCurrentDeviceMouse
 		{
 			get
@@ -128,7 +126,15 @@ namespace StarterAssets
 			_hasAnimator = _animator != null; // Kiểm tra xem Animator có tồn tại không
 			JumpAndGravity();
 			GroundedCheck();
-			Move();
+
+			PlayerScript playerScript = GetComponentInChildren<PlayerScript>();
+			if (playerScript != null)
+			{
+				if (!playerScript.isPlayerClimbing)
+				{
+					Move();
+				}
+			}
 		}
 
 		private void LateUpdate()

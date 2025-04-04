@@ -1,3 +1,4 @@
+using TreeEditor;
 using UnityEngine;
 
 public class Stretcher : MonoBehaviour
@@ -15,12 +16,19 @@ public class Stretcher : MonoBehaviour
 
         // // Đặt vị trí và rotation cho victim
         // victim.transform.localPosition = Vector3.zero; // Đặt vị trí về (0, 0, 0)
-        transform.GetChild(0).gameObject.transform.localPosition = Vector3.zero; // Đặt vị trí về (0, 0, 0)
+        victim.transform.localPosition = new Vector3(0f,-0.025f,0.0313612074f); // Đặt vị trí lên trên một chút
         victim.transform.localRotation = Quaternion.identity; // Đặt rotation về mặc định (không xoay)
     }
 
     private void SetVictim()
     {
-        victim = transform.childCount > 0 ? transform.GetChild(0).gameObject : null;
+        foreach (Transform item in transform)
+        {
+            if (item.GetComponent<Victim>() != null)
+            {
+                victim = item.gameObject;
+                break; 
+            }
+        }
     }
 }
