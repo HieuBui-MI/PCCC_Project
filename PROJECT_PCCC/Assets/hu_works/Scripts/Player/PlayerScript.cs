@@ -27,7 +27,6 @@ public class PlayerScript : MonoBehaviour
     private PlayerAnimationsHandler playerAnimationsHandler;
 
     ///////////////////////////////////////////////////////
-    public GameObject availableConnectionPoint;
     [SerializeField] float climbSpeed = 5f;
     private void Awake()
     {

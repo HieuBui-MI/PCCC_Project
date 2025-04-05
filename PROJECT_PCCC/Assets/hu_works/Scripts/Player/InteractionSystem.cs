@@ -3,7 +3,11 @@ using UnityEngine;
 public class InteractionSystem : MonoBehaviour
 {
     [SerializeField] private GameObject targetObject;
-    public GameObject targetConnectObject;
+    public GameObject TargetObject
+    {
+        get => targetObject;
+        set => targetObject = value;
+    }
     public GameObject playerCameraRoot;
     public float reachDistance;
     private GameObject marker;
@@ -46,8 +50,6 @@ public class InteractionSystem : MonoBehaviour
                 RemoveMarker();
 
                 targetObject = hitObject;
-                targetConnectObject = GetComponent<PlayerScript>().connectableObjectOnHold != null? 
-                GetComponent<PlayerScript>().connectableObjectOnHold : null;
                 ApplyMarker(targetObject);
             }
         }
@@ -60,11 +62,7 @@ public class InteractionSystem : MonoBehaviour
 
     private void ApplyMarker(GameObject obj)
     {
-        if (markerPrefab == null)
-        {
-            Debug.LogWarning("Marker prefab is not assigned!");
-            return;
-        }
+        if (markerPrefab == null)return;
 
         // Instantiate marker nếu chưa tồn tại
         if (marker == null)

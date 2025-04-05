@@ -53,7 +53,6 @@ public class Interactable : MonoBehaviour
                 Climb(player);
                 break;
             case InteractableType.Connectable:
-
                 ConnectObjectHandler(player);
                 break;
             default:
@@ -154,30 +153,34 @@ public class Interactable : MonoBehaviour
         }
         else if (playerScript.connectableObjectOnHold != null)
         {
-            ConnectObject(interactionSystem.targetConnectObject, this.gameObject);
+            ConnectObject(playerScript.connectableObjectOnHold, interactionSystem.TargetObject);
+            playerScript.connectableObjectOnHold = null;
         }
     }
     private void ConnectObject(GameObject obj1, GameObject obj2)
     {
         Debug.Log($"Connecting {obj1.name} with {obj2.name}");
-        // Kiểm tra và kết nối nếu obj1 là WaterSourceConnector và obj2 là FireHydrant
         if (TryConnect(obj1, obj2)) return;
-        // Kiểm tra và kết nối nếu obj2 là WaterSourceConnector và obj1 là FireHydrant
         TryConnect(obj2, obj1);
     }
 
-    private bool TryConnect(GameObject waterSourceObj, GameObject fireHydrantObj)
+    private bool TryConnect(GameObject obj1, GameObject obj2)
     {
-        WaterSourceConnector waterSourceConnector = waterSourceObj.GetComponent<WaterSourceConnector>();
-        FireHydrant fireHydrant = fireHydrantObj.GetComponent<FireHydrant>();
+        WaterSourceConnector waterSourceConnector = obj1.GetComponent<WaterSourceConnector>();
+        FireHydrant fireHydrant = obj2.GetComponent<FireHydrant>();
 
         if (waterSourceConnector != null && fireHydrant != null)
         {
+            if (waterSourceConnector.objConnectedTo != null || fireHydrant.objConnectedTo != null)
+            {
+                Debug.Log("Both objects are already connected.");
+                return false;
+            }
             waterSourceConnector.objConnectedTo = fireHydrant.gameObject;
             fireHydrant.objConnectedTo = waterSourceConnector.gameObject;
-            return true; // Kết nối thành công
+            return true;
         }
-        return false; // Không kết nối được
+        return false;
     }
 
     private void SetSelectedConnectedObject(PlayerScript playerScript)
