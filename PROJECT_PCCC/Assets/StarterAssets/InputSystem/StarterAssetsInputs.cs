@@ -17,6 +17,9 @@ namespace StarterAssets
 		[Header("Movement Settings")]
 		public bool analogMovement;
 
+		[Header("Other Settings")]
+		public bool toolWheel = false;
+
 		[Header("Mouse Cursor Settings")]
 		public bool cursorLocked = true;
 		public bool cursorInputForLook = true;
@@ -48,6 +51,11 @@ namespace StarterAssets
 		public void OnLeftClick(InputValue value)
 		{
 			leftClick = value.isPressed;
+		}
+
+		public void OnToolWheel(InputValue value)
+		{
+			toolWheel = value.isPressed;
 		}
 #endif
 
@@ -84,6 +92,10 @@ namespace StarterAssets
 		public void LeftClickInput(bool newLeftClickState)
 		{
 			leftClick = newLeftClickState;
+		}
+		public void ToolWheelInput(bool newToolWheelState)
+		{
+			toolWheel = newToolWheelState;
 		}
 	}
 

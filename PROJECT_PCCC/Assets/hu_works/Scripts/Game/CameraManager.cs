@@ -41,7 +41,7 @@ public class CameraManager : MonoBehaviour
             playerFollowCamera.SetActive(true);
             vehicleFollowCamera.SetActive(false);
 
-            player.GetComponentInChildren<PlayerScript>().isDriving = false;
+            player.GetComponentInChildren<PlayerScript>().isPlayerDriving = false;
             player.GetComponentInChildren<PlayerScript>().vehicle = null;
         }
     }

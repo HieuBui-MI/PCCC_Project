@@ -3,16 +3,21 @@ using UnityEngine;
 
 public class ToolWheelController : MonoBehaviour
 {
+    private StarterAssetsInputs inputs;
     public GameObject toolWheel;
-    public GameObject player;
+
+    private void Awake()
+    {
+        inputs = GetComponent<StarterAssetsInputs>();
+    }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.G))
+        if (inputs.toolWheel)
         {
+            GetComponentInChildren<PlayerScript>().isInWheelSelectionMode = true;
             toolWheel.SetActive(true);
 
-            StarterAssetsInputs inputs = player.GetComponent<StarterAssetsInputs>();
             if (inputs != null)
             {
                 inputs.cursorLocked = false;
@@ -22,11 +27,11 @@ public class ToolWheelController : MonoBehaviour
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
-        if (Input.GetKeyUp(KeyCode.G))
+        if (!inputs.toolWheel)
         {
+            GetComponentInChildren<PlayerScript>().isInWheelSelectionMode = false;
             toolWheel.SetActive(false);
 
-            StarterAssetsInputs inputs = player.GetComponent<StarterAssetsInputs>();
             if (inputs != null)
             {
                 inputs.cursorLocked = true;

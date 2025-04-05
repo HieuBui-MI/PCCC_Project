@@ -7,12 +7,14 @@ public class PlayerScript : MonoBehaviour
 {
     private bool previousGroundedState = false;
     //////////////////////////////////////////////////////
-    public bool isDriving = false;
+    public bool isPlayerDriving = false;
     public GameObject vehicle;
     public bool isUsingFireAxe = false;
     public bool isCarryingLadder = false;
     public bool isCarryingBucket = false;
     public bool isHoldingFireHose = false;
+    public bool isHoldingFireExtinguisher = false;
+    //////////////////////////////////////////////////////
     public bool isPlayerHoldingTool = false;
     public bool isPlayerCarryingAVictim = false;
     public GameObject carriedVictim = null;
@@ -27,6 +29,8 @@ public class PlayerScript : MonoBehaviour
     private PlayerAnimationsHandler playerAnimationsHandler;
 
     ///////////////////////////////////////////////////////
+    public bool isInPlaceingMode = false;
+    public bool isInWheelSelectionMode = false;
     [SerializeField] float climbSpeed = 5f;
     private void Awake()
     {
@@ -38,11 +42,18 @@ public class PlayerScript : MonoBehaviour
     private void Update()
     {
         Interact();
+        PlaceModeState();
         HandleLeftClick();
         RHWeightForFireHose();
         ClimbLadder();
         ClimbState();
     }
+
+    void PlaceModeState()
+    {
+        isInPlaceingMode = carriedObject != null;
+    }
+
     void Interact()
     {
         if (Input.GetKeyDown(KeyCode.F) && interactionSystem != null)
@@ -57,6 +68,7 @@ public class PlayerScript : MonoBehaviour
         isCarryingLadder = false;
         isCarryingBucket = false;
         isHoldingFireHose = false;
+        isHoldingFireExtinguisher = false;
     }
 
     void HandleLeftClick()
@@ -66,6 +78,7 @@ public class PlayerScript : MonoBehaviour
             if (Time.time >= leftClickTimeOutDelta + 0.1f)
             {
                 SetIsUsingFireAxe();
+                GetComponent<PlacementSystem>().PlaceDownObj();
                 leftClickTimeOutDelta = Time.time;
             }
             else
@@ -115,6 +128,4 @@ public class PlayerScript : MonoBehaviour
         }
         previousGroundedState = GetComponentInParent<FirstPersonController>().Grounded;
     }
-
-
 }

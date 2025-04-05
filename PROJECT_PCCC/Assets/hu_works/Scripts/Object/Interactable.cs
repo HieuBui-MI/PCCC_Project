@@ -75,7 +75,7 @@ public class Interactable : MonoBehaviour
         PlayerScript playerScript = player.GetComponentInChildren<PlayerScript>();
         if (playerScript == null) return;
 
-        playerScript.isDriving = true;
+        playerScript.isPlayerDriving = true;
         playerScript.vehicle = this.gameObject;
 
         CarController carController = transform.parent?.parent?.GetComponent<CarController>();
@@ -118,10 +118,10 @@ public class Interactable : MonoBehaviour
         playerScript.isPlayerCarryingAVictim = false;
     }
 
-    void CarryObject(GameObject player)
+    private void CarryObject(GameObject player)
     {
         PlayerScript playerScript = player.GetComponentInChildren<PlayerScript>();
-        if (playerScript == null || playerScript.carriedObject == null) return;
+        if (playerScript == null || playerScript.carriedObject != null) return;
 
         player.GetComponentInChildren<PlayerScript>().carriedObject = this.gameObject;
         player.GetComponentInChildren<PlacementSystem>().prevCarriedObjectPosition = this.transform.position;
@@ -159,7 +159,6 @@ public class Interactable : MonoBehaviour
     }
     private void ConnectObject(GameObject obj1, GameObject obj2)
     {
-        Debug.Log($"Connecting {obj1.name} with {obj2.name}");
         if (TryConnect(obj1, obj2)) return;
         TryConnect(obj2, obj1);
     }

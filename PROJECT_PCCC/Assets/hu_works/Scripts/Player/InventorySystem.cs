@@ -27,59 +27,39 @@ public class InventorySystem : MonoBehaviour
         }
     }
 
-    void Update()
-    {
-        HandleToolSwitching();
-    }
-
-    void HandleToolSwitching()
-    {
-        // Hỗ trợ chuyển đổi nhiều công cụ
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            SwitchTool("FireAxe");
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            SwitchTool("Ladder");
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            SwitchTool("Bucket");
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            SwitchTool("FireHose");
-        }
-    }
-
-    void SwitchTool(string toolName)
+    public void SwitchTool(Tool.ToolType toolType)
     {
         playerScript.ResetToolStates(); // Đặt lại trạng thái công cụ trước khi chuyển đổi
 
         // Kích hoạt công cụ tương ứng
-        switch (toolName)
+        switch (toolType)
         {
-            case "FireAxe":
+            case Tool.ToolType.FireAxe:
                 playerScript.isUsingFireAxe = true;
                 UpdateActiveTool();
                 break;
-            case "Ladder":
+            case Tool.ToolType.Ladder:
                 playerScript.isCarryingLadder = true;
                 UpdateActiveTool();
                 break;
-            case "Bucket":
+            case Tool.ToolType.Bucket:
                 playerScript.isCarryingBucket = true;
                 UpdateActiveTool();
                 break;
-            case "FireHose":
+            case Tool.ToolType.FireHose:
                 playerScript.isHoldingFireHose = true;
+                UpdateActiveTool();
+                break;
+            case Tool.ToolType.FireExtinguisher:
+                playerScript.isHoldingFireExtinguisher = true;
                 UpdateActiveTool();
                 break;
         }
 
         // Cập nhật trạng thái người chơi
-        playerScript.isPlayerHoldingTool = playerScript.isUsingFireAxe || playerScript.isCarryingLadder || playerScript.isCarryingBucket || playerScript.isHoldingFireHose;
+        playerScript.isPlayerHoldingTool = playerScript.isUsingFireAxe 
+        || playerScript.isCarryingLadder || playerScript.isCarryingBucket 
+        || playerScript.isHoldingFireHose || playerScript.isHoldingFireExtinguisher;
     }
 
     void UpdateActiveTool()
@@ -94,10 +74,11 @@ public class InventorySystem : MonoBehaviour
         // Đặt công cụ đang sử dụng về activeEquipment
         foreach (Transform tool in inActiveEquipments.transform)
         {
-            if (playerScript.isUsingFireAxe == true && tool.GetComponent<Tool>().toolName == "FireAxe" ||
-                playerScript.isCarryingLadder == true && tool.GetComponent<Tool>().toolName == "Ladder" ||
-                playerScript.isCarryingBucket == true && tool.GetComponent<Tool>().toolName == "Bucket" ||
-                playerScript.isHoldingFireHose == true && tool.GetComponent<Tool>().toolName == "FireHose")
+            if (playerScript.isUsingFireAxe == true && tool.GetComponent<Tool>().toolType == Tool.ToolType.FireAxe ||
+                playerScript.isCarryingLadder == true && tool.GetComponent<Tool>().toolType == Tool.ToolType.Ladder ||
+                playerScript.isCarryingBucket == true && tool.GetComponent<Tool>().toolType == Tool.ToolType.Bucket ||
+                playerScript.isHoldingFireHose == true && tool.GetComponent<Tool>().toolType == Tool.ToolType.FireHose ||
+                playerScript.isHoldingFireExtinguisher == true && tool.GetComponent<Tool>().toolType == Tool.ToolType.FireExtinguisher)
             {
                 tool.gameObject.SetActive(true);
                 tool.SetParent(activeEquipment.transform);

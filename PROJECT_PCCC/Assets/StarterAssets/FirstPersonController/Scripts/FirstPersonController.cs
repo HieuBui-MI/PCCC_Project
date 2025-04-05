@@ -135,11 +135,13 @@ namespace StarterAssets
 					Move();
 				}
 			}
+
 		}
 
 		private void LateUpdate()
 		{
 			CameraRotation();
+			
 		}
 
 		private void AssignAnimationIDs()
@@ -166,7 +168,7 @@ namespace StarterAssets
 		private void CameraRotation()
 		{
 			// if there is an input
-			if (_input.look.sqrMagnitude >= _threshold)
+			if (_input.look.sqrMagnitude >= _threshold && !_input.toolWheel)
 			{
 				//Don't multiply mouse input by Time.deltaTime
 				float deltaTimeMultiplier = IsCurrentDeviceMouse ? 1.0f : Time.deltaTime;

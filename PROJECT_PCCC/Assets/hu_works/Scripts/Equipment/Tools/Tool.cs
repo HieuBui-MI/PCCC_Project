@@ -2,14 +2,6 @@ using UnityEngine;
 
 public class Tool : MonoBehaviour
 {
-    public string toolName = "";
-    void Start()
-    {
-        // Initialize the tool
-    }
-    void Update()
-    {
-        // Update the tool's state
-    }
-    
+    public enum ToolType { none, FireAxe, Ladder, Bucket, FireHose, FireExtinguisher };
+    public ToolType toolType = ToolType.none;
 }

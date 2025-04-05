@@ -23,7 +23,6 @@ public class PlacementSystem : MonoBehaviour
     {
         SetTargetPosition();
         HollowPosition();
-        PlaceDownObj();
         CancelPlacement();
     }
 
@@ -32,11 +31,13 @@ public class PlacementSystem : MonoBehaviour
         Vector3 origin = playerCameraRoot.transform.position;
         Vector3 direction = playerCameraRoot.transform.forward;
 
-        // Debug.DrawRay(origin, direction * reachDistance, Color.red);
-
         if (Physics.Raycast(origin, direction, out RaycastHit hit, reachDistance, raycastLayerMask))
         {
             hitPosition = hit.point;
+        }
+        else
+        {
+            hitPosition = origin + direction * reachDistance;
         }
     }
 
@@ -48,7 +49,7 @@ public class PlacementSystem : MonoBehaviour
 
     public void PlaceDownObj()
     {
-        if (Input.GetKeyDown(KeyCode.R))
+        if (GetComponent<PlayerScript>().isInPlaceingMode)
         {
             if (GetComponent<PlayerScript>().carriedObject != null)
             {

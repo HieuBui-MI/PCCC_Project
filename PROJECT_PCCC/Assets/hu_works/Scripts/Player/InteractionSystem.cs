@@ -95,7 +95,7 @@ public class InteractionSystem : MonoBehaviour
         if (targetObject == null) return;
 
         Interactable interactable = targetObject.GetComponent<Interactable>();
-        if (interactable != null)
+        if (interactable != null || !GetComponent<PlayerScript>().isInPlaceingMode)
         {
             interactable.InteractCase(transform.parent.gameObject);
         }
