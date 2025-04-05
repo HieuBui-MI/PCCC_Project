@@ -3,6 +3,7 @@ using UnityEngine;
 public class InteractionSystem : MonoBehaviour
 {
     [SerializeField] private GameObject targetObject;
+    public GameObject targetConnectObject;
     public GameObject playerCameraRoot;
     public float reachDistance;
     private GameObject marker;
@@ -10,10 +11,7 @@ public class InteractionSystem : MonoBehaviour
 
     private void Awake()
     {
-        if (playerCameraRoot == null)
-        {
-            playerCameraRoot = transform.parent.Find("PlayerCameraRoot")?.gameObject;
-        }
+        playerCameraRoot = transform.parent.Find("PlayerCameraRoot")?.gameObject;
     }
 
     private void Update()
@@ -46,7 +44,10 @@ public class InteractionSystem : MonoBehaviour
             if (hitObject != targetObject)
             {
                 RemoveMarker();
+
                 targetObject = hitObject;
+                targetConnectObject = GetComponent<PlayerScript>().connectableObjectOnHold != null? 
+                GetComponent<PlayerScript>().connectableObjectOnHold : null;
                 ApplyMarker(targetObject);
             }
         }
@@ -78,7 +79,7 @@ public class InteractionSystem : MonoBehaviour
             Bounds bounds = objCollider.bounds;
             Vector3 markerPosition = bounds.center + Vector3.up * bounds.extents.y + Vector3.up * 0.3f; // Chính giữa phía trên
             marker.transform.position = markerPosition;
-            marker.transform.SetParent(obj.transform); 
+            marker.transform.SetParent(obj.transform);
         }
     }
 

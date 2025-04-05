@@ -13,8 +13,9 @@ public class Interactable : MonoBehaviour
         Breakable,
         Climbable,
         Take,
+        Connectable,
     }
-    [SerializeField] private InteractableType type = InteractableType.None;
+    public InteractableType type = InteractableType.None;
 
     public enum CarriableType
     {
@@ -51,8 +52,9 @@ public class Interactable : MonoBehaviour
             case InteractableType.Climbable:
                 Climb(player);
                 break;
-            case InteractableType.Take:
-                Debug.Log($"Interacted with {type}");
+            case InteractableType.Connectable:
+
+                ConnectObjectHandler(player);
                 break;
             default:
                 Debug.Log($"Interacted with {type}");
@@ -119,11 +121,11 @@ public class Interactable : MonoBehaviour
 
     void CarryObject(GameObject player)
     {
-        if (player.GetComponentInChildren<PlayerScript>().carriedObject == null)
-        {
-            player.GetComponentInChildren<PlayerScript>().carriedObject = this.gameObject;
-            player.GetComponentInChildren<PlacementSystem>().prevCarriedObjectPosition = this.transform.position;
-        }
+        PlayerScript playerScript = player.GetComponentInChildren<PlayerScript>();
+        if (playerScript == null || playerScript.carriedObject == null) return;
+
+        player.GetComponentInChildren<PlayerScript>().carriedObject = this.gameObject;
+        player.GetComponentInChildren<PlacementSystem>().prevCarriedObjectPosition = this.transform.position;
     }
     private void Climb(GameObject player)
     {
@@ -131,15 +133,55 @@ public class Interactable : MonoBehaviour
         Animator animator = player.GetComponentInChildren<Animator>();
         if (playerScript == null) return;
 
-        // Justify the player position to the ladder position
         Vector3 playerCurrentPosition = player.transform.position;
         player.transform.position = new Vector3(playerCurrentPosition.x, playerCurrentPosition.y + 0.5f, playerCurrentPosition.z);
 
-        // Set the player to climb the ladder
         playerScript.isPlayerClimbing = true;
         if (animator != null)
         {
             animator.SetTrigger("Climb");
         }
+    }
+    private void ConnectObjectHandler(GameObject player)
+    {
+        PlayerScript playerScript = player.GetComponentInChildren<PlayerScript>();
+        InteractionSystem interactionSystem = player.GetComponentInChildren<InteractionSystem>();
+        if (interactionSystem == null) return;
+        if (playerScript == null) return;
+        if (playerScript.connectableObjectOnHold == null)
+        {
+            SetSelectedConnectedObject(playerScript);
+        }
+        else if (playerScript.connectableObjectOnHold != null)
+        {
+            ConnectObject(interactionSystem.targetConnectObject, this.gameObject);
+        }
+    }
+    private void ConnectObject(GameObject obj1, GameObject obj2)
+    {
+        Debug.Log($"Connecting {obj1.name} with {obj2.name}");
+        // Kiểm tra và kết nối nếu obj1 là WaterSourceConnector và obj2 là FireHydrant
+        if (TryConnect(obj1, obj2)) return;
+        // Kiểm tra và kết nối nếu obj2 là WaterSourceConnector và obj1 là FireHydrant
+        TryConnect(obj2, obj1);
+    }
+
+    private bool TryConnect(GameObject waterSourceObj, GameObject fireHydrantObj)
+    {
+        WaterSourceConnector waterSourceConnector = waterSourceObj.GetComponent<WaterSourceConnector>();
+        FireHydrant fireHydrant = fireHydrantObj.GetComponent<FireHydrant>();
+
+        if (waterSourceConnector != null && fireHydrant != null)
+        {
+            waterSourceConnector.objConnectedTo = fireHydrant.gameObject;
+            fireHydrant.objConnectedTo = waterSourceConnector.gameObject;
+            return true; // Kết nối thành công
+        }
+        return false; // Không kết nối được
+    }
+
+    private void SetSelectedConnectedObject(PlayerScript playerScript)
+    {
+        playerScript.connectableObjectOnHold = this.gameObject;
     }
 }

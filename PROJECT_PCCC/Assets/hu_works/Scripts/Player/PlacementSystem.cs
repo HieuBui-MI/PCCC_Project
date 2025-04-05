@@ -14,13 +14,11 @@ public class PlacementSystem : MonoBehaviour
             playerCameraRoot = transform.parent.Find("PlayerCameraRoot")?.gameObject;
         }
     }
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
 
     }
 
-    // Update is called once per frame
     void Update()
     {
         SetTargetPosition();
@@ -34,8 +32,7 @@ public class PlacementSystem : MonoBehaviour
         Vector3 origin = playerCameraRoot.transform.position;
         Vector3 direction = playerCameraRoot.transform.forward;
 
-        // Vẽ ray trong Scene View để debug
-        Debug.DrawRay(origin, direction * reachDistance, Color.red);
+        // Debug.DrawRay(origin, direction * reachDistance, Color.red);
 
         if (Physics.Raycast(origin, direction, out RaycastHit hit, reachDistance, raycastLayerMask))
         {

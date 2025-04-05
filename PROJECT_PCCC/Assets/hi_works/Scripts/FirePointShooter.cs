@@ -1,3 +1,4 @@
+using StarterAssets;
 using UnityEngine;
 
 public class FirePointShooter : MonoBehaviour
@@ -7,8 +8,16 @@ public class FirePointShooter : MonoBehaviour
     public float projectileSpeed = 10f;
     public float fireRate = 0.2f;
     public float destroyTime = 3f;
-
     private float nextFireTime = 0f;
+
+    /////////////////////////////////////////
+    [SerializeField] private GameObject obiEmitter;
+
+    void Awake()
+    {
+        obiEmitter = transform.Find("Obi Emitter")?.gameObject;
+        firePoint = transform.Find("FirePoint")?.transform;
+    }
 
     void Update()
     {
@@ -17,19 +26,31 @@ public class FirePointShooter : MonoBehaviour
             Shoot();
             nextFireTime = Time.time + fireRate;
         }
+
+        ToggleObiEmitter();
     }
 
     void Shoot()
     {
-        GameObject projectile = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
-
-        Rigidbody rb = projectile.GetComponent<Rigidbody>();
-        if (rb != null)
+        if (Input.GetKey(KeyCode.Mouse0) && firePoint != null && projectilePrefab != null)
         {
-            rb.useGravity = true;
-            rb.linearVelocity = firePoint.up * projectileSpeed;
-        }
+            GameObject projectile = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
 
-        Destroy(projectile, destroyTime);
+            Rigidbody rb = projectile.GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                rb.useGravity = true;
+                rb.linearVelocity = firePoint.up * projectileSpeed;
+            }
+            Destroy(projectile, destroyTime);
+        }
+    }
+
+    void ToggleObiEmitter()
+    {
+        if (obiEmitter != null)
+        {
+            obiEmitter.SetActive(Input.GetKey(KeyCode.Mouse0));
+        }
     }
 }

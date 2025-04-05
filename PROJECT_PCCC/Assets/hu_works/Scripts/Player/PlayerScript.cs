@@ -20,12 +20,14 @@ public class PlayerScript : MonoBehaviour
     public GameObject carriedObject = null;
     private float leftClickTimeOutDelta = 0.0f;
     public bool isPlayerClimbing = false;
+    public GameObject connectableObjectOnHold = null;
     ///////////////////////////////////////////////////////
     private InteractionSystem interactionSystem;
     private StarterAssetsInputs starterAssetsInputs;
     private PlayerAnimationsHandler playerAnimationsHandler;
 
     ///////////////////////////////////////////////////////
+    public GameObject availableConnectionPoint;
     [SerializeField] float climbSpeed = 5f;
     private void Awake()
     {
@@ -44,7 +46,7 @@ public class PlayerScript : MonoBehaviour
     }
     void Interact()
     {
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(KeyCode.F) && interactionSystem != null)
         {
             interactionSystem.Interact();
         }
@@ -60,7 +62,7 @@ public class PlayerScript : MonoBehaviour
 
     void HandleLeftClick()
     {
-        if (starterAssetsInputs.leftClick)
+        if (starterAssetsInputs.leftClick && starterAssetsInputs != null)
         {
             if (Time.time >= leftClickTimeOutDelta + 0.1f)
             {
@@ -76,7 +78,7 @@ public class PlayerScript : MonoBehaviour
 
     public void SetIsUsingFireAxe()
     {
-        if (isUsingFireAxe)
+        if (isUsingFireAxe && playerAnimationsHandler != null)
         {
             playerAnimationsHandler.AxeBreaking();
         }
@@ -105,7 +107,9 @@ public class PlayerScript : MonoBehaviour
 
     void ClimbState()
     {
-        bool currentGroundedState = GetComponentInParent<FirstPersonController>().Grounded;
+        FirstPersonController firstPersonController = GetComponentInParent<FirstPersonController>();
+        if (firstPersonController == null) return;
+        bool currentGroundedState = firstPersonController.Grounded;
         if (!previousGroundedState && currentGroundedState)
         {
             isPlayerClimbing = false;
