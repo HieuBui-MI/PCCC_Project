@@ -51,6 +51,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "RightClick",
+                    "type": "Button",
+                    "id": "0630ac8f-6f81-409c-807c-5560221b21c8",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "ToolWheel",
                     "type": "PassThrough",
                     "id": "5283e5a6-7a45-40ea-a32f-ac61686bb56c",
@@ -234,6 +243,17 @@
                     "processors": "",
                     "groups": ";KeyboardMouse",
                     "action": "LeftClick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "269d032a-8df9-4b0d-aad7-8b92a55c830b",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";KeyboardMouse",
+                    "action": "RightClick",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

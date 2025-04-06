@@ -13,6 +13,7 @@ namespace StarterAssets
 		public bool sprint;
 		public bool jump;
 		public bool leftClick = false;
+		public bool rightClick = false;
 
 		[Header("Movement Settings")]
 		public bool analogMovement;
@@ -51,6 +52,11 @@ namespace StarterAssets
 		public void OnLeftClick(InputValue value)
 		{
 			leftClick = value.isPressed;
+		}
+
+		public void OnRightClick(InputValue value)
+		{
+			rightClick = value.isPressed;
 		}
 
 		public void OnToolWheel(InputValue value)
@@ -93,6 +99,12 @@ namespace StarterAssets
 		{
 			leftClick = newLeftClickState;
 		}
+
+		public void RightClickInput(bool newRightClickState)
+		{
+			rightClick = newRightClickState;
+		}
+
 		public void ToolWheelInput(bool newToolWheelState)
 		{
 			toolWheel = newToolWheelState;
