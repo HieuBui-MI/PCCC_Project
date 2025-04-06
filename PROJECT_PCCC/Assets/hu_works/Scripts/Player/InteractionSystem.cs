@@ -29,7 +29,7 @@ public class InteractionSystem : MonoBehaviour
         Vector3 direction = playerCameraRoot.transform.forward;
 
         // Vẽ ray trong Scene View để debug
-        Debug.DrawRay(origin, direction * reachDistance, Color.red);
+        Debug.DrawRay(origin, direction * reachDistance * 10, Color.red);
 
         if (Physics.Raycast(origin, direction, out RaycastHit hit, reachDistance))
         {

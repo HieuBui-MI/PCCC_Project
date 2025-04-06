@@ -7,62 +7,43 @@ public class GenRope : MonoBehaviour
     private bool hasLoggedPositions = false; // Biến cờ để kiểm tra trạng thái
     public GameObject parentRope;
     public GameObject ropePrefab;
+    private void Start()
+    {
+        fireHydrant = GetComponent<FireHydrant>();
+    }
 
     void Update()
     {
-        if (fireHydrant.isConnectedToFireTruck && !hasLoggedPositions)
+        if (GetComponent<FireHydrant>().isConnectedToFireTruck && !hasLoggedPositions)
         {
-            // Lấy vị trí của GameObject gắn FireHydrant
-            Vector3 fireHydrantPosition = fireHydrant.gameObject.transform.position;
-            Debug.Log("FireHydrant Position: " + fireHydrantPosition);
-
-            // Lấy vị trí của GameObject được kết nối
-            Vector3 Position2 = fireHydrant.objConnectedTo.transform.position;
-            Debug.Log("FireTruck Position: " + Position2);
-
             CreateRope();
-
-            // Đánh dấu đã thực thi
             hasLoggedPositions = true;
         }
-        else if (!fireHydrant.isConnectedToFireTruck)
-        {
-            Debug.Log("FireHydrant is not connected to the fire truck.");
-        }
-    }
-
-    void Start()
-    {
-        // Lấy Component FireHydrant từ GameObject hiện tại
-        fireHydrant = GetComponent<FireHydrant>();
     }
 
     public void CreateRope()
     {
-        // Lấy vị trí của FireHydrant và đối tượng được kết nối
-        Vector3 fireHydrantPosition = fireHydrant.gameObject.transform.position;
-        Vector3 connectedObjectPosition = fireHydrant.objConnectedTo.transform.position;
+        Vector3 fireHydrantPosition = transform.Find("ConnectPoint").position;
+        Vector3 connectedObjectPosition = fireHydrant.objConnectedTo.transform.Find("ConnectPoint").position;
 
-        // Tính toán vị trí trung điểm giữa hai tọa độ
         Vector3 middlePosition = (fireHydrantPosition + connectedObjectPosition) / 2;
-
-        // Tạo một đối tượng Rope từ prefab tại vị trí trung điểm
         GameObject rope = Instantiate(ropePrefab, middlePosition, Quaternion.identity);
 
-        // Đặt Rope làm con của parentRope
         if (parentRope != null)
         {
             rope.transform.SetParent(parentRope.transform);
         }
 
         // Bắt đầu Coroutine để delay 3 giây trước khi đặt vị trí cho S1 và S2
-        StartCoroutine(SetRopePositionsWithDelay(rope, fireHydrantPosition, connectedObjectPosition));
+        StartCoroutine(SetRopePositionsWithDelay(rope, GetComponent<FireHydrant>().objConnectedTo));
     }
 
-    private IEnumerator SetRopePositionsWithDelay(GameObject rope, Vector3 fireHydrantPosition, Vector3 connectedObjectPosition)
+    private IEnumerator SetRopePositionsWithDelay(GameObject rope, GameObject connectedObject)
     {
+        WaterSourceConnector waterSourceConnector = connectedObject.GetComponent<WaterSourceConnector>();
+
         // Chờ 3 giây
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(0.5f);
 
         // Tìm các GameObject con S1 và S2 trong ropePrefab
         Transform s1 = rope.transform.Find("S1");
@@ -70,7 +51,7 @@ public class GenRope : MonoBehaviour
 
         if (s1 != null)
         {
-            s1.position = fireHydrantPosition; // Đặt vị trí của S1
+            s1.position = transform.Find("ConnectPoint").position; // Đặt vị trí của S1
         }
         else
         {
@@ -79,7 +60,7 @@ public class GenRope : MonoBehaviour
 
         if (s2 != null)
         {
-            s2.position = connectedObjectPosition; // Đặt vị trí của S2
+            s2.position = waterSourceConnector.transform.Find("ConnectPoint").position; // Đặt vị trí của S2
         }
         else
         {

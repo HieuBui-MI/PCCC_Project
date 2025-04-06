@@ -1,8 +1,16 @@
 using StarterAssets;
 using UnityEngine;
+using Obi;
 
 public class FirePointShooter : MonoBehaviour
 {
+    [Header("Obi Settings")]
+    private ObiEmitter obiEmitterComponent;
+    private float targetSpeed = 0f;
+    private float speedIncreaseRate = 10f;
+    private float speedDecreaseRate = 20f;
+
+    [Header("Projectile Settings")]
     public GameObject projectilePrefab;
     public Transform firePoint;
     public float projectileSpeed = 10f;
@@ -17,6 +25,15 @@ public class FirePointShooter : MonoBehaviour
     {
         obiEmitter = transform.Find("Obi Emitter")?.gameObject;
         firePoint = transform.Find("FirePoint")?.transform;
+
+        if (obiEmitter != null)
+        {
+            obiEmitterComponent = obiEmitter.GetComponent<ObiEmitter>();
+            if (obiEmitterComponent != null)
+            {
+                obiEmitterComponent.speed = 0f;
+            }
+        }
     }
 
     void Update()
@@ -27,8 +44,9 @@ public class FirePointShooter : MonoBehaviour
             nextFireTime = Time.time + fireRate;
         }
 
-        ToggleObiEmitter();
+        ControlObiEmitter();
     }
+
 
     void Shoot()
     {
@@ -46,11 +64,27 @@ public class FirePointShooter : MonoBehaviour
         }
     }
 
-    void ToggleObiEmitter()
+    void ControlObiEmitter()
     {
-        if (obiEmitter != null)
+        if (obiEmitterComponent == null) return;
+
+        if (Input.GetKey(KeyCode.Mouse0))
         {
-            obiEmitter.SetActive(Input.GetKey(KeyCode.Mouse0));
+            targetSpeed = 25f;
+            obiEmitterComponent.speed = Mathf.MoveTowards(
+                obiEmitterComponent.speed,
+                targetSpeed,
+                speedIncreaseRate * Time.deltaTime
+            );
+        }
+        else
+        {
+            targetSpeed = 0f;
+            obiEmitterComponent.speed = Mathf.MoveTowards(
+                obiEmitterComponent.speed,
+                targetSpeed,
+                speedDecreaseRate * Time.deltaTime
+            );
         }
     }
 }

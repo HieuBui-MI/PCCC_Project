@@ -11,7 +11,7 @@ public class ToolWheelSelector : MonoBehaviour
     private MenuItemS previousmenuItemScripts;
     private GameObject player;
     [SerializeField] private InventorySystem inventorySystem;
-    private int previousSelectedItemIndex;
+    private int previousSelectedItemIndex = -1;
 
     private void Awake()
     {
@@ -22,8 +22,10 @@ public class ToolWheelSelector : MonoBehaviour
     {
         // Tính toán góc và xác định mục được chọn
         mousePosition = new Vector2(Input.mousePosition.x - Screen.width / 2, Input.mousePosition.y - Screen.height / 2);
+        // currentAngle = Mathf.Atan2(mousePosition.y, mousePosition.x) * Mathf.Rad2Deg;
+        // currentAngle = (currentAngle + 360) % 360;
         currentAngle = Mathf.Atan2(mousePosition.y, mousePosition.x) * Mathf.Rad2Deg;
-        currentAngle = (currentAngle + 360) % 360;
+        currentAngle = (450 - currentAngle) % 360;
         selection = (int)currentAngle / 45;
 
         if (selection != previousSelection)
