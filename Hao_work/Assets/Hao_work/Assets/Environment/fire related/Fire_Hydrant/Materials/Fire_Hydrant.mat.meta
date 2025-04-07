@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 582c4e6ed6596d840adb502fc458a2ee
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 28194
+  packageName: Fire Hydrant
+  packageVersion: 1.0
+  assetPath: Assets/Fire_Hydrant/Materials/Fire_Hydrant.mat
+  uploadId: 47163
