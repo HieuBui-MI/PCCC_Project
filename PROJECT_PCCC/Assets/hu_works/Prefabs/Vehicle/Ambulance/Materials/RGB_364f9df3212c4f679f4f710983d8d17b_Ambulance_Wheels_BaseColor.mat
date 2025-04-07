@@ -1,10 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
-<<<<<<<< HEAD:PROJECT_PCCC/Assets/Hao_work/Assets/Environment/Houses/Abandoned textures/Materials/House_House_Beams_Roughness.1001.mat
---- !u!114 &-3245781132454060473
-========
---- !u!114 &-8406547861184816372
->>>>>>>> hu_branch:PROJECT_PCCC/Assets/hu_works/Prefabs/Vehicle/Ambulance/Materials/RGB_364f9df3212c4f679f4f710983d8d17b_Ambulance_Wheels_BaseColor.mat
+--- !u!114 &-3277764388247351302
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -24,11 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-<<<<<<<< HEAD:PROJECT_PCCC/Assets/Hao_work/Assets/Environment/Houses/Abandoned textures/Materials/House_House_Beams_Roughness.1001.mat
-  m_Name: House_House_Beams_Roughness.1001
-========
   m_Name: RGB_364f9df3212c4f679f4f710983d8d17b_Ambulance_Wheels_BaseColor
->>>>>>>> hu_branch:PROJECT_PCCC/Assets/hu_works/Prefabs/Vehicle/Ambulance/Materials/RGB_364f9df3212c4f679f4f710983d8d17b_Ambulance_Wheels_BaseColor.mat
   m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -47,11 +39,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseMap:
-<<<<<<<< HEAD:PROJECT_PCCC/Assets/Hao_work/Assets/Environment/Houses/Abandoned textures/Materials/House_House_Beams_Roughness.1001.mat
-        m_Texture: {fileID: 2800000, guid: 792eda6b5472d354f9a4ab3b4fa7d932, type: 3}
-========
-        m_Texture: {fileID: 2800000, guid: 2ecb72e0963be8d48abb91f4ddf27e6c, type: 3}
->>>>>>>> hu_branch:PROJECT_PCCC/Assets/hu_works/Prefabs/Vehicle/Ambulance/Materials/RGB_364f9df3212c4f679f4f710983d8d17b_Ambulance_Wheels_BaseColor.mat
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -75,11 +63,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-<<<<<<<< HEAD:PROJECT_PCCC/Assets/Hao_work/Assets/Environment/Houses/Abandoned textures/Materials/House_House_Beams_Roughness.1001.mat
-        m_Texture: {fileID: 2800000, guid: 792eda6b5472d354f9a4ab3b4fa7d932, type: 3}
-========
-        m_Texture: {fileID: 2800000, guid: 2ecb72e0963be8d48abb91f4ddf27e6c, type: 3}
->>>>>>>> hu_branch:PROJECT_PCCC/Assets/hu_works/Prefabs/Vehicle/Ambulance/Materials/RGB_364f9df3212c4f679f4f710983d8d17b_Ambulance_Wheels_BaseColor.mat
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:

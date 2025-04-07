@@ -1,9 +1,5 @@
 fileFormatVersion: 2
-<<<<<<<< HEAD:PROJECT_PCCC/Assets/Hao_work/Assets/Environment/Houses/Abandoned textures/Barricade_Barricade_Roughness.1001.png.meta
-guid: 93cc5c154fef1af4dadde897537cf485
-========
-guid: f77f7968ed9a1954688d19d8831f1666
->>>>>>>> hu_branch:PROJECT_PCCC/Assets/hu_works/Prefabs/Environments/AluminumLadder/N_06bec2d4b74d4004b3f6677b0c9e413c_Extension_Ladder_Normal.png.meta
+guid: bf946c3811363b549b24c74c59a07450
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}

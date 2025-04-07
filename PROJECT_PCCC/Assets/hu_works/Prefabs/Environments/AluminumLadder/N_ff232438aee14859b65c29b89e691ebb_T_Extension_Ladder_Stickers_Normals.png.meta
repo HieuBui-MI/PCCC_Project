@@ -1,9 +1,5 @@
 fileFormatVersion: 2
-<<<<<<<< HEAD:PROJECT_PCCC/Assets/Hao_work/Assets/Environment/Houses/Abandoned textures/House_House_Beams_BaseColor.1001.png.meta
-guid: b7f346d13ae165944bfcc392b4e5bce8
-========
-guid: ebd745ce43426ae4eb6b9a5e4a0a973b
->>>>>>>> hu_branch:PROJECT_PCCC/Assets/hu_works/Prefabs/Environments/AluminumLadder/N_ff232438aee14859b65c29b89e691ebb_T_Extension_Ladder_Stickers_Normals.png.meta
+guid: a4448633aafe6264a9a70f4bebe6a0d5
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
