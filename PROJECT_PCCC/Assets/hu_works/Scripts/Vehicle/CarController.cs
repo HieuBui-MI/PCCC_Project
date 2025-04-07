@@ -34,7 +34,8 @@ public class CarController : MonoBehaviour
         rb.centerOfMass = new Vector3(0, -0.5f, 0); // Hạ thấp trọng tâm để tăng độ ổn định
     }
 
-    private void Update() {
+    private void Update()
+    {
         LeaveVehicle();
     }
 

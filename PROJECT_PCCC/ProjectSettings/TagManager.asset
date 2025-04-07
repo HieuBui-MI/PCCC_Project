@@ -8,6 +8,7 @@ TagManager:
   - Vehicle
   - Breakable
   - Water
+  - Cube
   layers:
   - Default
   - TransparentFX
@@ -20,7 +21,7 @@ TagManager:
   - FIrePoint
   - Effect
   - Vehicle
-  - 
+  - Marker
   - 
   - 
   - 

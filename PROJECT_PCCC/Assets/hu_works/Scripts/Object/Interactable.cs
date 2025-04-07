@@ -82,6 +82,14 @@ public class Interactable : MonoBehaviour
         if (carController != null)
         {
             carController.driver = player;
+
+            // Updated to use FindFirstObjectByType
+            HintSystem hintSystem = Object.FindFirstObjectByType<HintSystem>();
+            if (hintSystem != null)
+            {
+                hintSystem.ForceUpdateHint();
+            }
+
             carController.ChangeFollowCamera();
         }
     }

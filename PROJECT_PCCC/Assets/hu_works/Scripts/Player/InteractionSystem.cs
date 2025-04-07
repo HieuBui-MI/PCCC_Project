@@ -90,7 +90,7 @@ public class InteractionSystem : MonoBehaviour
         }
     }
 
-    public void Interact()
+    public void Interact()  
     {
         if (targetObject == null) return;
 
