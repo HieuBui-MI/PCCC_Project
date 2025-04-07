@@ -1,0 +1,12 @@
+fileFormatVersion: 2
+guid: f4901f25d4e1542589348bbb89563d8e
+ShaderImporter:
+  userData: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 47726
+  packageName: Realistic Terrain Collection LITE
+  packageVersion: 1.0
+  assetPath: Assets/Realistic Terrain Collection/Other/Effects/ImageEffects/Shaders/Contrast
+    Stretch/Apply.shader
+  uploadId: 85155

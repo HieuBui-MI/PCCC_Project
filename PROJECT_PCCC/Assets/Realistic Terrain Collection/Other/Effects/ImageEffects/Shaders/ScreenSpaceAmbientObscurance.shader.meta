@@ -1,0 +1,11 @@
+fileFormatVersion: 2
+guid: 95616c020c5604dda96cf76afbbc0272
+ShaderImporter:
+  userData: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 47726
+  packageName: Realistic Terrain Collection LITE
+  packageVersion: 1.0
+  assetPath: Assets/Realistic Terrain Collection/Other/Effects/ImageEffects/Shaders/ScreenSpaceAmbientObscurance.shader
+  uploadId: 85155

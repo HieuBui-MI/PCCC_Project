@@ -33,7 +33,7 @@ public class PlayerAnimationsHandler : MonoBehaviour
     }
     void RHWeightForFireHose()
     {
-        if (GetComponent<PlayerScript>().isHoldingFireHose)
+        if (GetComponent<PlayerScript>().isHoldingFireHose || GetComponent<PlayerScript>().isHoldingFireExtinguisher)
         {
             transform.Find("Rig2/RightHandAim").GetComponent<MultiAimConstraint>().weight = 1f;
             transform.Find("Rig1/RightHandIK").GetComponent<TwoBoneIKConstraint>().weight = 1f;

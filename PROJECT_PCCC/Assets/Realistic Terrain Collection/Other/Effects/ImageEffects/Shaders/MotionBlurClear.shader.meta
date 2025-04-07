@@ -1,0 +1,11 @@
+fileFormatVersion: 2
+guid: 7699c5fbfa27745a1abe111ab7bf9785
+ShaderImporter:
+  userData: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 47726
+  packageName: Realistic Terrain Collection LITE
+  packageVersion: 1.0
+  assetPath: Assets/Realistic Terrain Collection/Other/Effects/ImageEffects/Shaders/MotionBlurClear.shader
+  uploadId: 85155

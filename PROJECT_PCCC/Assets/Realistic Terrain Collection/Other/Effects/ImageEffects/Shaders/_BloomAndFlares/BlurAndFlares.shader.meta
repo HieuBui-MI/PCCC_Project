@@ -1,0 +1,11 @@
+fileFormatVersion: 2
+guid: be6e39cf196f146d5be72fbefb18ed75
+ShaderImporter:
+  userData: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 47726
+  packageName: Realistic Terrain Collection LITE
+  packageVersion: 1.0
+  assetPath: Assets/Realistic Terrain Collection/Other/Effects/ImageEffects/Shaders/_BloomAndFlares/BlurAndFlares.shader
+  uploadId: 85155

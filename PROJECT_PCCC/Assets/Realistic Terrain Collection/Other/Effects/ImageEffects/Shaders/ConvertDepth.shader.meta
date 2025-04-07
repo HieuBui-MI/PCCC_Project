@@ -1,0 +1,11 @@
+fileFormatVersion: 2
+guid: 14768d3865b1342e3a861fbe19ba2db2
+ShaderImporter:
+  userData: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 47726
+  packageName: Realistic Terrain Collection LITE
+  packageVersion: 1.0
+  assetPath: Assets/Realistic Terrain Collection/Other/Effects/ImageEffects/Shaders/ConvertDepth.shader
+  uploadId: 85155

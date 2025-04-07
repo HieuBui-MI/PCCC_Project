@@ -1,0 +1,11 @@
+fileFormatVersion: 2
+guid: daf9781cad112c75d0008dfa8d76c639
+ShaderImporter:
+  userData: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 47726
+  packageName: Realistic Terrain Collection LITE
+  packageVersion: 1.0
+  assetPath: Assets/Realistic Terrain Collection/Other/Effects/ImageEffects/Shaders/GrayscaleEffect.shader
+  uploadId: 85155

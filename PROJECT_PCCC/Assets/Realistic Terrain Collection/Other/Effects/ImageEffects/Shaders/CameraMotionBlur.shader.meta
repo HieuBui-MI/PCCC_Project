@@ -1,0 +1,11 @@
+fileFormatVersion: 2
+guid: 85a88efa8c871af4a9d17c64791b6f4f
+ShaderImporter:
+  userData: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 47726
+  packageName: Realistic Terrain Collection LITE
+  packageVersion: 1.0
+  assetPath: Assets/Realistic Terrain Collection/Other/Effects/ImageEffects/Shaders/CameraMotionBlur.shader
+  uploadId: 85155

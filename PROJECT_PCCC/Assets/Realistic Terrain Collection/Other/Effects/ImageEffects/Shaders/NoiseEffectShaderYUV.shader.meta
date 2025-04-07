@@ -1,0 +1,11 @@
+fileFormatVersion: 2
+guid: 0e447868506ba49f0a73235b8a8b647a
+ShaderImporter:
+  userData: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 47726
+  packageName: Realistic Terrain Collection LITE
+  packageVersion: 1.0
+  assetPath: Assets/Realistic Terrain Collection/Other/Effects/ImageEffects/Shaders/NoiseEffectShaderYUV.shader
+  uploadId: 85155

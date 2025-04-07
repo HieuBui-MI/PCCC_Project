@@ -1,0 +1,11 @@
+fileFormatVersion: 2
+guid: 57e6deea7c2924e22a5138e2b70bb4dc
+ShaderImporter:
+  userData: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 47726
+  packageName: Realistic Terrain Collection LITE
+  packageVersion: 1.0
+  assetPath: Assets/Realistic Terrain Collection/Other/Effects/ImageEffects/Shaders/BlurEffectConeTaps.shader
+  uploadId: 85155

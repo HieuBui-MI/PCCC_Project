@@ -88,6 +88,8 @@ public class PlayerScript : MonoBehaviour
         {
             if (Time.time >= leftClickTimeOutDelta + 0.1f)
             {
+                Debug.Log("1");
+
                 SetIsUsingFireAxe();
                 GetComponent<PlacementSystem>().PlaceDownObj();
                 leftClickTimeOutDelta = Time.time;
@@ -107,6 +109,14 @@ public class PlayerScript : MonoBehaviour
         }
     }
 
+    public void AfterActionInteract()
+    {
+        if (!isUsingFireAxe) return;
+        if (interactionSystem.TargetObject == null) return;
+        if (interactionSystem.TargetObject.GetComponent<Interactable>() == null) return;
+        if (interactionSystem.TargetObject.GetComponent<Interactable>().type != Interactable.InteractableType.Breakable) return;
+        interactionSystem.TargetObject.GetComponent<Interactable>().HandleBroken();
+    }
 
     void ClimbLadder()
     {

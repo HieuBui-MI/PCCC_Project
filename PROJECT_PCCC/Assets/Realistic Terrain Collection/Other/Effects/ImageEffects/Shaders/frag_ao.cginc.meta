@@ -1,0 +1,11 @@
+fileFormatVersion: 2
+guid: 51ae11a5cd82fda468a85179946d672a
+ShaderImporter:
+  userData: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 47726
+  packageName: Realistic Terrain Collection LITE
+  packageVersion: 1.0
+  assetPath: Assets/Realistic Terrain Collection/Other/Effects/ImageEffects/Shaders/frag_ao.cginc
+  uploadId: 85155

@@ -53,7 +53,7 @@ public class Interactable : MonoBehaviour
         }
     }
 
-    private void HandleBroken()
+    public void HandleBroken()
     {
         Transform brokenPart = transform.Find("Broken");
         Transform normalPart = transform.Find("Normal");

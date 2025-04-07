@@ -1,0 +1,11 @@
+fileFormatVersion: 2
+guid: f1b13d7a80660504a858ea24cfa418c6
+ShaderImporter:
+  userData: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 47726
+  packageName: Realistic Terrain Collection LITE
+  packageVersion: 1.0
+  assetPath: Assets/Realistic Terrain Collection/Other/Effects/ImageEffects/Shaders/CameraMotionBlurDX11.shader
+  uploadId: 85155

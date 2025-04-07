@@ -1,0 +1,11 @@
+fileFormatVersion: 2
+guid: 43ca18288c424f645aaa1e9e07f04c50
+ShaderImporter:
+  userData: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 47726
+  packageName: Realistic Terrain Collection LITE
+  packageVersion: 1.0
+  assetPath: Assets/Realistic Terrain Collection/Other/Effects/ImageEffects/Shaders/SSAOShader.shader
+  uploadId: 85155

@@ -1,0 +1,11 @@
+fileFormatVersion: 2
+guid: 2b4f29398d9484ccfa9fd220449f5eee
+ShaderImporter:
+  userData: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 47726
+  packageName: Realistic Terrain Collection LITE
+  packageVersion: 1.0
+  assetPath: Assets/Realistic Terrain Collection/Other/Effects/ImageEffects/Shaders/ChromaticAberrationShader.shader
+  uploadId: 85155

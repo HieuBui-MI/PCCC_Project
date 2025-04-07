@@ -1,0 +1,11 @@
+fileFormatVersion: 2
+guid: ce0cb2621f6d84e21a87414e471a3cce
+ShaderImporter:
+  userData: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 47726
+  packageName: Realistic Terrain Collection LITE
+  packageVersion: 1.0
+  assetPath: Assets/Realistic Terrain Collection/Other/Effects/ImageEffects/Shaders/_Antialiasing/NFAA.shader
+  uploadId: 85155
