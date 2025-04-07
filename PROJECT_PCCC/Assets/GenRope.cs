@@ -3,18 +3,18 @@ using System.Collections;
 
 public class GenRope : MonoBehaviour
 {
-    private FireHydrant fireHydrant;
+    private PipeConnector fireHydrant;
     private bool hasLoggedPositions = false; // Biến cờ để kiểm tra trạng thái
     public GameObject parentRope;
     public GameObject ropePrefab;
     private void Start()
     {
-        fireHydrant = GetComponent<FireHydrant>();
+        fireHydrant = GetComponent<PipeConnector>();
     }
 
     void Update()
     {
-        if (GetComponent<FireHydrant>().isConnectedToFireTruck && !hasLoggedPositions)
+        if (GetComponent<PipeConnector>().isConnectedToObj && !hasLoggedPositions)
         {
             CreateRope();
             hasLoggedPositions = true;
@@ -35,13 +35,11 @@ public class GenRope : MonoBehaviour
         }
 
         // Bắt đầu Coroutine để delay 3 giây trước khi đặt vị trí cho S1 và S2
-        StartCoroutine(SetRopePositionsWithDelay(rope, GetComponent<FireHydrant>().objConnectedTo));
+        StartCoroutine(SetRopePositionsWithDelay(rope, GetComponent<PipeConnector>().objConnectedTo));
     }
 
     private IEnumerator SetRopePositionsWithDelay(GameObject rope, GameObject connectedObject)
     {
-        WaterSourceConnector waterSourceConnector = connectedObject.GetComponent<WaterSourceConnector>();
-
         // Chờ 3 giây
         yield return new WaitForSeconds(0.5f);
 
@@ -51,7 +49,8 @@ public class GenRope : MonoBehaviour
 
         if (s1 != null)
         {
-            s1.position = transform.Find("ConnectPoint").position; // Đặt vị trí của S1
+            s1.SetParent(transform.Find("ConnectPoint"));
+            s1.localPosition = Vector3.zero;
         }
         else
         {
@@ -60,7 +59,8 @@ public class GenRope : MonoBehaviour
 
         if (s2 != null)
         {
-            s2.position = waterSourceConnector.transform.Find("ConnectPoint").position; // Đặt vị trí của S2
+            s2.SetParent(connectedObject.transform.Find("ConnectPoint"));
+            s2.localPosition = Vector3.zero;
         }
         else
         {

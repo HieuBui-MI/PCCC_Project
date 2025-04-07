@@ -67,7 +67,7 @@ public class ToolWheelSelector : MonoBehaviour
                     previousSelectedItemIndex = 4;
                     break;
                 case 5:
-
+                    inventorySystem.SwitchTool(Tool.ToolType.SledgeHammer);
                     previousSelectedItemIndex = 5;
                     break;
                 case 6:

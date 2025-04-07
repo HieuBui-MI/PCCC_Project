@@ -6,27 +6,27 @@ public class PlacementSystem : MonoBehaviour
     public Transform playerCameraRoot;
     public float reachDistance;
     public Vector3 hitPosition;
-    //////////////////////////////////////////////////////////
     public Vector3 prevCarriedObjectPosition;
     public Vector3 prevCarriedObjectRotation;
     public Vector3 cloneObjectPosition;
     public LayerMask raycastLayerMask;
-    private StarterAssetsInputs inputs;
+    private GameObject cloneObject;
+    private bool previousIsInPlaceingMode = false;
+    private PlayerScript playerScript;
+
     private void Awake()
     {
         playerCameraRoot = transform.parent.Find("PlayerCameraRoot");
-    }
-    void Start()
-    {
-
+        playerScript = GetComponent<PlayerScript>();
     }
 
-    void Update()
+    private void Update()
     {
         SetTargetPosition();
-        HollowPosition();
-        CancelPlacement();
-        RotateCarriedObject();
+        UpdateCloneObjectPosition();
+        HandleCancelPlacement();
+        HandleRotateCarriedObject();
+        TrackPlacementModeChange();
     }
 
     private void SetTargetPosition()
@@ -47,57 +47,102 @@ public class PlacementSystem : MonoBehaviour
                 hitPosition = groundHit.point;
             }
         }
-
-
     }
 
-    private void RotateCarriedObject()
+    private void TrackPlacementModeChange()
     {
-        // Kiểm tra nếu người chơi đang mang một đối tượng
-        if (GetComponent<PlayerScript>().carriedObject != null)
+        bool currentIsInPlaceingMode = playerScript.isInPlaceingMode;
+
+        if (!previousIsInPlaceingMode && currentIsInPlaceingMode)
         {
-            // Kiểm tra nếu chuột phải được nhấn
-            if (Input.GetMouseButton(1)) // Chuột phải
+            if (playerScript.carriedObject != null)
             {
-                // Xoay đối tượng quanh trục Y
-                GetComponent<PlayerScript>().carriedObject.transform.Rotate(Vector3.up, 90f * Time.deltaTime);
+                CreateCloneObject(playerScript.carriedObject);
             }
+        }
+
+        previousIsInPlaceingMode = currentIsInPlaceingMode;
+    }
+
+    private void CreateCloneObject(GameObject carriedObject)
+    {
+        cloneObject = Instantiate(carriedObject);
+        cloneObject.transform.rotation = Quaternion.identity;
+
+        // Remove Interactable component if it exists
+        Interactable interactableComponent = cloneObject.GetComponent<Interactable>();
+        if (interactableComponent != null)
+        {
+            Destroy(interactableComponent);
+        }
+
+        // Xử lý tất cả các MeshCollider trong cloneObject và các child của nó
+        MeshCollider[] meshColliders = cloneObject.GetComponentsInChildren<MeshCollider>();
+        foreach (MeshCollider meshCollider in meshColliders)
+        {
+            meshCollider.isTrigger = true;
+        }
+
+        // Xử lý Rigidbody
+        Rigidbody rb = cloneObject.GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.isKinematic = true;
+            rb.useGravity = false;
         }
     }
 
-    public void HollowPosition()
+    private void UpdateCloneObjectPosition()
     {
-        if (GetComponent<PlayerScript>().carriedObject == null) return;
-
-        GameObject clonedObject = Instantiate(GetComponent<PlayerScript>().carriedObject);
-        clonedObject.transform.position = GetComponent<PlacementSystem>().hitPosition;
-        Destroy(clonedObject, 0.1f);
+        if (cloneObject == null) return;
+        cloneObject.transform.position = hitPosition;
     }
 
     public void PlaceDownObj()
     {
-        if (GetComponent<PlayerScript>().isInPlaceingMode)
+        if (!playerScript.isInPlaceingMode || playerScript.carriedObject == null) return;
+
+        PlaceObjectAtPosition(playerScript.carriedObject, hitPosition, cloneObject.transform.rotation);
+
+        playerScript.carriedObject = null;
+        playerScript.isPlayerCarryingObject = false;
+
+        DestroyCloneObject();
+    }
+
+    private void HandleCancelPlacement()
+    {
+        if (Input.GetKeyDown(KeyCode.Q) && playerScript.carriedObject != null)
         {
-            if (GetComponent<PlayerScript>().carriedObject != null)
-            {
-                GetComponent<PlayerScript>().carriedObject.transform.position = GetComponent<PlacementSystem>().hitPosition;
-                GetComponent<PlayerScript>().carriedObject = null;
-                GetComponent<PlayerScript>().isPlayerCarryingObject = false;
-            }
+            PlaceObjectAtPosition(playerScript.carriedObject, prevCarriedObjectPosition, Quaternion.Euler(prevCarriedObjectRotation));
+
+            playerScript.carriedObject = null;
+            playerScript.isPlayerCarryingObject = false;
+
+            DestroyCloneObject();
         }
     }
 
-    public void CancelPlacement()
+    private void HandleRotateCarriedObject()
     {
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (cloneObject != null && Input.GetMouseButton(1))
         {
-            if (GetComponent<PlayerScript>().carriedObject != null)
-            {
-                GetComponent<PlayerScript>().carriedObject.transform.position = prevCarriedObjectPosition;
-                GetComponent<PlayerScript>().carriedObject.transform.rotation = Quaternion.Euler(prevCarriedObjectRotation);
-                GetComponent<PlayerScript>().carriedObject = null;
-                GetComponent<PlayerScript>().isPlayerCarryingObject = false;
-            }
+            cloneObject.transform.Rotate(Vector3.up, 90f * Time.deltaTime);
         }
+    }
+
+    private void DestroyCloneObject()
+    {
+        if (cloneObject != null)
+        {
+            Destroy(cloneObject);
+            cloneObject = null;
+        }
+    }
+
+    private void PlaceObjectAtPosition(GameObject obj, Vector3 position, Quaternion rotation)
+    {
+        obj.transform.position = position;
+        obj.transform.rotation = rotation;
     }
 }

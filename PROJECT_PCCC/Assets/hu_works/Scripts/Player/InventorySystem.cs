@@ -54,12 +54,17 @@ public class InventorySystem : MonoBehaviour
                 playerScript.isHoldingFireExtinguisher = true;
                 UpdateActiveTool();
                 break;
+            case Tool.ToolType.SledgeHammer:
+                playerScript.isHoldingSledgeHammer = true;
+                UpdateActiveTool();
+                break;
         }
 
         // Cập nhật trạng thái người chơi
-        playerScript.isPlayerHoldingTool = playerScript.isUsingFireAxe 
-        || playerScript.isCarryingLadder || playerScript.isCarryingBucket 
-        || playerScript.isHoldingFireHose || playerScript.isHoldingFireExtinguisher;
+        playerScript.isPlayerHoldingTool = playerScript.isUsingFireAxe
+        || playerScript.isCarryingLadder || playerScript.isCarryingBucket
+        || playerScript.isHoldingFireHose || playerScript.isHoldingFireExtinguisher
+        || playerScript.isHoldingSledgeHammer;
     }
 
     void UpdateActiveTool()
@@ -78,9 +83,11 @@ public class InventorySystem : MonoBehaviour
                 playerScript.isCarryingLadder == true && tool.GetComponent<Tool>().toolType == Tool.ToolType.Ladder ||
                 playerScript.isCarryingBucket == true && tool.GetComponent<Tool>().toolType == Tool.ToolType.Bucket ||
                 playerScript.isHoldingFireHose == true && tool.GetComponent<Tool>().toolType == Tool.ToolType.FireHose ||
-                playerScript.isHoldingFireExtinguisher == true && tool.GetComponent<Tool>().toolType == Tool.ToolType.FireExtinguisher)
+                playerScript.isHoldingFireExtinguisher == true && tool.GetComponent<Tool>().toolType == Tool.ToolType.FireExtinguisher ||
+                playerScript.isHoldingSledgeHammer == true && tool.GetComponent<Tool>().toolType == Tool.ToolType.SledgeHammer)
             {
                 tool.gameObject.SetActive(true);
+                playerScript.currentEquipment = tool.gameObject;
                 tool.SetParent(activeEquipment.transform);
             }
         }

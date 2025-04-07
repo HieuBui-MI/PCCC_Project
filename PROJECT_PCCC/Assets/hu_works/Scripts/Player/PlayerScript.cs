@@ -5,33 +5,43 @@ using UnityEngine.Animations.Rigging;
 
 public class PlayerScript : MonoBehaviour
 {
-    private bool previousGroundedState = false;
-    //////////////////////////////////////////////////////
+    [Header("Player State")]
+    [SerializeField] private bool previousGroundedState = false;
     public bool isPlayerDriving = false;
-    public GameObject vehicle;
+    public bool isPlayerHoldingTool = false;
+    public bool isPlayerCarryingAVictim = false;
+    public bool isPlayerCarryingObject = false;
+    public bool isPlayerClimbing = false;
+
+    [Header("Equipment State")]
     public bool isUsingFireAxe = false;
     public bool isCarryingLadder = false;
     public bool isCarryingBucket = false;
     public bool isHoldingFireHose = false;
     public bool isHoldingFireExtinguisher = false;
-    //////////////////////////////////////////////////////
-    public bool isPlayerHoldingTool = false;
-    public bool isPlayerCarryingAVictim = false;
+    public bool isHoldingSledgeHammer = false;
+    public GameObject currentEquipment = null;
+
+    [Header("Carried Objects")]
     public GameObject carriedVictim = null;
-    public bool isPlayerCarryingObject = false;
     public GameObject carriedObject = null;
-    private float leftClickTimeOutDelta = 0.0f;
-    public bool isPlayerClimbing = false;
     public GameObject connectableObjectOnHold = null;
-    ///////////////////////////////////////////////////////
+
+    [Header("Interaction Systems")]
     private InteractionSystem interactionSystem;
     private StarterAssetsInputs starterAssetsInputs;
     private PlayerAnimationsHandler playerAnimationsHandler;
 
-    ///////////////////////////////////////////////////////
+    [Header("Placement and Selection Modes")]
     public bool isInPlaceingMode = false;
     public bool isInWheelSelectionMode = false;
-    [SerializeField] float climbSpeed = 5f;
+
+    [Header("Vehicle State")]
+    public GameObject vehicle = null;
+
+    [Header("Miscellaneous")]
+    private float leftClickTimeOutDelta = 0.0f;
+    [SerializeField] private float climbSpeed = 5f;
     private void Awake()
     {
         interactionSystem = GetComponent<InteractionSystem>();
@@ -44,7 +54,6 @@ public class PlayerScript : MonoBehaviour
         Interact();
         PlaceModeState();
         HandleLeftClick();
-        RHWeightForFireHose();
         ClimbLadder();
         ClimbState();
     }
@@ -69,6 +78,8 @@ public class PlayerScript : MonoBehaviour
         isCarryingBucket = false;
         isHoldingFireHose = false;
         isHoldingFireExtinguisher = false;
+        isHoldingSledgeHammer = false;
+        currentEquipment = null;
     }
 
     void HandleLeftClick()
@@ -90,23 +101,12 @@ public class PlayerScript : MonoBehaviour
 
     public void SetIsUsingFireAxe()
     {
-        if (isUsingFireAxe && playerAnimationsHandler != null)
+        if (isUsingFireAxe && playerAnimationsHandler != null || isHoldingSledgeHammer && playerAnimationsHandler != null)
         {
             playerAnimationsHandler.AxeBreaking();
         }
     }
 
-    void RHWeightForFireHose()
-    {
-        if (isHoldingFireHose)
-        {
-            transform.Find("Rig2/RightHandAim").GetComponent<MultiAimConstraint>().weight = 1f;
-        }
-        else
-        {
-            transform.Find("Rig2/RightHandAim").GetComponent<MultiAimConstraint>().weight = 0f;
-        }
-    }
 
     void ClimbLadder()
     {

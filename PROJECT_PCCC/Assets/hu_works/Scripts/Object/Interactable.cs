@@ -30,30 +30,22 @@ public class Interactable : MonoBehaviour
         switch (type)
         {
             case InteractableType.Breakable:
-                Broken(player);
+                HandleBroken();
                 break;
             case InteractableType.Drivable:
-                DriveVehicle(player);
+                HandleDriveVehicle(player);
                 break;
             case InteractableType.Carriable:
-                if (carriableType == CarriableType.Victim)
-                {
-                    CarryVictim(player);
-                }
-
-                if (carriableType == CarriableType.Object)
-                {
-                    CarryObject(player);
-                }
+                HandleCarriable(player);
                 break;
             case InteractableType.Putable:
-                PutVictim(player);
+                HandlePutVictim(player);
                 break;
             case InteractableType.Climbable:
-                Climb(player);
+                HandleClimb(player);
                 break;
             case InteractableType.Connectable:
-                ConnectObjectHandler(player);
+                HandleConnectObject(player);
                 break;
             default:
                 Debug.Log($"Interacted with {type}");
@@ -61,7 +53,7 @@ public class Interactable : MonoBehaviour
         }
     }
 
-    private void Broken(GameObject player)
+    private void HandleBroken()
     {
         Transform brokenPart = transform.Find("Broken");
         Transform normalPart = transform.Find("Normal");
@@ -70,7 +62,7 @@ public class Interactable : MonoBehaviour
         if (normalPart != null) normalPart.gameObject.SetActive(false);
     }
 
-    private void DriveVehicle(GameObject player)
+    private void HandleDriveVehicle(GameObject player)
     {
         PlayerScript playerScript = player.GetComponentInChildren<PlayerScript>();
         if (playerScript == null) return;
@@ -83,6 +75,18 @@ public class Interactable : MonoBehaviour
         {
             carController.driver = player;
             carController.ChangeFollowCamera();
+        }
+    }
+
+    private void HandleCarriable(GameObject player)
+    {
+        if (carriableType == CarriableType.Victim)
+        {
+            CarryVictim(player);
+        }
+        else if (carriableType == CarriableType.Object)
+        {
+            CarryObject(player);
         }
     }
 
@@ -100,7 +104,7 @@ public class Interactable : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    private void PutVictim(GameObject player)
+    private void HandlePutVictim(GameObject player)
     {
         PlayerScript playerScript = player.GetComponentInChildren<PlayerScript>();
         if (playerScript == null || playerScript.carriedVictim == null) return;
@@ -123,10 +127,11 @@ public class Interactable : MonoBehaviour
         PlayerScript playerScript = player.GetComponentInChildren<PlayerScript>();
         if (playerScript == null || playerScript.carriedObject != null) return;
 
-        player.GetComponentInChildren<PlayerScript>().carriedObject = this.gameObject;
+        playerScript.carriedObject = this.gameObject;
         player.GetComponentInChildren<PlacementSystem>().prevCarriedObjectPosition = this.transform.position;
     }
-    private void Climb(GameObject player)
+
+    private void HandleClimb(GameObject player)
     {
         PlayerScript playerScript = player.GetComponentInChildren<PlayerScript>();
         Animator animator = player.GetComponentInChildren<Animator>();
@@ -136,54 +141,63 @@ public class Interactable : MonoBehaviour
         player.transform.position = new Vector3(playerCurrentPosition.x, playerCurrentPosition.y + 0.5f, playerCurrentPosition.z);
 
         playerScript.isPlayerClimbing = true;
-        if (animator != null)
-        {
-            animator.SetTrigger("Climb");
-        }
+        animator?.SetTrigger("Climb");
     }
-    private void ConnectObjectHandler(GameObject player)
+
+    private void HandleConnectObject(GameObject player)
     {
         PlayerScript playerScript = player.GetComponentInChildren<PlayerScript>();
         InteractionSystem interactionSystem = player.GetComponentInChildren<InteractionSystem>();
-        if (interactionSystem == null) return;
-        if (playerScript == null) return;
+        if (playerScript == null || interactionSystem == null) return;
+
         if (playerScript.connectableObjectOnHold == null)
         {
-            SetSelectedConnectedObject(playerScript);
+            if (playerScript.isHoldingFireHose && interactionSystem.TargetObject.GetComponent<PipeConnector>().isConnectToFireHoseOnly)
+            {
+                ConnectObject(playerScript.currentEquipment, interactionSystem.TargetObject);
+            }
+            else if (!interactionSystem.TargetObject.GetComponent<PipeConnector>().isConnectToFireHoseOnly)
+            {
+                playerScript.connectableObjectOnHold = this.gameObject;
+            }
         }
-        else if (playerScript.connectableObjectOnHold != null)
+        else
         {
             ConnectObject(playerScript.connectableObjectOnHold, interactionSystem.TargetObject);
             playerScript.connectableObjectOnHold = null;
         }
     }
+
     private void ConnectObject(GameObject obj1, GameObject obj2)
     {
-        if (TryConnect(obj1, obj2)) return;
-        TryConnect(obj2, obj1);
+        if (TryConnect(obj1, obj2))
+        {
+            Debug.Log("Objects connected successfully.");
+        }
+        else
+        {
+            Debug.Log("Failed to connect objects.");
+        }
     }
 
     private bool TryConnect(GameObject obj1, GameObject obj2)
     {
-        WaterSourceConnector waterSourceConnector = obj1.GetComponent<WaterSourceConnector>();
-        FireHydrant fireHydrant = obj2.GetComponent<FireHydrant>();
+        PipeConnector connector1 = obj1.GetComponent<PipeConnector>();
+        PipeConnector connector2 = obj2.GetComponent<PipeConnector>();
 
-        if (waterSourceConnector != null && fireHydrant != null)
+        if (connector1 != null && connector2 != null)
         {
-            if (waterSourceConnector.objConnectedTo != null || fireHydrant.objConnectedTo != null)
+            if (connector1.objConnectedTo != null || connector2.objConnectedTo != null)
             {
-                Debug.Log("Both objects are already connected.");
+                Debug.Log("One or both objects are already connected.");
                 return false;
             }
-            waterSourceConnector.objConnectedTo = fireHydrant.gameObject;
-            fireHydrant.objConnectedTo = waterSourceConnector.gameObject;
+
+            connector1.objConnectedTo = connector2.gameObject;
+            connector2.objConnectedTo = connector1.gameObject;
             return true;
         }
-        return false;
-    }
 
-    private void SetSelectedConnectedObject(PlayerScript playerScript)
-    {
-        playerScript.connectableObjectOnHold = this.gameObject;
+        return false;
     }
 }
