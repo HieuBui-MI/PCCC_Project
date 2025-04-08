@@ -33,7 +33,7 @@ public class PlayerScript : MonoBehaviour
     private PlayerAnimationsHandler playerAnimationsHandler;
 
     [Header("Placement and Selection Modes")]
-    public bool isInPlaceingMode = false;
+    public bool isInPlacingMode = false;
     public bool isInWheelSelectionMode = false;
 
     [Header("Vehicle State")]
@@ -60,7 +60,7 @@ public class PlayerScript : MonoBehaviour
 
     void PlaceModeState()
     {
-        isInPlaceingMode = carriedObject != null;
+        isInPlacingMode = carriedObject != null;
     }
 
     void Interact()
@@ -88,8 +88,6 @@ public class PlayerScript : MonoBehaviour
         {
             if (Time.time >= leftClickTimeOutDelta + 0.1f)
             {
-                Debug.Log("1");
-
                 SetIsUsingFireAxe();
                 GetComponent<PlacementSystem>().PlaceDownObj();
                 leftClickTimeOutDelta = Time.time;

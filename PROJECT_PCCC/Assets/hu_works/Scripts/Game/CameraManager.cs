@@ -30,7 +30,7 @@ public class CameraManager : MonoBehaviour
             {
                 if (item.name == player.name)
                 {
-                    player.transform.SetParent(GameObject.Find("Ground").transform); 
+                    player.transform.SetParent(GameObject.Find("World").transform); 
                     item.gameObject.SetActive(true); 
                     break;
                 }

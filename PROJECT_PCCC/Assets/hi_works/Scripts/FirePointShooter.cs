@@ -13,10 +13,14 @@ public class FirePointShooter : MonoBehaviour
     [Header("Projectile Settings")]
     public GameObject projectilePrefab;
     public Transform firePoint;
-    public float projectileSpeed = 10f;
+    public float projectileSpeed = 10f; // Tốc độ ban đầu của projectile
+    public float maxProjectileSpeed = 25f; // Tốc độ tối đa của projectile
     public float fireRate = 0.2f;
     public float destroyTime = 3f;
     private float nextFireTime = 0f;
+
+    [SerializeField] private Transform playerCameraRoot;
+
 
     /////////////////////////////////////////
     [SerializeField] private GameObject obiEmitter;
@@ -38,13 +42,15 @@ public class FirePointShooter : MonoBehaviour
 
     void Update()
     {
+
+        // Bắn như bình thường
         if (Time.time >= nextFireTime)
         {
             Shoot();
             nextFireTime = Time.time + fireRate;
         }
-
         ControlObiEmitter();
+        ControlProjectileSpeed();
     }
 
 
@@ -57,8 +63,10 @@ public class FirePointShooter : MonoBehaviour
             Rigidbody rb = projectile.GetComponent<Rigidbody>();
             if (rb != null)
             {
-                rb.useGravity = true;
-                rb.linearVelocity = firePoint.up * projectileSpeed;
+                rb.useGravity = false;
+                // rb.AddForce(firePoint.rotation * Vector3.up * projectileSpeed, ForceMode.VelocityChange);
+                rb.AddForce(firePoint.up * projectileSpeed, ForceMode.VelocityChange);
+
             }
             Destroy(projectile, destroyTime);
         }
@@ -83,6 +91,28 @@ public class FirePointShooter : MonoBehaviour
             obiEmitterComponent.speed = Mathf.MoveTowards(
                 obiEmitterComponent.speed,
                 targetSpeed,
+                speedDecreaseRate * Time.deltaTime
+            );
+        }
+    }
+
+    void ControlProjectileSpeed()
+    {
+        if (Input.GetKey(KeyCode.Mouse0))
+        {
+            // Tăng dần tốc độ của projectile khi giữ chuột trái
+            projectileSpeed = Mathf.MoveTowards(
+                projectileSpeed,
+                maxProjectileSpeed,
+                speedIncreaseRate * Time.deltaTime
+            );
+        }
+        else
+        {
+            // Giảm dần tốc độ của projectile khi thả chuột trái
+            projectileSpeed = Mathf.MoveTowards(
+                projectileSpeed,
+                0f,
                 speedDecreaseRate * Time.deltaTime
             );
         }

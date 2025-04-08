@@ -5,9 +5,8 @@ public class InventorySystem : MonoBehaviour
 {
     public GameObject inActiveEquipments = null;
     public GameObject activeEquipment = null;
-
+    public GameObject carrySlot = null;
     private PlayerScript playerScript;
-
 
     private void Awake()
     {
@@ -19,6 +18,11 @@ public class InventorySystem : MonoBehaviour
         if (activeEquipment == null)
         {
             activeEquipment = GetComponentsInChildren<Transform>().FirstOrDefault(t => t.name == "ActiveEquipment").gameObject;
+        }
+
+        if (carrySlot == null)
+        {
+            carrySlot = GetComponentsInChildren<Transform>().FirstOrDefault(t => t.name == "CarrySlot").gameObject;
         }
 
         if (playerScript == null)

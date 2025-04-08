@@ -29,7 +29,7 @@ public class PlayerAnimationsHandler : MonoBehaviour
         PoseStateHandler();
         OnClimb();
         RHWeightForFireHose();
-
+        animator.SetBool("isInPlacingMode", GetComponent<PlayerScript>().isInPlacingMode);
     }
     void RHWeightForFireHose()
     {

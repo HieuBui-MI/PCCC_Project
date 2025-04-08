@@ -4,6 +4,7 @@ public class GasTank : MonoBehaviour
 {
     private bool isExploded = false;
     private float explosionRadius = 5f;
+    private float explosionTime = 5f;
     private float explosionForce = 700f;
     private float explosionDamage = 50f;
     private float explosionDelay = 0.5f; // Delay before explosion in seconds
@@ -15,7 +16,7 @@ public class GasTank : MonoBehaviour
         // Kiểm tra nếu chưa phát nổ thì mới gọi TriggerExplosion
         if (!isExploded)
         {
-            Invoke("TriggerExplosion", 5f);
+            Invoke("TriggerExplosion", explosionTime);
         }
     }
 
@@ -50,10 +51,16 @@ public class GasTank : MonoBehaviour
 
         foreach (Collider collider in colliders)
         {
-            Rigidbody rb = collider.GetComponent<Rigidbody>();
-            if (rb != null)
+            // Rigidbody rb = collider.GetComponent<Rigidbody>();
+            // if (rb != null)
+            // {
+            //     rb.AddExplosionForce(explosionForce, transform.position, explosionRadius);
+            // }
+
+            if (collider.gameObject.GetComponent<FlamePoint>() != null)
             {
-                rb.AddExplosionForce(explosionForce, transform.position, explosionRadius);
+                // Nếu có FlamePoint, gọi hàm Ignite
+                collider.gameObject.GetComponent<FlamePoint>().IncreaseDOC(50f);
             }
         }
 

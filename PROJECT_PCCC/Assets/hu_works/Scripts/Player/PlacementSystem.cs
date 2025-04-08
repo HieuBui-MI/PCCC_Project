@@ -13,6 +13,9 @@ public class PlacementSystem : MonoBehaviour
     private GameObject cloneObject;
     private bool previousIsInPlaceingMode = false;
     private PlayerScript playerScript;
+    ////////////////////////////////////////
+    public Material red; // Màu đỏ
+    public Material green; // Màu xanh lá cây
 
     private void Awake()
     {
@@ -51,16 +54,16 @@ public class PlacementSystem : MonoBehaviour
 
     private void TrackPlacementModeChange()
     {
-        bool currentIsInPlaceingMode = playerScript.isInPlaceingMode;
+        bool currentIsInPlaceingMode = playerScript.isInPlacingMode;
 
         if (!previousIsInPlaceingMode && currentIsInPlaceingMode)
         {
             if (playerScript.carriedObject != null)
             {
+                GetComponent<Animator>().SetTrigger("triggerPlacingMode");
                 CreateCloneObject(playerScript.carriedObject);
             }
         }
-
         previousIsInPlaceingMode = currentIsInPlaceingMode;
     }
 
@@ -69,27 +72,19 @@ public class PlacementSystem : MonoBehaviour
         cloneObject = Instantiate(carriedObject);
         cloneObject.transform.rotation = Quaternion.identity;
 
-        // Remove Interactable component if it exists
-        Interactable interactableComponent = cloneObject.GetComponent<Interactable>();
-        if (interactableComponent != null)
-        {
-            Destroy(interactableComponent);
-        }
+        // Remove unnecessary components
+        RemoveComponent<Interactable>(cloneObject);
 
-        // Xử lý tất cả các MeshCollider trong cloneObject và các child của nó
-        MeshCollider[] meshColliders = cloneObject.GetComponentsInChildren<MeshCollider>();
-        foreach (MeshCollider meshCollider in meshColliders)
-        {
-            meshCollider.isTrigger = true;
-        }
+        // Set all MeshColliders to trigger
+        SetMeshCollidersToTrigger(cloneObject);
 
-        // Xử lý Rigidbody
-        Rigidbody rb = cloneObject.GetComponent<Rigidbody>();
-        if (rb != null)
-        {
-            rb.isKinematic = true;
-            rb.useGravity = false;
-        }
+        // Configure Rigidbody
+        ConfigureRigidbody(cloneObject);
+
+        // Thêm script CloneObject và truyền materials
+        CloneObject cloneObjectScript = cloneObject.AddComponent<CloneObject>();
+        cloneObjectScript.red = red;
+        cloneObjectScript.green = green;
     }
 
     private void UpdateCloneObjectPosition()
@@ -100,10 +95,12 @@ public class PlacementSystem : MonoBehaviour
 
     public void PlaceDownObj()
     {
-        if (!playerScript.isInPlaceingMode || playerScript.carriedObject == null) return;
+        if (!playerScript.isInPlacingMode || playerScript.carriedObject == null) return;
+        if (cloneObject.GetComponentInChildren<Renderer>().material == red) return;
 
         PlaceObjectAtPosition(playerScript.carriedObject, hitPosition, cloneObject.transform.rotation);
 
+        playerScript.carriedObject.GetComponent<Interactable>().BackToPrevParrent();
         playerScript.carriedObject = null;
         playerScript.isPlayerCarryingObject = false;
 
@@ -116,6 +113,7 @@ public class PlacementSystem : MonoBehaviour
         {
             PlaceObjectAtPosition(playerScript.carriedObject, prevCarriedObjectPosition, Quaternion.Euler(prevCarriedObjectRotation));
 
+            playerScript.carriedObject.GetComponent<Interactable>().BackToPrevParrent();
             playerScript.carriedObject = null;
             playerScript.isPlayerCarryingObject = false;
 
@@ -144,5 +142,43 @@ public class PlacementSystem : MonoBehaviour
     {
         obj.transform.position = position;
         obj.transform.rotation = rotation;
+        PlacedObjectState(obj);
+    }
+
+    private void PlacedObjectState(GameObject obj)
+    {
+        MeshCollider[] meshColliders = obj.GetComponentsInChildren<MeshCollider>();
+        foreach (MeshCollider meshCollider in meshColliders)
+        {
+            meshCollider.isTrigger = false;
+        }
+    }
+
+    private void RemoveComponent<T>(GameObject obj) where T : Component
+    {
+        T component = obj.GetComponent<T>();
+        if (component != null)
+        {
+            Destroy(component);
+        }
+    }
+
+    private void SetMeshCollidersToTrigger(GameObject obj)
+    {
+        MeshCollider[] meshColliders = obj.GetComponentsInChildren<MeshCollider>();
+        foreach (MeshCollider meshCollider in meshColliders)
+        {
+            meshCollider.isTrigger = true;
+        }
+    }
+
+    private void ConfigureRigidbody(GameObject obj)
+    {
+        Rigidbody rb = obj.GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.isKinematic = true;
+            rb.useGravity = false;
+        }
     }
 }

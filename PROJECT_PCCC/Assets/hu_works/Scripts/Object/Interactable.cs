@@ -53,6 +53,12 @@ public class Interactable : MonoBehaviour
         }
     }
 
+    public GameObject prevParrent;
+    private void Start()
+    {
+        prevParrent = transform.parent.gameObject;
+    }
+
     public void HandleBroken()
     {
         Transform brokenPart = transform.Find("Broken");
@@ -82,18 +88,18 @@ public class Interactable : MonoBehaviour
     {
         if (carriableType == CarriableType.Victim)
         {
-            CarryVictim(player);
+            PickupVictim(player);
         }
         else if (carriableType == CarriableType.Object)
         {
-            CarryObject(player);
+            PickupObject(player);
         }
     }
 
-    private void CarryVictim(GameObject player)
+    private void PickupVictim(GameObject player)
     {
         PlayerScript playerScript = player.GetComponentInChildren<PlayerScript>();
-        if (playerScript == null) return;
+        if (playerScript == null || (playerScript.carriedVictim != null)) return;
 
         playerScript.isPlayerCarryingAVictim = true;
         playerScript.carriedVictim = this.gameObject;
@@ -113,21 +119,41 @@ public class Interactable : MonoBehaviour
         carriedVictim.SetActive(true);
 
         Stretcher stretcher = GetComponent<Stretcher>();
-        if (stretcher != null)
+        if (stretcher != null && stretcher.isOcupied == false)
         {
             stretcher.PutVictimInStretcher(carriedVictim);
+            playerScript.carriedVictim = null;
+            playerScript.isPlayerCarryingAVictim = false;
         }
-
-        playerScript.carriedVictim = null;
-        playerScript.isPlayerCarryingAVictim = false;
+        else
+        {
+            Debug.Log("Stretcher is occupied or not found.");
+        }
     }
 
-    private void CarryObject(GameObject player)
+    private void PickupObject(GameObject player)
     {
         PlayerScript playerScript = player.GetComponentInChildren<PlayerScript>();
         if (playerScript == null || playerScript.carriedObject != null) return;
 
         playerScript.carriedObject = this.gameObject;
+
+        Rigidbody rb = this.gameObject.GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.isKinematic = true;
+            rb.useGravity = false;
+        }
+
+        MeshCollider[] meshColliders = this.gameObject.GetComponentsInChildren<MeshCollider>();
+        foreach (MeshCollider meshCollider in meshColliders)
+        {
+            meshCollider.isTrigger = true;
+        }
+
+        this.gameObject.transform.SetParent(player.GetComponentInChildren<InventorySystem>().carrySlot.transform);
+        this.gameObject.transform.localPosition = new Vector3(1.152f,-0.067f,-0.295f);
+        this.gameObject.transform.localRotation = new Quaternion(0.372680098f,-0.640431643f,-0.557825327f,-0.373882234f);
         player.GetComponentInChildren<PlacementSystem>().prevCarriedObjectPosition = this.transform.position;
     }
 
@@ -199,5 +225,13 @@ public class Interactable : MonoBehaviour
         }
 
         return false;
+    }
+
+    public void BackToPrevParrent()
+    {
+        if (prevParrent != null)
+        {
+            transform.SetParent(prevParrent.transform);
+        }
     }
 }
