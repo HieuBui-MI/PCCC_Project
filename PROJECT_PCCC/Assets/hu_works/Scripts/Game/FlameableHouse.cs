@@ -17,7 +17,10 @@ public class FlameableHouse : MonoBehaviour
         {
             if (child != transform) // Bỏ qua chính object cha (ngôi nhà)
             {
-                houseParts.Add(child.gameObject);
+                if (child.GetComponent<Collider>() != null)
+                {
+                    houseParts.Add(child.gameObject);
+                }
             }
         }
 
