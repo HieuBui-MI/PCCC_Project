@@ -6,7 +6,7 @@ public class InventorySystem : MonoBehaviour
     public GameObject inActiveEquipments = null;
     public GameObject activeEquipment = null;
     public GameObject carrySlot = null;
-    private PlayerScript playerScript;
+    private PlayerState playerScript;
 
     private void Awake()
     {
@@ -27,7 +27,7 @@ public class InventorySystem : MonoBehaviour
 
         if (playerScript == null)
         {
-            playerScript = GetComponent<PlayerScript>();
+            playerScript = GetComponent<PlayerState>();
         }
     }
 

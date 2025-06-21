@@ -6,13 +6,16 @@ public class PlacementSystem : MonoBehaviour
     public Transform playerCameraRoot;
     public float reachDistance;
     public Vector3 hitPosition;
-    public Vector3 prevCarriedObjectPosition;
-    public Vector3 prevCarriedObjectRotation;
+    [SerializeField] private Vector3 prevCarriedObjectPosition;
+    [SerializeField] private Vector3 prevCarriedObjectRotation;
     public Vector3 cloneObjectPosition;
     public LayerMask raycastLayerMask;
-    private GameObject cloneObject;
+    [SerializeField] private GameObject cloneObject;
     private bool previousIsInPlaceingMode = false;
-    private PlayerScript playerScript;
+    private PlayerState playerScript;
+    [SerializeField] private GameObject prevCarriedObjectParrent;
+    private DetectorSystem detectorSystem;
+
     ////////////////////////////////////////
     public Material red; // Màu đỏ
     public Material green; // Màu xanh lá cây
@@ -20,11 +23,16 @@ public class PlacementSystem : MonoBehaviour
     private void Awake()
     {
         playerCameraRoot = transform.parent.Find("PlayerCameraRoot");
-        playerScript = GetComponent<PlayerScript>();
+        playerScript = GetComponent<PlayerState>();
+        detectorSystem = GetComponent<DetectorSystem>();
     }
 
     private void Update()
     {
+        PickupObject();
+        PickupVictim();
+        ObjectPlaceAction();
+        HandlePutVictim();
         SetTargetPosition();
         UpdateCloneObjectPosition();
         HandleCancelPlacement();
@@ -54,7 +62,7 @@ public class PlacementSystem : MonoBehaviour
 
     private void TrackPlacementModeChange()
     {
-        bool currentIsInPlaceingMode = playerScript.isInPlacingMode;
+        bool currentIsInPlaceingMode = playerScript.isInCarryState;
 
         if (!previousIsInPlaceingMode && currentIsInPlaceingMode)
         {
@@ -93,18 +101,54 @@ public class PlacementSystem : MonoBehaviour
         cloneObject.transform.position = hitPosition;
     }
 
-    public void PlaceDownObj()
+    private void PickupObject()
     {
-        if (!playerScript.isInPlacingMode || playerScript.carriedObject == null) return;
-        if (cloneObject.GetComponentInChildren<Renderer>().material == red) return;
+        if (Input.GetKeyDown(KeyCode.C) && !playerScript.isInCarryState)
+        {
+            if (playerScript == null || playerScript.carriedObject != null || playerScript.carriedVictim != null) return;
+            if (!detectorSystem.TargetObject.GetComponent<PlacableObj>()) return;
+            if (detectorSystem.TargetObject.GetComponent<PlacableObj>().carriableType != PlacableObj.CarriableType.Object) return;
 
-        PlaceObjectAtPosition(playerScript.carriedObject, hitPosition, cloneObject.transform.rotation);
+            prevCarriedObjectPosition = detectorSystem.TargetObject.transform.position;
+            prevCarriedObjectRotation = detectorSystem.TargetObject.transform.eulerAngles;
 
-        playerScript.carriedObject.GetComponent<Interactable>().BackToPrevParrent();
-        playerScript.carriedObject = null;
-        playerScript.isPlayerCarryingObject = false;
+            playerScript.carriedObject = detectorSystem.TargetObject;
 
-        DestroyCloneObject();
+            Rigidbody rb = playerScript.carriedObject.GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                rb.isKinematic = true;
+                rb.useGravity = false;
+            }
+
+            MeshCollider[] meshColliders = playerScript.carriedObject.GetComponentsInChildren<MeshCollider>();
+            foreach (MeshCollider meshCollider in meshColliders)
+            {
+                meshCollider.isTrigger = true;
+            }
+
+            prevCarriedObjectParrent = detectorSystem.TargetObject.transform.parent.gameObject;
+            playerScript.carriedObject.transform.SetParent(GetComponent<InventorySystem>().carrySlot.transform);
+            playerScript.carriedObject.transform.localPosition = new Vector3(1.152f, -0.067f, -0.295f);
+            playerScript.carriedObject.transform.localRotation = new Quaternion(0.372680098f, -0.640431643f, -0.557825327f, -0.373882234f);
+        }
+    }
+
+    public void ObjectPlaceAction()
+    {
+        if (Input.GetKeyDown(KeyCode.C) && playerScript.isInCarryState)
+        {
+            if (playerScript.carriedObject == null) return;
+            if (!cloneObject.GetComponent<CloneObject>() || !cloneObject.GetComponent<CloneObject>().validPlaceState) return;
+
+            PlaceObjectAtPosition(playerScript.carriedObject, hitPosition, cloneObject.transform.rotation);
+
+            BackToPrevParrent();
+            playerScript.carriedObject = null;
+            playerScript.isPlayerCarryingObject = false;
+
+            DestroyCloneObject();
+        }
     }
 
     private void HandleCancelPlacement()
@@ -113,7 +157,7 @@ public class PlacementSystem : MonoBehaviour
         {
             PlaceObjectAtPosition(playerScript.carriedObject, prevCarriedObjectPosition, Quaternion.Euler(prevCarriedObjectRotation));
 
-            playerScript.carriedObject.GetComponent<Interactable>().BackToPrevParrent();
+            BackToPrevParrent();
             playerScript.carriedObject = null;
             playerScript.isPlayerCarryingObject = false;
 
@@ -179,6 +223,53 @@ public class PlacementSystem : MonoBehaviour
         {
             rb.isKinematic = true;
             rb.useGravity = false;
+        }
+    }
+
+    private void PickupVictim()
+    {
+        if (Input.GetKeyDown(KeyCode.C) && !playerScript.isInCarryState)
+        {
+            if (playerScript == null || (playerScript.carriedVictim != null) || playerScript.carriedObject != null) return;
+            if (detectorSystem.TargetObject.GetComponent<PlacableObj>().carriableType != PlacableObj.CarriableType.Victim) return;
+            
+            playerScript.isPlayerCarryingAVictim = true;
+            playerScript.carriedVictim = detectorSystem.TargetObject;
+            playerScript.carriedVictim.transform.SetParent(GetComponent<InventorySystem>().carrySlot.transform);
+            playerScript.carriedVictim.transform.localPosition = Vector3.zero;
+            playerScript.carriedVictim.transform.localRotation = Quaternion.identity;
+            playerScript.carriedVictim.SetActive(false);
+        }
+    }
+
+    private void HandlePutVictim()
+    {
+        if (Input.GetKeyDown(KeyCode.C) && playerScript.isInCarryState)
+        {
+            if (playerScript == null || playerScript.carriedVictim == null) return;
+
+            Stretcher stretcher = detectorSystem.TargetObject.GetComponent<Stretcher>();
+            if (stretcher != null && stretcher.isOcupied == false)
+            {
+                playerScript.carriedVictim.SetActive(true);
+                stretcher.PutVictimInStretcher(playerScript.carriedVictim);
+                playerScript.carriedVictim = null;
+                playerScript.isPlayerCarryingAVictim = false;
+            }
+            else
+            {
+                Debug.Log("Stretcher is occupied or not found.");
+            }
+        }
+
+    }
+
+    public void BackToPrevParrent()
+    {
+        if (prevCarriedObjectParrent != null)
+        {
+            playerScript.carriedObject.transform.SetParent(prevCarriedObjectParrent.transform);
+            prevCarriedObjectParrent = null;
         }
     }
 }

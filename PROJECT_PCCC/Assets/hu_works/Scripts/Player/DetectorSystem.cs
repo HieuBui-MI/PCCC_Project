@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class InteractionSystem : MonoBehaviour
+public class DetectorSystem : MonoBehaviour
 {
     [SerializeField] private GameObject targetObject;
     public GameObject TargetObject
@@ -95,7 +95,7 @@ public class InteractionSystem : MonoBehaviour
         if (targetObject == null) return;
 
         Interactable interactable = targetObject.GetComponent<Interactable>();
-        if (interactable != null || !GetComponent<PlayerScript>().isInPlacingMode)
+        if (interactable != null || !GetComponent<PlayerState>().isInCarryState)
         {
             interactable.InteractCase(transform.parent.gameObject);
         }

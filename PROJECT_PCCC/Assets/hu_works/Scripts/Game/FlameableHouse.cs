@@ -7,8 +7,8 @@ public class FlameableHouse : MonoBehaviour
     [SerializeField] private List<GameObject> houseParts = new List<GameObject>(); // Danh sách các phần của ngôi nhà
     [SerializeField] private GameObject pointPrefab; // Prefab để gắn vào RandomPointOnSurface
     public int numberOfPointsEachPart;
-    [SerializeField] public Vector3 rotationOffset = Vector3.zero; 
-    public float spawnChance = 0.5f; 
+    [SerializeField] public Vector3 rotationOffset = Vector3.zero;
+    public float spawnChance = 0.5f;
 
     void Start()
     {
@@ -17,7 +17,11 @@ public class FlameableHouse : MonoBehaviour
         {
             if (child != transform) // Bỏ qua chính object cha (ngôi nhà)
             {
-                houseParts.Add(child.gameObject);
+                // Kiểm tra nếu child có bất kỳ loại collider nào
+                if (child.GetComponent<Collider>() != null)
+                {
+                    houseParts.Add(child.gameObject);
+                }
             }
         }
 
@@ -48,8 +52,8 @@ public class FlameableHouse : MonoBehaviour
             if (pointPrefab != null)
             {
                 randomPointScript.pointPrefab = pointPrefab;
-                randomPointScript.numberOfPoints = numberOfPointsEachPart; 
-                randomPointScript.rotationOffset = rotationOffset; 
+                randomPointScript.numberOfPoints = numberOfPointsEachPart;
+                randomPointScript.rotationOffset = rotationOffset;
                 randomPointScript.spawnChance = spawnChance;
             }
         }

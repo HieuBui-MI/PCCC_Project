@@ -5,6 +5,7 @@ public class CloneObject : MonoBehaviour
     public Material red; // Màu đỏ
     public Material green; // Màu xanh lá cây
     private Renderer[] objectRenderers; // Mảng Renderer của các phần tử con
+    public bool validPlaceState = false; // Trạng thái có thể đặt đối tượng
 
     void Start()
     {
@@ -48,6 +49,8 @@ public class CloneObject : MonoBehaviour
             foreach (Renderer renderer in objectRenderers)
             {
                 renderer.material = red;
+                validPlaceState = false;
+
             }
         }
     }
@@ -59,6 +62,8 @@ public class CloneObject : MonoBehaviour
             foreach (Renderer renderer in objectRenderers)
             {
                 renderer.material = green;
+                validPlaceState = true;
+
             }
         }
     }

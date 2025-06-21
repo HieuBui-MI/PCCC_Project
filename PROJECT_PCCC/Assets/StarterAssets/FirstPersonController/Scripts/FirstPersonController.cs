@@ -127,7 +127,7 @@ namespace StarterAssets
 			JumpAndGravity();
 			GroundedCheck();
 
-			PlayerScript playerScript = GetComponentInChildren<PlayerScript>();
+			PlayerState playerScript = GetComponentInChildren<PlayerState>();
 			if (playerScript != null)
 			{
 				if (!playerScript.isPlayerClimbing)

@@ -15,7 +15,7 @@ public class ToolWheelController : MonoBehaviour
     {
         if (inputs.toolWheel)
         {
-            GetComponentInChildren<PlayerScript>().isInWheelSelectionMode = true;
+            GetComponentInChildren<PlayerState>().isInWheelSelectionMode = true;
             toolWheel.SetActive(true);
 
             if (inputs != null)
@@ -29,7 +29,7 @@ public class ToolWheelController : MonoBehaviour
         }
         if (!inputs.toolWheel)
         {
-            GetComponentInChildren<PlayerScript>().isInWheelSelectionMode = false;
+            GetComponentInChildren<PlayerState>().isInWheelSelectionMode = false;
             toolWheel.SetActive(false);
 
             if (inputs != null)

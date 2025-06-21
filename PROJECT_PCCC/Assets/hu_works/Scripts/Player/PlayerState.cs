@@ -3,7 +3,7 @@ using UnityEngine;
 using StarterAssets;
 using UnityEngine.Animations.Rigging;
 
-public class PlayerScript : MonoBehaviour
+public class PlayerState : MonoBehaviour
 {
     [Header("Player State")]
     [SerializeField] private bool previousGroundedState = false;
@@ -12,6 +12,7 @@ public class PlayerScript : MonoBehaviour
     public bool isPlayerCarryingAVictim = false;
     public bool isPlayerCarryingObject = false;
     public bool isPlayerClimbing = false;
+    public bool isInCarryState = false;
 
     [Header("Equipment State")]
     public bool isUsingFireAxe = false;
@@ -28,12 +29,11 @@ public class PlayerScript : MonoBehaviour
     public GameObject connectableObjectOnHold = null;
 
     [Header("Interaction Systems")]
-    private InteractionSystem interactionSystem;
+    private DetectorSystem interactionSystem;
     private StarterAssetsInputs starterAssetsInputs;
     private PlayerAnimationsHandler playerAnimationsHandler;
 
     [Header("Placement and Selection Modes")]
-    public bool isInPlacingMode = false;
     public bool isInWheelSelectionMode = false;
 
     [Header("Vehicle State")]
@@ -44,7 +44,7 @@ public class PlayerScript : MonoBehaviour
     [SerializeField] private float climbSpeed = 5f;
     private void Awake()
     {
-        interactionSystem = GetComponent<InteractionSystem>();
+        interactionSystem = GetComponent<DetectorSystem>();
         starterAssetsInputs = GetComponentInParent<StarterAssetsInputs>();
         playerAnimationsHandler = GetComponent<PlayerAnimationsHandler>();
     }
@@ -60,7 +60,7 @@ public class PlayerScript : MonoBehaviour
 
     void PlaceModeState()
     {
-        isInPlacingMode = carriedObject != null;
+        isInCarryState = carriedObject != null || carriedVictim != null;
     }
 
     void Interact()
@@ -89,7 +89,6 @@ public class PlayerScript : MonoBehaviour
             if (Time.time >= leftClickTimeOutDelta + 0.1f)
             {
                 SetIsUsingFireAxe();
-                GetComponent<PlacementSystem>().PlaceDownObj();
                 leftClickTimeOutDelta = Time.time;
             }
             else

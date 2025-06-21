@@ -63,8 +63,7 @@ public class FirePointShooter : MonoBehaviour
             Rigidbody rb = projectile.GetComponent<Rigidbody>();
             if (rb != null)
             {
-                rb.useGravity = false;
-                // rb.AddForce(firePoint.rotation * Vector3.up * projectileSpeed, ForceMode.VelocityChange);
+                rb.useGravity = true;
                 rb.AddForce(firePoint.up * projectileSpeed, ForceMode.VelocityChange);
 
             }

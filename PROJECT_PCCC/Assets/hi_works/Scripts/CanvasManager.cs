@@ -16,6 +16,7 @@ public class CanvasManager : MonoBehaviour
     public GameObject LoadSavePanel;
     public Transform saveSlotContainer; // nơi chứa các button save
     public GameObject saveSlotPrefab;   // prefab slot
+    // public Camera cam;
 
     public void StartGameBtn_Main1_CLick()
     {
@@ -69,6 +70,7 @@ public class CanvasManager : MonoBehaviour
         PlayerPrefs.Save();
 
         // Load Scene 1
+        // Destroy(cam.gameObject); // Xóa camera cũ
         SceneManager.LoadScene("hu_scene");
     }
 

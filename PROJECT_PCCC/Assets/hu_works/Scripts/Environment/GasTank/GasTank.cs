@@ -4,7 +4,7 @@ public class GasTank : MonoBehaviour
 {
     private bool isExploded = false;
     private float explosionRadius = 5f;
-    private float explosionTime = 5f;
+    [SerializeField ]private float explosionTime = 5f;
     private float explosionForce = 700f;
     private float explosionDamage = 50f;
     private float explosionDelay = 0.5f; // Delay before explosion in seconds

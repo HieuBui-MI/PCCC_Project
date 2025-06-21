@@ -12,6 +12,8 @@ public class CarController : MonoBehaviour
     private bool isBreaking;
     public Vector3 wheelsOffSet;
     public float speed;
+    private Rigidbody rb => GetComponent<Rigidbody>();
+    private float prevRbMass;
     // Settings
     [SerializeField] private float motorForce, breakForce, maxSteerAngle;
 
@@ -30,7 +32,7 @@ public class CarController : MonoBehaviour
 
     private void Start()
     {
-        Rigidbody rb = GetComponent<Rigidbody>();
+        prevRbMass = rb.mass;// Hạ thấp trọng tâm để tăng độ ổn định
         rb.centerOfMass = new Vector3(0, -0.5f, 0); // Hạ thấp trọng tâm để tăng độ ổn định
     }
 
